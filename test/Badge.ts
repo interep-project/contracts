@@ -11,12 +11,13 @@ describe("Badge", function () {
   let badge: Badge;
   let admin: SignerWithAddress;
   let signer1: SignerWithAddress;
+  let signer2: SignerWithAddress;
 
   const badgeName = "TwitterBadge";
   const badgeSymbol = "iTWITT";
 
   before(async function () {
-    [admin, signer1] = await hre.ethers.getSigners();
+    [admin, signer1, signer2] = await hre.ethers.getSigners();
   });
 
   beforeEach(async function () {
@@ -32,13 +33,13 @@ describe("Badge", function () {
     expect(await badge.symbol()).to.eq(badgeSymbol);
   });
 
-  it("should let the owner pause", async () => {
+  it("should let the admin pause", async () => {
     await badge.connect(admin).pause();
 
     expect(await badge.paused()).to.be.true;
   });
 
-  it("should let the owner unpause", async () => {
+  it("should let the admin unpause", async () => {
     await badge.connect(admin).pause();
 
     await badge.connect(admin).unpause();
@@ -50,11 +51,57 @@ describe("Badge", function () {
     await expect(badge.connect(signer1).pause()).to.be.revertedWith("Ownable: caller is not the owner");
   });
 
-  it("should let the owner mint a token", async () => {
+  it("should let the admin mint a token", async () => {
     await badge.connect(admin).safeMint(signer1.address, 1);
 
     expect(await badge.balanceOf(signer1.address)).to.eq(1);
     expect(await badge.ownerOf(1)).to.eq(signer1.address);
+  });
+
+  it("should not let mint twice with the same id", async () => {
+    const tokenId = 5555;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    expect(await badge.balanceOf(signer1.address)).to.eq(1);
+
+    await expect(badge.connect(admin).safeMint(signer2.address, tokenId)).to.be.revertedWith(
+      "ERC721: token already minted",
+    );
+  });
+
+  it("should let tokens be burned by their owner", async () => {
+    const tokenId = 5645324387978;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    expect(await badge.balanceOf(signer1.address)).to.eq(1);
+
+    await badge.connect(signer1).burn(tokenId);
+
+    expect(await badge.balanceOf(signer1.address)).to.eq(0);
+  });
+
+  it("should not let tokens be burned if not approved or owner", async () => {
+    const tokenId = 3333;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    expect(await badge.balanceOf(signer1.address)).to.eq(1);
+
+    await expect(badge.connect(signer2).burn(tokenId)).to.be.revertedWith(
+      "ERC721Burnable: caller is not owner nor approved",
+    );
+    expect(await badge.balanceOf(signer1.address)).to.eq(1);
+  });
+
+  it("should let approved accounts burn tokens on behalf", async () => {
+    const tokenId = 44;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    expect(await badge.balanceOf(signer1.address)).to.eq(1);
+
+    await badge.connect(signer1).approve(signer2.address, tokenId);
+
+    await expect(badge.connect(signer2).burn(tokenId)).to.not.be.reverted;
+    expect(await badge.balanceOf(signer1.address)).to.eq(0);
   });
 
   it("should set the base URI", async () => {
@@ -68,7 +115,7 @@ describe("Badge", function () {
     expect(await badge.tokenURI(1)).to.eq(baseURI + tokenId.toString());
   });
 
-  it("should only let the owner change the base URI", async () => {
+  it("should only let the admin change the base URI", async () => {
     await expect(badge.connect(signer1).changeBaseURI("https://opensea.io/")).to.be.revertedWith(
       "Ownable: caller is not the owner",
     );
