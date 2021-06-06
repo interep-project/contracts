@@ -120,4 +120,33 @@ describe("Badge", function () {
       "Ownable: caller is not the owner",
     );
   });
+
+  it("should let token holder transfer their token", async () => {
+    const tokenId = 6;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    await expect(() =>
+      badge.connect(signer1)["safeTransferFrom(address,address,uint256)"](signer1.address, signer2.address, tokenId),
+    ).to.changeTokenBalances(badge, [signer1, signer2], [-1, 1]);
+  });
+
+  it("should let approved accounts transfer", async () => {
+    const tokenId = 77;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    await badge.connect(signer1).approve(signer2.address, tokenId);
+
+    await badge.connect(signer2)["safeTransferFrom(address,address,uint256)"](signer1.address, admin.address, tokenId);
+
+    expect(await badge.ownerOf(tokenId)).to.eq(admin.address);
+  });
+
+  it("should not let unapproved transfers happen", async () => {
+    const tokenId = 77;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    await expect(
+      badge.connect(signer2)["safeTransferFrom(address,address,uint256)"](signer1.address, signer2.address, tokenId),
+    ).to.be.revertedWith("ERC721: transfer caller is not owner nor approved");
+  });
 });
