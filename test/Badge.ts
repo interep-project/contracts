@@ -33,6 +33,9 @@ describe("Badge", function () {
     expect(await badge.symbol()).to.eq(badgeSymbol);
   });
 
+  /*
+   **** PAUSING ****
+   */
   it("should let the admin pause", async () => {
     await badge.connect(admin).pause();
 
@@ -51,11 +54,20 @@ describe("Badge", function () {
     await expect(badge.connect(signer1).pause()).to.be.revertedWith("Ownable: caller is not the owner");
   });
 
+  /*
+   **** MINTING ****
+   */
   it("should let the admin mint a token", async () => {
     await badge.connect(admin).safeMint(signer1.address, 1);
 
     expect(await badge.balanceOf(signer1.address)).to.eq(1);
     expect(await badge.ownerOf(1)).to.eq(signer1.address);
+  });
+
+  it("should only let the admin mint a token", async () => {
+    await expect(badge.connect(signer1).safeMint(signer1.address, 234)).to.be.revertedWith(
+      "Ownable: caller is not the owner",
+    );
   });
 
   it("should not let mint twice with the same id", async () => {
@@ -69,6 +81,9 @@ describe("Badge", function () {
     );
   });
 
+  /*
+   **** BURNING ****
+   */
   it("should let tokens be burned by their owner", async () => {
     const tokenId = 5645324387978;
     await badge.connect(admin).safeMint(signer1.address, tokenId);
@@ -104,6 +119,9 @@ describe("Badge", function () {
     expect(await badge.balanceOf(signer1.address)).to.eq(0);
   });
 
+  /*
+   **** URI ****
+   */
   it("should set the base URI", async () => {
     const baseURI = "https://interrep.link/tokens/";
     const tokenId = 1;
@@ -121,6 +139,9 @@ describe("Badge", function () {
     );
   });
 
+  /*
+   **** TRANSFER ****
+   */
   it("should let token holder transfer their token", async () => {
     const tokenId = 6;
     await badge.connect(admin).safeMint(signer1.address, tokenId);
@@ -142,11 +163,22 @@ describe("Badge", function () {
   });
 
   it("should not let unapproved transfers happen", async () => {
-    const tokenId = 77;
+    const tokenId = 8;
     await badge.connect(admin).safeMint(signer1.address, tokenId);
 
     await expect(
       badge.connect(signer2)["safeTransferFrom(address,address,uint256)"](signer1.address, signer2.address, tokenId),
     ).to.be.revertedWith("ERC721: transfer caller is not owner nor approved");
+  });
+
+  it("should not let transfer happen when paused", async () => {
+    const tokenId = 991;
+    await badge.connect(admin).safeMint(signer1.address, tokenId);
+
+    await badge.connect(admin).pause();
+
+    await expect(
+      badge.connect(signer1)["safeTransferFrom(address,address,uint256)"](signer1.address, signer2.address, tokenId),
+    ).to.be.revertedWith("Pausable: paused");
   });
 });
