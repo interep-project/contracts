@@ -1,10 +1,10 @@
 const shell = require("shelljs");
 
-// The environment variables are loaded in hardhat.config.ts
-const mnemonic = process.env.MNEMONIC;
-if (!mnemonic) {
-  throw new Error("Please set your MNEMONIC in a .env file");
-}
+// // The environment variables are loaded in hardhat.config.ts
+// const mnemonic = process.env.MNEMONIC;
+// if (!mnemonic) {
+//   throw new Error("Please set your MNEMONIC in a .env file");
+// }
 
 module.exports = {
   istanbulReporter: ["html", "lcov"],
@@ -16,8 +16,8 @@ module.exports = {
     shell.rm("-rf", "./artifacts");
     shell.rm("-rf", "./typechain");
   },
-  providerOptions: {
-    mnemonic,
-  },
+  // providerOptions: {
+  // mnemonic,
+  // },
   skipFiles: ["mocks", "test"],
 };
