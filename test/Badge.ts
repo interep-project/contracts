@@ -110,6 +110,10 @@ describe("Badge", function () {
   /*
    **** BACKEND ADDRESS ****
    */
+  it("should return the backend address", async () => {
+    expect(await badge.backendAddress()).to.eq(backend.address);
+  });
+
   it("should let the deployer change the backend address", async () => {
     const newBackend = signer1;
 
@@ -121,6 +125,9 @@ describe("Badge", function () {
     // change backend address
     const tx = await badge.connect(deployer).changeBackendAddress(signer1.address);
     await tx.wait();
+
+    // check backendAddress was changed
+    expect(await badge.backendAddress()).to.eq(signer1.address);
 
     // try minting again
     await expect(badge.connect(signer1).safeMint(signer1.address, 234));

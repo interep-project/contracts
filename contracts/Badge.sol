@@ -46,8 +46,12 @@ contract Badge is ERC721, Pausable, Ownable, ERC721Burnable {
         _safeMint(to, tokenId);
     }
 
-    function changeBackendAddress(address backendAddress) public onlyOwner {
-        _backendAddress = backendAddress;
+    function changeBackendAddress(address newBackendAddress) public onlyOwner {
+        _backendAddress = newBackendAddress;
+    }
+
+    function backendAddress() public view returns (address) {
+        return _backendAddress;
     }
 
     function changeBaseURI(string memory baseURI) public onlyOwner {
