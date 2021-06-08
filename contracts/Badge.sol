@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721BurnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Badge is ERC721, Pausable, Ownable, ERC721Burnable {
+contract Badge is Initializable, ERC721Upgradeable, PausableUpgradeable, OwnableUpgradeable, ERC721BurnableUpgradeable {
     address private _backendAddress;
     string private _baseTokenURI;
 
@@ -15,11 +16,18 @@ contract Badge is ERC721, Pausable, Ownable, ERC721Burnable {
         uint256 tokenId;
     }
 
-    constructor(
+    function initialize(
         string memory name_,
         string memory symbol_,
         address backendAddress_
-    ) ERC721(name_, symbol_) {
+    ) public initializer {
+        __Context_init_unchained();
+        __Pausable_init_unchained();
+        __Ownable_init_unchained();
+        __ERC165_init_unchained();
+        __ERC721_init_unchained(name_, symbol_);
+        __ERC721Burnable_init_unchained();
+
         _backendAddress = backendAddress_;
     }
 

@@ -23,7 +23,11 @@ describe("Badge", function () {
 
   beforeEach(async function () {
     const BadgeFactory: Badge__factory = await ethers.getContractFactory("Badge");
-    badge = await BadgeFactory.connect(deployer).deploy(badgeName, badgeSymbol, backend.address);
+    badge = await BadgeFactory.connect(deployer).deploy();
+    await badge.deployed();
+
+    const initTx = await badge.connect(deployer).initialize(badgeName, badgeSymbol, backend.address);
+    await initTx.wait();
   });
 
   it("should return the badge name", async () => {
