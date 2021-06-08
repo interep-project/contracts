@@ -1,14 +1,15 @@
 import hre from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
+import { expect } from "chai";
+import { Contract, ContractFactory } from "@ethersproject/contracts";
 
 import { Badge } from "../typechain/Badge";
 import { Badge__factory } from "../typechain";
-import { expect } from "chai";
 
-const { ethers } = hre;
+const { ethers, upgrades } = hre;
 
 describe("Badge", function () {
-  let badge: Badge;
+  let badge: Contract;
   let deployer: SignerWithAddress;
   let backend: SignerWithAddress;
   let signer1: SignerWithAddress;
@@ -22,12 +23,11 @@ describe("Badge", function () {
   });
 
   beforeEach(async function () {
-    const BadgeFactory: Badge__factory = await ethers.getContractFactory("Badge");
-    badge = await BadgeFactory.connect(deployer).deploy();
-    await badge.deployed();
+    const BadgeFactory: ContractFactory = await ethers.getContractFactory("contracts/Badge.sol:Badge");
 
-    const initTx = await badge.connect(deployer).initialize(badgeName, badgeSymbol, backend.address);
-    await initTx.wait();
+    badge = await upgrades.deployProxy(BadgeFactory, [badgeName, badgeSymbol, backend.address]);
+
+    await badge.deployed();
   });
 
   it("should return the badge name", async () => {
