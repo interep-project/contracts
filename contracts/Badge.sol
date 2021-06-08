@@ -36,9 +36,17 @@ contract Badge is Initializable, ERC721Upgradeable, PausableUpgradeable, Ownable
         _;
     }
 
+    function backendAddress() public view returns (address) {
+        return _backendAddress;
+    }
+
+    function safeMint(address to, uint256 tokenId) public onlyBackend {
+        _safeMint(to, tokenId);
+    }
+
     function batchMint(MintParameters[] memory tokensToMint) external onlyBackend {
         for (uint256 i = 0; i < tokensToMint.length; i++) {
-            _mint(tokensToMint[i].to, tokensToMint[i].tokenId);
+            _safeMint(tokensToMint[i].to, tokensToMint[i].tokenId);
         }
     }
 
@@ -50,16 +58,8 @@ contract Badge is Initializable, ERC721Upgradeable, PausableUpgradeable, Ownable
         _unpause();
     }
 
-    function safeMint(address to, uint256 tokenId) public onlyBackend {
-        _safeMint(to, tokenId);
-    }
-
     function changeBackendAddress(address newBackendAddress) public onlyOwner {
         _backendAddress = newBackendAddress;
-    }
-
-    function backendAddress() public view returns (address) {
-        return _backendAddress;
     }
 
     function changeBaseURI(string memory baseURI) public onlyOwner {
