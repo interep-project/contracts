@@ -3,9 +3,6 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { expect } from "chai";
 import { Contract, ContractFactory } from "@ethersproject/contracts";
 
-import { Badge } from "../typechain/Badge";
-import { Badge__factory } from "../typechain";
-
 const { ethers, upgrades } = hre;
 
 describe("Badge", function () {
@@ -23,7 +20,7 @@ describe("Badge", function () {
   });
 
   beforeEach(async function () {
-    const BadgeFactory: ContractFactory = await ethers.getContractFactory("contracts/Badge.sol:Badge");
+    const BadgeFactory: ContractFactory = await ethers.getContractFactory("Badge");
 
     badge = await upgrades.deployProxy(BadgeFactory, [badgeName, badgeSymbol, backend.address]);
 

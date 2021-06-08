@@ -20,8 +20,8 @@ describe("Badge upgrade", function () {
   });
 
   beforeEach(async function () {
-    const BadgeFactory: ContractFactory = await ethers.getContractFactory("contracts/Badge.sol:Badge");
-    const BadgeV2Factory: ContractFactory = await ethers.getContractFactory("contracts/mocks/BadgeV2Test.sol:Badge");
+    const BadgeFactory: ContractFactory = await ethers.getContractFactory("Badge");
+    const BadgeV2Factory: ContractFactory = await ethers.getContractFactory("BadgeV2Test");
 
     badge = await upgrades.deployProxy(BadgeFactory, [badgeName, badgeSymbol, backend.address]);
     badgeTestV2 = await upgrades.upgradeProxy(badge.address, BadgeV2Factory);
