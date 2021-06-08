@@ -7,7 +7,13 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721BurnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Badge is Initializable, ERC721Upgradeable, PausableUpgradeable, OwnableUpgradeable, ERC721BurnableUpgradeable {
+contract BadgeV2Test is
+    Initializable,
+    ERC721Upgradeable,
+    PausableUpgradeable,
+    OwnableUpgradeable,
+    ERC721BurnableUpgradeable
+{
     address private _backendAddress;
     string private _baseTokenURI;
 
@@ -36,17 +42,13 @@ contract Badge is Initializable, ERC721Upgradeable, PausableUpgradeable, Ownable
         _;
     }
 
-    function backendAddress() public view returns (address) {
-        return _backendAddress;
-    }
-
-    function safeMint(address to, uint256 tokenId) public onlyBackend {
-        _safeMint(to, tokenId);
+    function thisIsATest() public pure returns (uint256) {
+        return 42;
     }
 
     function batchMint(MintParameters[] memory tokensToMint) external onlyBackend {
         for (uint256 i = 0; i < tokensToMint.length; i++) {
-            _safeMint(tokensToMint[i].to, tokensToMint[i].tokenId);
+            _mint(tokensToMint[i].to, tokensToMint[i].tokenId);
         }
     }
 
@@ -58,8 +60,16 @@ contract Badge is Initializable, ERC721Upgradeable, PausableUpgradeable, Ownable
         _unpause();
     }
 
+    function safeMint(address to, uint256 tokenId) public onlyBackend {
+        _safeMint(to, tokenId);
+    }
+
     function changeBackendAddress(address newBackendAddress) public onlyOwner {
         _backendAddress = newBackendAddress;
+    }
+
+    function backendAddress() public view returns (address) {
+        return _backendAddress;
     }
 
     function changeBaseURI(string memory baseURI) public onlyOwner {
