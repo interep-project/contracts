@@ -5,7 +5,7 @@ import { Contract, ContractFactory } from "@ethersproject/contracts";
 
 const { ethers, upgrades } = hre;
 
-describe("Badge upgrade", function () {
+describe("ReputationBadge upgrade", function () {
   let badge: Contract;
   let badgeTestV2: Contract;
   let deployer: SignerWithAddress;
@@ -20,8 +20,8 @@ describe("Badge upgrade", function () {
   });
 
   beforeEach(async function () {
-    const BadgeFactory: ContractFactory = await ethers.getContractFactory("Badge");
-    const BadgeV2Factory: ContractFactory = await ethers.getContractFactory("BadgeV2Test");
+    const BadgeFactory: ContractFactory = await ethers.getContractFactory("ReputationBadge");
+    const BadgeV2Factory: ContractFactory = await ethers.getContractFactory("ReputationBadgeV2Test");
 
     badge = await upgrades.deployProxy(BadgeFactory, [badgeName, badgeSymbol, backend.address]);
     badgeTestV2 = await upgrades.upgradeProxy(badge.address, BadgeV2Factory);
