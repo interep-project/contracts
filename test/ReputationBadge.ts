@@ -5,7 +5,7 @@ import { Contract, ContractFactory } from "@ethersproject/contracts";
 
 const { ethers, upgrades } = hre;
 
-describe("Badge", function () {
+describe("ReputationBadge", function () {
   let badge: Contract;
   let deployer: SignerWithAddress;
   let backend: SignerWithAddress;
@@ -20,7 +20,7 @@ describe("Badge", function () {
   });
 
   beforeEach(async function () {
-    const BadgeFactory: ContractFactory = await ethers.getContractFactory("Badge");
+    const BadgeFactory: ContractFactory = await ethers.getContractFactory("ReputationBadge");
 
     badge = await upgrades.deployProxy(BadgeFactory, [badgeName, badgeSymbol, backend.address]);
 
@@ -108,6 +108,16 @@ describe("Badge", function () {
     ).to.be.revertedWith("Unauthorized");
   });
 
+  it("should return true if a token exists", async () => {
+    await badge.connect(backend).safeMint(signer1.address, 1);
+
+    expect(await badge.exists(1)).to.be.true;
+  });
+
+  it("should return false if a token does not exist", async () => {
+    expect(await badge.exists(268080990909099)).to.be.false;
+  });
+
   /*
    **** BACKEND ADDRESS ****
    */
@@ -131,10 +141,10 @@ describe("Badge", function () {
     expect(await badge.backendAddress()).to.eq(signer1.address);
 
     // try minting again
-    await expect(badge.connect(signer1).safeMint(signer1.address, 234));
+    await badge.connect(signer1).safeMint(signer1.address, 234);
 
     // check balance is 1
-    expect(await badge.balanceOf(signer1.address)).to.eq(0);
+    expect(await badge.balanceOf(signer1.address)).to.eq(1);
   });
 
   it("should only let the deployer change the backend address", async () => {
