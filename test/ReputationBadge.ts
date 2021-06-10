@@ -194,7 +194,7 @@ describe("ReputationBadge", function () {
   /*
    **** URI ****
    */
-  it("should set the base URI", async () => {
+  it("should set the base URI and return the proper tokenURI", async () => {
     const baseURI = "https://interrep.link/tokens/";
     const tokenId = 1;
 
