@@ -1,6 +1,11 @@
 # InterRep Smart Contracts
 
-Smart contracts used for InterRep reputation badge
+Smart contracts used for InterRep reputation badge.
+
+Deployed contracts:
+- Kovan:
+  - Proxy: https://kovan.etherscan.io/address/0x99fcf805c468977e0f8ceae21935268eeceadc07
+  - Implementation: https://kovan.etherscan.io/address/0x00f85341da5919d1131ef77c6270b71353a3ccce
 
 ## Usage
 
