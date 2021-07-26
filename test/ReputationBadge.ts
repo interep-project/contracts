@@ -74,6 +74,12 @@ describe("ReputationBadge", function () {
     await expect(badge.connect(signer1).safeMint(signer1.address, 234)).to.be.revertedWith("Unauthorized");
   });
 
+  it("should not let minting happen when paused", async () => {
+    await badge.connect(deployer).pause();
+
+    await expect(badge.connect(backend).safeMint(signer1.address, 1)).to.be.revertedWith("Pausable: paused");
+  });
+
   it("should not let mint twice with the same id", async () => {
     const tokenId = 5555;
     await badge.connect(backend).safeMint(signer1.address, tokenId);
