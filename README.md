@@ -6,7 +6,7 @@ Read the announcement post: https://jaygraber.medium.com/introducing-interrep-25
 
 Official website: https://interrep.link/
 
-For more details on how to use and a technical overview please see the [wiki](https://github.com/ra-phael/interRep-contracts/wiki).
+For more details on how to use and a technical overview, please see the [wiki](https://github.com/ra-phael/interRep-contracts/wiki).
 
 Deployed contracts:
 - Ropsten: [0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) (Proxy)
