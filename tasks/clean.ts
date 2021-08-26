@@ -1,14 +1,14 @@
-import fsExtra from "fs-extra";
-import { TASK_CLEAN } from "hardhat/builtin-tasks/task-names";
-import { task } from "hardhat/config";
+import fsExtra from "fs-extra"
+import { TASK_CLEAN } from "hardhat/builtin-tasks/task-names"
+import { task } from "hardhat/config"
 
 task(TASK_CLEAN, "Overrides the standard clean task", async (args, { config }, runSuper) => {
-  await fsExtra.remove("./coverage");
-  await fsExtra.remove("./coverage.json");
+    await fsExtra.remove("./coverage")
+    await fsExtra.remove("./coverage.json")
 
-  if (config.typechain?.outDir) {
-    await fsExtra.remove(config.typechain.outDir);
-  }
+    if (config.typechain?.outDir) {
+        await fsExtra.remove(config.typechain.outDir)
+    }
 
-  await runSuper();
-});
+    await runSuper()
+})

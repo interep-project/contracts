@@ -1,10 +1,10 @@
-import { Signer } from "@ethersproject/abstract-signer";
-import { task } from "hardhat/config";
+import { Signer } from "@ethersproject/abstract-signer"
+import { task } from "hardhat/config"
 
 task("accounts", "Prints the list of accounts", async (args, hre) => {
-  const accounts: Signer[] = await hre.ethers.getSigners();
+    const accounts: Signer[] = await hre.ethers.getSigners()
 
-  for (const account of accounts) {
-    console.log(await account.getAddress());
-  }
-});
+    for (const account of accounts) {
+        console.log(await account.getAddress())
+    }
+})

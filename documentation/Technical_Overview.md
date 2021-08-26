@@ -4,8 +4,8 @@ InterRep is made up of 2 main components: a centralized verification service (wi
 
 By interacting with the front-end, users are able to:
 
-- link and unlink their Ethereum account with their Twitter account
-- mint and burn an NFT or “badge” representing this association
+-   link and unlink their Ethereum account with their Twitter account
+-   mint and burn an NFT or “badge” representing this association
 
 Applications can also use InterRep through the API, which returns a Twitter account’s reputation based on publicly available data.
 
