@@ -24,9 +24,11 @@ Official website: https://interrep.link/
 
 For more details on how to use and a technical overview, please see the [wiki](https://github.com/InterRep/contracts/wiki).
 
-Deployed contracts:
-- Arbitrum One: [0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11)
-- Ropsten: [0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) (Proxy)
+### Deployed contracts
+
+|                  | Ropsten           | Arbitrum One    |
+|------------------|-------------------|-----------------|
+| ReputationBadge   |      [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11)       | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
 
 ⚠️ If you had a badge minted on Ropsten and want to unlink your account, please visit [https://ropsten.interrep.link/](https://ropsten.interrep.link/)
 
