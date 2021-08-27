@@ -17,41 +17,32 @@ dotenvConfig({ path: resolve(__dirname, "./.env") })
 
 function getNetworks(): NetworksUserConfig | undefined {
     if (process.env.NODE_ENV === "production") {
-        const infuraApiKey = process.env.INFURA_API_KEY
-        const mnemonic = process.env.MNEMONIC
-
-        if (!infuraApiKey) {
+        if (!process.env.INFURA_API_KEY) {
             throw new Error("Please set your INFURA_API_KEY in a .env file")
         }
 
-        if (!mnemonic) {
-            throw new Error("Please set MNEMONIC in a .env file")
+        if (!process.env.BACKEND_PRIVATE_KEY) {
+            throw new Error("Please set your BACKEND_PRIVATE_KEY in a .env file")
         }
+
+        const infuraApiKey = process.env.INFURA_API_KEY
+        const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
 
         return {
             ropsten: {
                 url: `https://ropsten.infura.io/v3/${infuraApiKey}`,
                 chainId: 3,
-                accounts: {
-                    count: 10,
-                    mnemonic
-                }
+                accounts
             },
             kovan: {
                 url: `https://kovan.infura.io/v3/${infuraApiKey}`,
                 chainId: 42,
-                accounts: {
-                    count: 10,
-                    mnemonic
-                }
+                accounts
             },
             arbitrum: {
                 url: "https://arb1.arbitrum.io/rpc",
                 chainId: 42161,
-                accounts: {
-                    count: 10,
-                    mnemonic
-                }
+                accounts
             }
         }
     }
