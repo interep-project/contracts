@@ -1,5 +1,4 @@
 import { task } from "hardhat/config"
-import { ReputationBadge } from "../typechain"
 
 task("deploy:reputation-badge", "Deploy a ReputationBadge contract")
     .addParam("name", "The name of the token")
@@ -10,11 +9,7 @@ task("deploy:reputation-badge", "Deploy a ReputationBadge contract")
 
         // Unfortunately the first signer is used to deploy and there is no option to change that
         // See https://github.com/OpenZeppelin/openzeppelin-upgrades/issues/271
-        const reputationBadge: ReputationBadge = (await upgrades.deployProxy(ReputationBadgeFactory, [
-            name,
-            symbol,
-            signer.address
-        ])) as ReputationBadge
+        const reputationBadge = await upgrades.deployProxy(ReputationBadgeFactory, [name, symbol, signer.address])
 
         await reputationBadge.deployed()
 
