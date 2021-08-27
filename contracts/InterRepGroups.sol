@@ -11,13 +11,15 @@ contract InterRepGroups is Initializable, OwnableUpgradeable {
     /// @param _rootHash: The new root hash of the tree.
     event NewRootHash(bytes32 _groupId, uint256 _identityCommitment, uint256 _rootHash);
 
-    mapping(bytes32 => uint256[]) public rootHashes;
+    /// @dev Gets a group id and returns the last root hash.
+    /// @return user data reference.
+    mapping(bytes32 => uint256) public rootHashes;
 
     function initialize() public initializer {
         __Ownable_init();
     }
 
-    /// @dev Add new .
+    /// @dev Associates the new root hash with its group id.
     /// @param _groupId: The id of the group.
     /// @param _identityCommitment: Semaphore identity commitment.
     /// @param _rootHash: The new root hash of the tree.
@@ -26,7 +28,7 @@ contract InterRepGroups is Initializable, OwnableUpgradeable {
         uint256 _identityCommitment,
         uint256 _rootHash
     ) external onlyOwner {
-        rootHashes[_groupId].push(_rootHash);
+        rootHashes[_groupId] = _rootHash;
 
         emit NewRootHash(_groupId, _identityCommitment, _rootHash);
     }

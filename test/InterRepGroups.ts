@@ -27,6 +27,6 @@ describe("InterRepGroups", () => {
 
         await contract.addRootHash(groupId, identityCommitment, rootHash)
 
-        expect(await contract.rootHashes(groupId, 0)).to.eq(3)
+        expect(await contract.rootHashes(groupId)).to.eq(3)
     })
 })
