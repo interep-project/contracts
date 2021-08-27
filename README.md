@@ -2,7 +2,7 @@
     <h1 align="center">
         InterRep contracts
     </h1>
-    <p align="center">Solidity smart contracts used for InterRep's reputation badge.</p>
+    <p align="center">InterRep Solidity smart contracts.</p>
 </p>
 
 <p align="center">
@@ -122,14 +122,17 @@ $ yarn clean
 Deploy the contracts to Hardhat Network:
 
 ```bash
-$ yarn deploy:reputation-badge --help
 $ yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT
+$ yarn deploy:interrep-groups
 ```
+
+or run `yarn deploy:mocks` if you want a short command to simulate the previous command for testing purposes.
 
 Set your `.env` file and deploy the contracts to a specific network, such as the Ropsten testnet:
 
 ```bash
 $ NODE_ENV=production yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT --network ropsten
+$ NODE_ENV=production yarn deploy:interrep-groups --network ropsten
 ```
 
 You can find a copy of the `.env` file in the `.env.example` file.
