@@ -40,6 +40,11 @@
       "address": "0x99FCf805C468977e0F8Ceae21935268EEceadC07",
       "txHash": "0x1aaada0b252d8cfb9fc892815d4aa449ec593a817af9776461b11d8a2cd8589f",
       "kind": "transparent"
+    },
+    {
+      "address": "0xa321683924BeBbB6Ea8e3fA5734068fbD5a63381",
+      "txHash": "0x4fb907bd531fa41fe4afb2e687a931675461bf89464b212d68d23589258d85a7",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -190,6 +195,73 @@
           },
           "t_array(t_uint256)44_storage": {
             "label": "uint256[44]"
+          }
+        }
+      }
+    },
+    "e96df1a18b7e050101e06d1d7647540204d26d190e112c35172faf3d2ceb7712": {
+      "address": "0x1357B970B44B1d13797D9007f18CFe6E08dD5013",
+      "txHash": "0x6bd318a64053c25cc1f4521e494f962930bd8607b7a8079c8a130da840e7d012",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:23"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:28"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:20"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:74"
+          },
+          {
+            "contract": "InterRepGroups",
+            "label": "rootHashes",
+            "type": "t_mapping(t_bytes32,t_uint256)",
+            "src": "contracts/InterRepGroups.sol:16"
+          }
+        ],
+        "types": {
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
           }
         }
       }
