@@ -26,10 +26,10 @@ For more details on how to use and a technical overview, please see the [wiki](h
 
 ### Deployed contracts
 
-|                  | Ropsten           | Arbitrum One    |
-|------------------|-------------------|-----------------|
-| ReputationBadge   |      [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11)       | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
-| InterRepGroups   |      [0x18d0...8116](https://ropsten.etherscan.io/address/0x18d022518c7ac0077f1406e82b054c0a96408116)       |  |
+|                  | Kovan   | Ropsten           | Arbitrum One    |
+|------------------|-----|--------------|-----------------|
+| ReputationBadge   |  [0x99FC...dC07](https://kovan.etherscan.io/address/0x99FCf805C468977e0F8Ceae21935268EEceadC07)  |  [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11)       | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
+| InterRepGroups   |  [0xa321...3381](https://kovan.etherscan.io/address/0xa321683924BeBbB6Ea8e3fA5734068fbD5a63381)   | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419)       |  |
 
 ⚠️ If you had a badge minted on Ropsten and want to unlink your account, please visit [https://ropsten.interrep.link/](https://ropsten.interrep.link/)
 
