@@ -29,6 +29,7 @@ For more details on how to use and a technical overview, please see the [wiki](h
 |                  | Ropsten           | Arbitrum One    |
 |------------------|-------------------|-----------------|
 | ReputationBadge   |      [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11)       | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
+| InterRepGroups   |      [0x18d0...8116](https://ropsten.etherscan.io/address/0x18d022518c7ac0077f1406e82b054c0a96408116)       |  |
 
 ⚠️ If you had a badge minted on Ropsten and want to unlink your account, please visit [https://ropsten.interrep.link/](https://ropsten.interrep.link/)
 
