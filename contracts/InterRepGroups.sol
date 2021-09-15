@@ -9,7 +9,7 @@ contract InterRepGroups is Initializable, OwnableUpgradeable {
     /// @param _groupId: The id of the group.
     /// @param _identityCommitment: Semaphore identity commitment.
     /// @param _rootHash: The new root hash of the tree.
-    event NewRootHash(bytes32 _groupId, uint256 _identityCommitment, uint256 _rootHash);
+    event NewRootHash(bytes32 indexed _groupId, uint256 _identityCommitment, uint256 _rootHash);
 
     /// @dev Gets a group id and returns the last root hash.
     /// @return user data reference.
