@@ -29,7 +29,7 @@ For more details on how to use and a technical overview, please see the [wiki](h
 |                  | Kovan   | Ropsten           | Arbitrum One    |
 |------------------|-----|--------------|-----------------|
 | ReputationBadge   |  [0x99FC...dC07](https://kovan.etherscan.io/address/0x99FCf805C468977e0F8Ceae21935268EEceadC07)  |  [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11)       | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
-| InterRepGroups   |  [0x2c81...f96d](https://kovan.etherscan.io/address/0x2c8111ea02Ed429Bdf47ea56CBC21fd244f7f96d)   | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419)       |  |
+| InterRepGroups   |  [0x8247...5BD9](https://kovan.etherscan.io/address/0x8247BC4382ecc6Eb240d9A4CD51E9Aa85Ef75BD9)   | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419)       |  |
 
 ⚠️ If you had a badge minted on Ropsten and want to unlink your account, please visit [https://ropsten.interrep.link/](https://ropsten.interrep.link/)
 
