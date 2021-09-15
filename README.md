@@ -18,11 +18,27 @@
     <img alt="Repository top language" src="https://img.shields.io/github/languages/top/InterRep/contracts?style=flat-square">
 </p>
 
-Read the announcement post: https://jaygraber.medium.com/introducing-interrep-255d3f56682
+<div align="center">
+    <h4>
+        <a href="https://docs.interrep.link/contributing">
+            👥 Contributing
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://docs.interrep.link/code-of-conduct">
+            🤝 Code of conduct
+        </a>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+        <a href="https://t.me/interrep">
+            🗣️ Chat &amp; Support
+        </a>
+    </h4>
+</div>
 
-Official website: https://interrep.link/
+___
 
-For more details on how to use and a technical overview, please see the [wiki](https://github.com/InterRep/contracts/wiki).
+If you want an overwiew of InterRep, read our announcement post: https://jaygraber.medium.com/introducing-interrep-255d3f56682.
+
+For more details on how to use and a technical overview, please see our [docs](https://docs.interrep.link).
 
 ### Deployed contracts
 
@@ -33,16 +49,7 @@ For more details on how to use and a technical overview, please see the [wiki](h
 
 ⚠️ If you had a badge minted on Ropsten and want to unlink your account, please visit [https://ropsten.interrep.link/](https://ropsten.interrep.link/)
 
----
-
-## Table of Contents
-
--   🛠 [Install](#install)
--   🕹 [Usage](#usage)
--   🔬 Development
-    -   Rules
-        -   [Commits](https://github.com/cedoor/cedoor/tree/main/git#commits-rules)
-        -   [Branches](https://github.com/cedoor/cedoor/tree/main/git#branch-rules)
+___
 
 ## Install
 
