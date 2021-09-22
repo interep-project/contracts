@@ -3,7 +3,11 @@ import { run } from "hardhat"
 async function main(): Promise<void> {
     await run("deploy:reputation-badge", {
         name: "InterRep Twitter Badge",
-        symbol: "iTWITT"
+        symbol: "iTW"
+    })
+    await run("deploy:reputation-badge", {
+        name: "InterRep Github Badge",
+        symbol: "iGH"
     })
     await run("deploy:interrep-groups")
 }

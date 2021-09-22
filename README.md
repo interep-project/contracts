@@ -34,7 +34,7 @@
     </h4>
 </div>
 
-___
+---
 
 If you want an overwiew of InterRep, read our announcement post: https://jaygraber.medium.com/introducing-interrep-255d3f56682.
 
@@ -42,14 +42,15 @@ For more details on how to use and a technical overview, please see our [docs](h
 
 ### Deployed contracts
 
-|                  | Kovan   | Ropsten           | Arbitrum One    |
-|------------------|-----|--------------|-----------------|
-| ReputationBadge   |  [0x99FC...dC07](https://kovan.etherscan.io/address/0x99FCf805C468977e0F8Ceae21935268EEceadC07)  |  [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11)       | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
-| InterRepGroups   |  [0x8247...5BD9](https://kovan.etherscan.io/address/0x8247BC4382ecc6Eb240d9A4CD51E9Aa85Ef75BD9)   | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419)       |  |
+|                           | Kovan                                                                                          | Ropsten                                                                                          | Arbitrum One                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| ReputationBadge (Twitter) | [0x99FC...dC07](https://kovan.etherscan.io/address/0x99FCf805C468977e0F8Ceae21935268EEceadC07) | [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
+| ReputationBadge (Github)  | [0xab00...73bf](https://kovan.etherscan.io/address/0xab0090f2F9C061C12D3Fa286079659Fe00e173bf) |                                                                                                  |                                                                                                       |
+| InterRepGroups            | [0x8247...5BD9](https://kovan.etherscan.io/address/0x8247BC4382ecc6Eb240d9A4CD51E9Aa85Ef75BD9) | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419) |                                                                                                       |
 
 ⚠️ If you had a badge minted on Ropsten and want to unlink your account, please visit [https://ropsten.interrep.link/](https://ropsten.interrep.link/)
 
-___
+---
 
 ## Install
 
@@ -153,8 +154,8 @@ compiler version is to add the following fields to your VSCode user settings:
 
 ```json
 {
-  "solidity.compileUsingRemoteVersion": "v0.8.4+commit.c7e474f2",
-  "solidity.defaultCompiler": "remote"
+    "solidity.compileUsingRemoteVersion": "v0.8.4+commit.c7e474f2",
+    "solidity.defaultCompiler": "remote"
 }
 ```
 
