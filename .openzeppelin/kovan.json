@@ -70,6 +70,16 @@
       "address": "0xAB1855a7d02C771465411fDD4B63f647925d6c37",
       "txHash": "0x3f730cebb6223e397315545d5ab86d69aab1f640dcfb23d794cd55cf97948403",
       "kind": "transparent"
+    },
+    {
+      "address": "0x0Cb09b04016Ba1CfBF37359f0112F304F2381EB6",
+      "txHash": "0xd24f3238717932830c26939657ada2687a49b0ebab439266bb4cf0ebcc3f4396",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x23789296D79FBD09e560FAf84C5870f266b4fef2",
+      "txHash": "0x61c5daee2160565b0ad93fa220bfebd6030df6f0dca8193ace2aea0d64c3a3d0",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -227,6 +237,73 @@
     "e96df1a18b7e050101e06d1d7647540204d26d190e112c35172faf3d2ceb7712": {
       "address": "0x1357B970B44B1d13797D9007f18CFe6E08dD5013",
       "txHash": "0x6bd318a64053c25cc1f4521e494f962930bd8607b7a8079c8a130da840e7d012",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:23"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:28"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:20"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:74"
+          },
+          {
+            "contract": "InterRepGroups",
+            "label": "rootHashes",
+            "type": "t_mapping(t_bytes32,t_uint256)",
+            "src": "contracts/InterRepGroups.sol:16"
+          }
+        ],
+        "types": {
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "3da0f361e06c81837d1a16a5c05fe2b3a20dcba13e36418d58ccdb904d3e749f": {
+      "address": "0x896264943f72D8DA21B60691bBfAcA736b182e39",
+      "txHash": "0x0fd62fdcb7e0ce5cc1a44fd7d68f355370a1475c9fdaf5f7ced4d37c670fa2e3",
       "layout": {
         "storage": [
           {
