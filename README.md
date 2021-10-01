@@ -36,9 +36,9 @@
 
 ---
 
-If you want an overwiew of InterRep, read our announcement post: https://jaygraber.medium.com/introducing-interrep-255d3f56682.
+If you want an overwiew of InterRep, read our announcement post: https://jaygraber.medium.com/introducing-interrep-255d3f56682. For more details, please see our [documentation website](https://docs.interrep.link).
 
-For more details on how to use and a technical overview, please see our [docs](https://docs.interrep.link).
+⚠️ **Notice**: [interrep.link](https://interrep.link) and [ropsten.interrep.link](https://ropsten.interrep.link) still refer to the old MVP version of interRep. They will soon be updated. You can find an updated version at [kovan.interrep.link](https://kovan.interrep.link) (staging env).
 
 ### Deployed contracts
 
@@ -48,8 +48,6 @@ For more details on how to use and a technical overview, please see our [docs](h
 | ReputationBadge (Github)  | [0xab00...73bf](https://kovan.etherscan.io/address/0xab0090f2F9C061C12D3Fa286079659Fe00e173bf)  |                                                                                                  |                                                                                                       |
 | ReputationBadge (Reddit)  | [0xAB18...6c37](https://kovan.etherscan.io/address/0xAB1855a7d02C771465411fDD4B63f647925d6c37)  |                                                                                                  |                                                                                                       |
 | InterRepGroups            | [0x2378...fef2](https://kovan.etherscan.io/address/0x23789296D79FBD09e560FAf84C5870f266b4fef2)  | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419) |                                                                                                       |
-
-⚠️ If you had a badge minted on Ropsten and want to unlink your account, please visit [https://ropsten.interrep.link/](https://ropsten.interrep.link/)
 
 ---
 
