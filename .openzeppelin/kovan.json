@@ -80,6 +80,11 @@
       "address": "0x23789296D79FBD09e560FAf84C5870f266b4fef2",
       "txHash": "0x61c5daee2160565b0ad93fa220bfebd6030df6f0dca8193ace2aea0d64c3a3d0",
       "kind": "transparent"
+    },
+    {
+      "address": "0xB9A55B681BF8426ceb71F54d127D3391fd28a1E4",
+      "txHash": "0xa89a1ec2d7efc8754f019da9cd62127fccc0be722527713ab1f1328f52f744cc",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -304,6 +309,73 @@
     "3da0f361e06c81837d1a16a5c05fe2b3a20dcba13e36418d58ccdb904d3e749f": {
       "address": "0x896264943f72D8DA21B60691bBfAcA736b182e39",
       "txHash": "0x0fd62fdcb7e0ce5cc1a44fd7d68f355370a1475c9fdaf5f7ced4d37c670fa2e3",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:23"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:28"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:31"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:20"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:74"
+          },
+          {
+            "contract": "InterRepGroups",
+            "label": "rootHashes",
+            "type": "t_mapping(t_bytes32,t_uint256)",
+            "src": "contracts/InterRepGroups.sol:16"
+          }
+        ],
+        "types": {
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "129353ce221cdd0030080eaffe503a748df2ca48795acef8959a41c22a8a245d": {
+      "address": "0xF59d3D02E59896ffBf70187Ff4d78fd3615aBBaC",
+      "txHash": "0x40ff58591aadb92b177da8ee76bb49b8cfcc1717c20bcd6a083396a06d5fec68",
       "layout": {
         "storage": [
           {
