@@ -46,8 +46,10 @@ contract InterRepGroups is Initializable, OwnableUpgradeable {
         uint256[] memory _identityCommitments,
         uint256[] memory _rootHashes
     ) external onlyOwner {
-        require(_names.length == _identityCommitments.length, "Array parameters should have the same length");
-        require(_names.length == _rootHashes.length, "Array parameters should have the same length");
+        require(
+            _names.length == _identityCommitments.length && _names.length == _rootHashes.length,
+            "Array parameters should have the same length"
+        );
 
         for (uint256 i = 0; i < _names.length; i++) {
             rootHashes[keccak256(abi.encodePacked(_provider, _names[i]))] = _rootHashes[i];
