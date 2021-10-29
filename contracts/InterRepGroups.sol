@@ -35,6 +35,27 @@ contract InterRepGroups is Initializable, OwnableUpgradeable {
         emit NewRootHash(_provider, _name, _identityCommitment, _rootHash);
     }
 
+    /// @dev Associates new root hashes with their group ids (keccak256(provider + name)).
+    /// @param _provider: the provider of the group.
+    /// @param _names: the names of the group.
+    /// @param _identityCommitments: semaphore identity commitments.
+    /// @param _rootHashes: the new root hashes of the tree.
+    function batchAddRootHash(
+        bytes32 _provider,
+        bytes32[] memory _names,
+        uint256[] memory _identityCommitments,
+        uint256[] memory _rootHashes
+    ) external onlyOwner {
+        require(_names.length == _identityCommitments.length, "Array parameters should have the same length");
+        require(_names.length == _rootHashes.length, "Array parameters should have the same length");
+
+        for (uint256 i = 0; i < _names.length; i++) {
+            rootHashes[keccak256(abi.encodePacked(_provider, _names[i]))] = _rootHashes[i];
+
+            emit NewRootHash(_provider, _names[i], _identityCommitments[i], _rootHashes[i]);
+        }
+    }
+
     /// @dev Gets a group provider and a group name and returns the last root hash of the group.
     /// @return The root hash.
     function getRootHash(bytes32 _provider, bytes32 _name) external view returns (uint256) {
