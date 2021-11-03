@@ -10,7 +10,7 @@ import { resolve } from "path"
 import "solidity-coverage"
 import "./tasks/accounts"
 import "./tasks/clean"
-import "./tasks/deploy-interrep-groups"
+import "./tasks/deploy-offchain-groups"
 import "./tasks/deploy-reputation-badge"
 import "./tasks/mint"
 

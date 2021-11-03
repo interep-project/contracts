@@ -24,7 +24,7 @@
         "clean": "hardhat clean",
         "compile": "hardhat compile",
         "deploy:mocks": "hardhat run ./scripts/deploy-mocks.ts",
-        "deploy:interrep-groups": "hardhat deploy:interrep-groups",
+        "deploy:offchain-groups": "hardhat deploy:offchain-groups",
         "deploy:reputation-badge": "hardhat deploy:reputation-badge",
         "mint": "hardhat mint",
         "test": "hardhat test",

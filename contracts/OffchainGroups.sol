@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract InterRepGroups is Initializable, OwnableUpgradeable {
+contract OffchainGroups is Initializable, OwnableUpgradeable {
     /// @dev Emitted when a new root hash is added.
     /// @param _provider: The provider of the group.
     /// @param _name: The name of the group.

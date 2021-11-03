@@ -47,7 +47,7 @@ If you want an overwiew of InterRep, read our announcement post: https://jaygrab
 | ReputationBadge (Twitter) | [0xF685...1E07](https://kovan.etherscan.io/address/0xF685380c95857Ae6f022F43ADB951BC2eE861E07) | [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
 | ReputationBadge (Github)  | [0xD6B4...2E18](https://kovan.etherscan.io/address/0xD6B4f70b441e9E2F4473F53Fe1cAe50F49C42E18)  |                                                                                                  |                                                                                                       |
 | ReputationBadge (Reddit)  | [0x55d2...B4Cf](https://kovan.etherscan.io/address/0x55d2d15631078cC555d06f14fD45bF2A7D86B4Cf)  |                                                                                                  |                                                                                                       |
-| InterRepGroups            | [0xD2C9...735B](https://kovan.etherscan.io/address/0xD2C9435C0E9e051e37456C01B2478f3e48ce735B)  | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419) |                                                                                                       |
+| OffchainGroups            | [0xD2C9...735B](https://kovan.etherscan.io/address/0xD2C9435C0E9e051e37456C01B2478f3e48ce735B)  | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419) |                                                                                                       |
 
 ---
 

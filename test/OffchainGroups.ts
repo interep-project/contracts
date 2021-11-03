@@ -1,15 +1,15 @@
 import { ContractFactory } from "@ethersproject/contracts"
 import { expect } from "chai"
 import { ethers, upgrades } from "hardhat"
-import { InterRepGroups } from "../typechain"
+import { OffchainGroups } from "../typechain"
 
-describe("InterRepGroups", () => {
-    let contract: InterRepGroups
+describe("OffchainGroups", () => {
+    let contract: OffchainGroups
 
     beforeEach(async () => {
-        const contractFactory: ContractFactory = await ethers.getContractFactory("InterRepGroups")
+        const contractFactory: ContractFactory = await ethers.getContractFactory("OffchainGroups")
 
-        contract = (await upgrades.deployProxy(contractFactory)) as InterRepGroups
+        contract = (await upgrades.deployProxy(contractFactory)) as OffchainGroups
 
         await contract.deployed()
     })
