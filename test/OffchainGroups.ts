@@ -1,17 +1,12 @@
-import { ContractFactory } from "@ethersproject/contracts"
 import { expect } from "chai"
-import { ethers, upgrades } from "hardhat"
+import { ethers, run } from "hardhat"
 import { OffchainGroups } from "../typechain"
 
 describe("OffchainGroups", () => {
     let contract: OffchainGroups
 
     beforeEach(async () => {
-        const contractFactory: ContractFactory = await ethers.getContractFactory("OffchainGroups")
-
-        contract = (await upgrades.deployProxy(contractFactory)) as OffchainGroups
-
-        await contract.deployed()
+        contract = await run("deploy:offchain-groups", { logs: false })
     })
 
     it("Should add a root hash", async () => {

@@ -1,9 +1,11 @@
-import { task } from "hardhat/config"
+import { Contract } from "ethers"
+import { task, types } from "hardhat/config"
 
 task("deploy:reputation-badge", "Deploy a ReputationBadge contract")
     .addParam("name", "The name of the token")
     .addParam("symbol", "The symbol of the token")
-    .setAction(async ({ name, symbol }, { ethers, upgrades }) => {
+    .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
+    .setAction(async ({ name, symbol, logs }, { ethers, upgrades }): Promise<Contract> => {
         const [signer] = await ethers.getSigners()
         const ContractFactory = await ethers.getContractFactory("ReputationBadge")
 
@@ -13,5 +15,7 @@ task("deploy:reputation-badge", "Deploy a ReputationBadge contract")
 
         await contract.deployed()
 
-        console.log(`The ReputationBadge contract has been deployed to the address: ${contract.address}`)
+        logs && console.log(`The ReputationBadge contract has been deployed to the address: ${contract.address}`)
+
+        return contract
     })
