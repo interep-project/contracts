@@ -11,6 +11,7 @@ import "solidity-coverage"
 import "./tasks/accounts"
 import "./tasks/clean"
 import "./tasks/deploy-offchain-groups"
+import "./tasks/deploy-curated-groups"
 import "./tasks/deploy-reputation-badge"
 import "./tasks/mint"
 
