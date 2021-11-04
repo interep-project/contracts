@@ -5,7 +5,7 @@ import { OffchainGroups } from "../typechain"
 describe("OffchainGroups", () => {
     let contract: OffchainGroups
 
-    beforeEach(async () => {
+    before(async () => {
         contract = await run("deploy:offchain-groups", { logs: false })
     })
 
