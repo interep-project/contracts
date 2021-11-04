@@ -15,16 +15,16 @@ task("deploy:curated-groups", "Deploy a CuratedGroups contract")
 
         await poseidonLib.deployed()
 
-        const IncrementalTreeLibFactory = await ethers.getContractFactory("IncrementalTree", {
+        const BinaryTreeLibFactory = await ethers.getContractFactory("BinaryTree", {
             libraries: {
                 Hash: poseidonLib.address
             }
         })
-        const incrementalLibTree = await IncrementalTreeLibFactory.deploy()
+        const binaryTreeLib = await BinaryTreeLibFactory.deploy()
 
         const ContractFactory = await ethers.getContractFactory("CuratedGroups", {
             libraries: {
-                IncrementalTree: incrementalLibTree.address
+                BinaryTree: binaryTreeLib.address
             }
         })
         const contract = await upgrades.deployProxy(ContractFactory, {
