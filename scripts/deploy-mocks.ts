@@ -13,7 +13,7 @@ async function main(): Promise<void> {
         name: "InterRep Reddit Badge",
         symbol: "iREDDIT"
     })
-    await run("deploy:offchain-groups")
+    await run("deploy:groups")
 }
 
 main()

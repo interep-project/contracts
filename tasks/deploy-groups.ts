@@ -2,7 +2,7 @@ import { task, types } from "hardhat/config"
 import { poseidonContract } from "circomlibjs"
 import { Contract } from "ethers"
 
-task("deploy:curated-groups", "Deploy a CuratedGroups contract")
+task("deploy:groups", "Deploy a Groups contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
     .setAction(async ({ logs }, { ethers, upgrades }): Promise<Contract> => {
         const poseidonABI = poseidonContract.generateABI(2)
@@ -15,16 +15,16 @@ task("deploy:curated-groups", "Deploy a CuratedGroups contract")
 
         await poseidonLib.deployed()
 
-        const BinaryTreeLibFactory = await ethers.getContractFactory("BinaryTree", {
+        const IncrementalTreeLibFactory = await ethers.getContractFactory("IncrementalTree", {
             libraries: {
                 Hash: poseidonLib.address
             }
         })
-        const binaryTreeLib = await BinaryTreeLibFactory.deploy()
+        const incrementalTreeLib = await IncrementalTreeLibFactory.deploy()
 
-        const ContractFactory = await ethers.getContractFactory("CuratedGroups", {
+        const ContractFactory = await ethers.getContractFactory("Groups", {
             libraries: {
-                BinaryTree: binaryTreeLib.address
+                IncrementalTree: incrementalTreeLib.address
             }
         })
         const contract = await upgrades.deployProxy(ContractFactory, {
@@ -33,7 +33,7 @@ task("deploy:curated-groups", "Deploy a CuratedGroups contract")
 
         await contract.deployed()
 
-        logs && console.log(`The CuratedGroups contract has been deployed to the address: ${contract.address}`)
+        logs && console.log(`The Groups contract has been deployed to the address: ${contract.address}`)
 
         return contract
     })
