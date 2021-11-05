@@ -21,7 +21,7 @@ library IncrementalTree {
         uint8 _depth,
         uint256 _zero
     ) public {
-        require(_depth > 0 && _depth <= MAX_DEPTH, "The tree depth must be between 1 and 32");
+        require(_depth > 0 && _depth <= MAX_DEPTH, "IncrementalTree: tree depth must be between 1 and 32");
 
         self.depth = _depth;
 
@@ -32,8 +32,8 @@ library IncrementalTree {
     }
 
     function insert(TreeData storage self, uint256 _leaf) public returns (uint256) {
-        require(_leaf < SNARK_SCALAR_FIELD, "The leaf must be < SNARK_SCALAR_FIELD");
-        require(self.numberOfLeaves < 2**self.depth, "The tree is full");
+        require(_leaf < SNARK_SCALAR_FIELD, "IncrementalTree: leaf must be < SNARK_SCALAR_FIELD");
+        require(self.numberOfLeaves < 2**self.depth, "IncrementalTree: tree is full");
 
         uint256 index = self.numberOfLeaves;
         uint256 hash = _leaf;

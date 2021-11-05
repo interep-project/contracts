@@ -3,9 +3,8 @@ pragma solidity ^0.8.0;
 
 import {IncrementalTree, TreeData} from "./IncrementalTree.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Groups is Initializable, OwnableUpgradeable {
+contract Groups is OwnableUpgradeable {
     using IncrementalTree for TreeData;
 
     /// @dev Emitted when a new group is created.
@@ -32,6 +31,9 @@ contract Groups is Initializable, OwnableUpgradeable {
     /// @dev Gets a group id and returns the last root hash.
     mapping(bytes32 => uint256) private rootHashes;
 
+    /// @dev Gets a group id and returns the multisig wallet address.
+    mapping(bytes32 => address) private multisigWallets;
+
     function initialize() public initializer {
         __Ownable_init();
     }
@@ -40,18 +42,19 @@ contract Groups is Initializable, OwnableUpgradeable {
     /// @param provider: The provider of the group.
     /// @param name: The name of the group.
     /// @param depth: Depth of the tree.
-    function createGroup(
+    function createMultisigGroup(
         bytes32 provider,
         bytes32 name,
-        uint8 depth
-    ) external onlyOwner {
+        uint8 depth,
+        address multisigWallet
+    ) external {
+        createGroup(provider, name, depth);
+
+        require(multisigWallet != owner(), "Groups: multisig wallet cannot be the contract owner");
+
         bytes32 groupId = getGroupId(provider, name);
 
-        require(groups[groupId].depth == 0, "The group already exists");
-
-        groups[groupId].init(depth, 0);
-
-        emit NewGroup(provider, name, depth);
+        multisigWallets[groupId] = multisigWallet;
     }
 
     /// @dev ...
@@ -62,8 +65,8 @@ contract Groups is Initializable, OwnableUpgradeable {
         bytes32 provider,
         bytes32[] memory names,
         uint256[] memory identityCommitments
-    ) external onlyOwner {
-        require(names.length == identityCommitments.length, "Array parameters should have the same length");
+    ) external {
+        require(names.length == identityCommitments.length, "Groups: array parameters should have the same length");
 
         for (uint256 i = 0; i < names.length; i++) {
             addIdentityCommitment(provider, names[i], identityCommitments[i]);
@@ -81,15 +84,38 @@ contract Groups is Initializable, OwnableUpgradeable {
     /// @dev ...
     /// @param provider: The provider of the group.
     /// @param name: The name of the group.
+    /// @param depth: Depth of the tree.
+    function createGroup(
+        bytes32 provider,
+        bytes32 name,
+        uint8 depth
+    ) public onlyOwner {
+        bytes32 groupId = getGroupId(provider, name);
+
+        require(groups[groupId].depth == 0, "Groups: group already exists");
+
+        groups[groupId].init(depth, 0);
+
+        emit NewGroup(provider, name, depth);
+    }
+
+    /// @dev ...
+    /// @param provider: The provider of the group.
+    /// @param name: The name of the group.
     /// @param identityCommitment: The new identity commitment.
     function addIdentityCommitment(
         bytes32 provider,
         bytes32 name,
         uint256 identityCommitment
-    ) public onlyOwner {
+    ) public {
         bytes32 groupId = getGroupId(provider, name);
 
-        require(groups[groupId].depth != 0, "The group does not exist");
+        require(
+            (owner() == _msgSender() && multisigWallets[groupId] == address(0)) ||
+                multisigWallets[groupId] == _msgSender(),
+            "Groups: caller is neither the owner nor a multisig wallet"
+        );
+        require(groups[groupId].depth != 0, "Groups: group does not exist");
 
         uint256 rootHash = groups[groupId].insert(identityCommitment);
 
