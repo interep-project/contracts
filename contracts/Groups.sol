@@ -17,11 +17,13 @@ contract Groups is OwnableUpgradeable {
     /// @param provider: The provider of the group.
     /// @param name: The name of the group.
     /// @param identityCommitment: The new identity commitment.
+    /// @param index: The index of the identity commitment in the tree.
     /// @param rootHash: The new root hash of the tree.
     event NewIdentityCommitment(
         bytes32 indexed provider,
         bytes32 indexed name,
         uint256 identityCommitment,
+        uint256 index,
         uint256 rootHash
     );
 
@@ -117,11 +119,17 @@ contract Groups is OwnableUpgradeable {
         );
         require(groups[groupId].depth != 0, "Groups: group does not exist");
 
-        uint256 rootHash = groups[groupId].insert(identityCommitment);
+        groups[groupId].insert(identityCommitment);
 
-        rootHashes[groupId] = rootHash;
+        rootHashes[groupId] = groups[groupId].root;
 
-        emit NewIdentityCommitment(provider, name, identityCommitment, rootHash);
+        emit NewIdentityCommitment(
+            provider,
+            name,
+            identityCommitment,
+            groups[groupId].numberOfLeaves - 1,
+            groups[groupId].root
+        );
     }
 
     function getGroupId(bytes32 provider, bytes32 name) private pure returns (bytes32) {
