@@ -18,25 +18,25 @@ library IncrementalTree {
 
     function init(
         TreeData storage self,
-        uint8 _depth,
-        uint256 _zero
+        uint8 depth,
+        uint256 zero
     ) public {
-        require(_depth > 0 && _depth <= MAX_DEPTH, "IncrementalTree: tree depth must be between 1 and 32");
+        require(depth > 0 && depth <= MAX_DEPTH, "IncrementalTree: tree depth must be between 1 and 32");
 
-        self.depth = _depth;
+        self.depth = depth;
 
-        for (uint8 i = 0; i < _depth; i++) {
-            self.zeroes[i] = _zero;
-            _zero = Hash.poseidon([_zero, _zero]);
+        for (uint8 i = 0; i < depth; i++) {
+            self.zeroes[i] = zero;
+            zero = Hash.poseidon([zero, zero]);
         }
     }
 
-    function insert(TreeData storage self, uint256 _leaf) public {
-        require(_leaf < SNARK_SCALAR_FIELD, "IncrementalTree: leaf must be < SNARK_SCALAR_FIELD");
+    function insert(TreeData storage self, uint256 leaf) public {
+        require(leaf < SNARK_SCALAR_FIELD, "IncrementalTree: leaf must be < SNARK_SCALAR_FIELD");
         require(self.numberOfLeaves < 2**self.depth, "IncrementalTree: tree is full");
 
         uint256 index = self.numberOfLeaves;
-        uint256 hash = _leaf;
+        uint256 hash = leaf;
 
         for (uint8 i = 0; i < self.depth; i++) {
             if (index % 2 == 0) {

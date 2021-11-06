@@ -27,12 +27,12 @@ describe("Groups", () => {
         await expect(fun()).to.be.revertedWith("Groups: group already exists")
     })
 
-    it("Should create a multisig group", async () => {
-        const dao = ethers.utils.formatBytes32String("HelloWorldDAO")
+    it("Should create an ownable group", async () => {
+        const dao = ethers.utils.formatBytes32String("DAO")
         const name = ethers.utils.formatBytes32String("HelloWorld")
-        const multisigWallet = await signers[1].getAddress()
+        const admin = await signers[1].getAddress()
 
-        const fun = () => contract.createMultisigGroup(dao, name, 16, multisigWallet)
+        const fun = () => contract.createOwnableGroup(dao, name, 16, admin)
 
         await expect(fun()).to.emit(contract, "NewGroup").withArgs(dao, name, 16)
     })
@@ -46,13 +46,13 @@ describe("Groups", () => {
         await expect(fun()).to.be.revertedWith("Groups: group does not exist")
     })
 
-    it("Should not add an identity commitment if the caller is not an admin or a multisig wallet", async () => {
+    it("Should not add an identity commitment if the caller is not the contract owner or the group admin", async () => {
         const identityCommitment = BigInt(2)
         const otherName = ethers.utils.formatBytes32String("silver")
 
         const fun = () => contract.connect(signers[2]).addIdentityCommitment(provider, otherName, identityCommitment)
 
-        await expect(fun()).to.be.revertedWith("Groups: caller is neither the owner nor a multisig wallet")
+        await expect(fun()).to.be.revertedWith("Groups: caller is not the contract owner or the group admin")
     })
 
     it("Should add an identity commitment in a group", async () => {
@@ -73,12 +73,12 @@ describe("Groups", () => {
             )
     })
 
-    it("Should add an identity commitment in a multisig group", async () => {
-        const dao = ethers.utils.formatBytes32String("HelloWorldDAO")
+    it("Should add an identity commitment in a ownable group", async () => {
+        const provider = ethers.utils.formatBytes32String("DAO")
         const name = ethers.utils.formatBytes32String("HelloWorld")
         const identityCommitment = BigInt(2)
 
-        const fun = () => contract.connect(signers[1]).addIdentityCommitment(dao, name, identityCommitment)
+        const fun = () => contract.connect(signers[1]).addIdentityCommitment(provider, name, identityCommitment)
 
         await expect(fun()).to.emit(contract, "NewIdentityCommitment")
     })

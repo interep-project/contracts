@@ -33,8 +33,8 @@ contract Groups is OwnableUpgradeable {
     /// @dev Gets a group id and returns the last root hash.
     mapping(bytes32 => uint256) private rootHashes;
 
-    /// @dev Gets a group id and returns the multisig wallet address.
-    mapping(bytes32 => address) private multisigWallets;
+    /// @dev Gets a group id and returns the group admin address.
+    mapping(bytes32 => address) private groupAdmins;
 
     function initialize() public initializer {
         __Ownable_init();
@@ -44,19 +44,19 @@ contract Groups is OwnableUpgradeable {
     /// @param provider: The provider of the group.
     /// @param name: The name of the group.
     /// @param depth: Depth of the tree.
-    function createMultisigGroup(
+    function createOwnableGroup(
         bytes32 provider,
         bytes32 name,
         uint8 depth,
-        address multisigWallet
+        address admin 
     ) external {
         createGroup(provider, name, depth);
 
-        require(multisigWallet != owner(), "Groups: multisig wallet cannot be the contract owner");
+        require(admin != owner(), "Groups: group admin cannot be the contract owner");
 
         bytes32 groupId = getGroupId(provider, name);
 
-        multisigWallets[groupId] = multisigWallet;
+        groupAdmins[groupId] = admin;
     }
 
     /// @dev ...
@@ -113,9 +113,8 @@ contract Groups is OwnableUpgradeable {
         bytes32 groupId = getGroupId(provider, name);
 
         require(
-            (owner() == _msgSender() && multisigWallets[groupId] == address(0)) ||
-                multisigWallets[groupId] == _msgSender(),
-            "Groups: caller is neither the owner nor a multisig wallet"
+            (owner() == _msgSender() && groupAdmins[groupId] == address(0)) || groupAdmins[groupId] == _msgSender(),
+            "Groups: caller is not the contract owner or the group admin"
         );
         require(groups[groupId].depth != 0, "Groups: group does not exist");
 
