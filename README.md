@@ -42,12 +42,12 @@ If you want an overwiew of InterRep, read our announcement post: https://jaygrab
 
 ### Deployed contracts
 
-|                           | Kovan                                                                                           | Ropsten                                                                                          | Arbitrum One                                                                                          |
-| ------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+|                           | Kovan                                                                                          | Ropsten                                                                                          | Arbitrum One                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | ReputationBadge (Twitter) | [0xF685...1E07](https://kovan.etherscan.io/address/0xF685380c95857Ae6f022F43ADB951BC2eE861E07) | [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
-| ReputationBadge (Github)  | [0xD6B4...2E18](https://kovan.etherscan.io/address/0xD6B4f70b441e9E2F4473F53Fe1cAe50F49C42E18)  |                                                                                                  |                                                                                                       |
-| ReputationBadge (Reddit)  | [0x55d2...B4Cf](https://kovan.etherscan.io/address/0x55d2d15631078cC555d06f14fD45bF2A7D86B4Cf)  |                                                                                                  |                                                                                                       |
-| OffchainGroups            | [0xD2C9...735B](https://kovan.etherscan.io/address/0xD2C9435C0E9e051e37456C01B2478f3e48ce735B)  | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419) |                                                                                                       |
+| ReputationBadge (Github)  | [0xD6B4...2E18](https://kovan.etherscan.io/address/0xD6B4f70b441e9E2F4473F53Fe1cAe50F49C42E18) |                                                                                                  |                                                                                                       |
+| ReputationBadge (Reddit)  | [0x55d2...B4Cf](https://kovan.etherscan.io/address/0x55d2d15631078cC555d06f14fD45bF2A7D86B4Cf) |                                                                                                  |                                                                                                       |
+| Groups                    | [0xD2C9...735B](https://kovan.etherscan.io/address/0xD2C9435C0E9e051e37456C01B2478f3e48ce735B) | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419) |                                                                                                       |
 
 ---
 
@@ -131,7 +131,7 @@ Deploy the contracts to Hardhat Network:
 
 ```bash
 $ yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT
-$ yarn deploy:interrep-groups
+$ yarn deploy:groups
 ```
 
 or run `yarn deploy:mocks` if you want a short command to simulate the previous command for testing purposes.
@@ -140,22 +140,7 @@ Set your `.env` file and deploy the contracts to a specific network, such as the
 
 ```bash
 $ NODE_ENV=production yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT --network ropsten
-$ NODE_ENV=production yarn deploy:interrep-groups --network ropsten
+$ NODE_ENV=production yarn deploy:groups --network ropsten
 ```
 
 You can find a copy of the `.env` file in the `.env.example` file.
-
-## Syntax Highlighting
-
-If you use VSCode, you can enjoy syntax highlighting for your Solidity code via the
-[vscode-solidity](https://github.com/juanfranblanco/vscode-solidity) extension. The recommended approach to set the
-compiler version is to add the following fields to your VSCode user settings:
-
-```json
-{
-    "solidity.compileUsingRemoteVersion": "v0.8.4+commit.c7e474f2",
-    "solidity.defaultCompiler": "remote"
-}
-```
-
-Where of course `v0.8.4+commit.c7e474f2` can be replaced with any other version.

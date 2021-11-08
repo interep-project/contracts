@@ -37,7 +37,7 @@ contract ReputationBadge is
         _backendAddress = backendAddress_;
     }
 
-    modifier onlyBackend {
+    modifier onlyBackend() {
         require(msg.sender == _backendAddress, "Unauthorized");
         _;
     }
