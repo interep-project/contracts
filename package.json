@@ -15,7 +15,7 @@
         "smart-contracts",
         "solidity"
     ],
-    "license": "WTFPL",
+    "license": "MIT",
     "resolutions": {
         "@ethersproject/wallet": "^5.2.0"
     },
