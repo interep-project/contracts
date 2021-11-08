@@ -17,13 +17,23 @@ contract Groups is OwnableUpgradeable {
     /// @param provider: The provider of the group.
     /// @param name: The name of the group.
     /// @param identityCommitment: The new identity commitment.
-    /// @param index: The index of the identity commitment in the tree.
     /// @param root: The new root hash of the tree.
     event NewIdentityCommitment(
         bytes32 indexed provider,
         bytes32 indexed name,
         uint256 identityCommitment,
-        uint256 index,
+        uint256 root
+    );
+
+    /// @dev Emitted when a new identity commitment is deleted.
+    /// @param provider: The provider of the group.
+    /// @param name: The name of the group.
+    /// @param identityCommitment: The new identity commitment.
+    /// @param root: The new root hash of the tree.
+    event DeleteIdentityCommitment(
+        bytes32 indexed provider,
+        bytes32 indexed name,
+        uint256 identityCommitment,
         uint256 root
     );
 
@@ -37,26 +47,29 @@ contract Groups is OwnableUpgradeable {
         __Ownable_init();
     }
 
-    /// @dev ...
+    /// @dev Creates a new group by initializing the associated Merkle tree.
     /// @param provider: The provider of the group.
     /// @param name: The name of the group.
     /// @param depth: Depth of the tree.
-    function createOwnableGroup(
+    /// @param admin: Admin of the group.
+    function createGroup(
         bytes32 provider,
         bytes32 name,
         uint8 depth,
         address admin
-    ) external {
-        createGroup(provider, name, depth);
-
-        require(admin != owner(), "Groups: group admin cannot be the contract owner");
-
+    ) external onlyOwner {
         bytes32 groupId = getGroupId(provider, name);
 
+        require(groups[groupId].depth == 0, "Groups: group already exists");
+
+        groups[groupId].init(depth, 0);
+
         groupAdmins[groupId] = admin;
+
+        emit NewGroup(provider, name, depth);
     }
 
-    /// @dev ...
+    /// @dev Batch function to add multiple identity commitments.
     /// @param provider: The provider of the group.
     /// @param names: The names of the group.
     /// @param identityCommitments: Identity commitments.
@@ -72,7 +85,7 @@ contract Groups is OwnableUpgradeable {
         }
     }
 
-    /// @dev Gets a group provider and a group name and returns the last root hash of the group.
+    /// @dev Returns the last root hash of the group.
     /// @return The root hash.
     function getRoot(bytes32 provider, bytes32 name) external view returns (uint256) {
         bytes32 groupId = getGroupId(provider, name);
@@ -80,7 +93,7 @@ contract Groups is OwnableUpgradeable {
         return groups[groupId].root;
     }
 
-    /// @dev Gets a group provider and a group name and returns the size of the group.
+    /// @dev Returns the size of the group.
     /// @return The root hash.
     function getSize(bytes32 provider, bytes32 name) external view returns (uint256) {
         bytes32 groupId = getGroupId(provider, name);
@@ -88,25 +101,7 @@ contract Groups is OwnableUpgradeable {
         return groups[groupId].numberOfLeaves;
     }
 
-    /// @dev ...
-    /// @param provider: The provider of the group.
-    /// @param name: The name of the group.
-    /// @param depth: Depth of the tree.
-    function createGroup(
-        bytes32 provider,
-        bytes32 name,
-        uint8 depth
-    ) public onlyOwner {
-        bytes32 groupId = getGroupId(provider, name);
-
-        require(groups[groupId].depth == 0, "Groups: group already exists");
-
-        groups[groupId].init(depth, 0);
-
-        emit NewGroup(provider, name, depth);
-    }
-
-    /// @dev ...
+    /// @dev Adds an identity commitment to an existing group.
     /// @param provider: The provider of the group.
     /// @param name: The name of the group.
     /// @param identityCommitment: The new identity commitment.
@@ -117,23 +112,40 @@ contract Groups is OwnableUpgradeable {
     ) public {
         bytes32 groupId = getGroupId(provider, name);
 
-        require(
-            (owner() == _msgSender() && groupAdmins[groupId] == address(0)) || groupAdmins[groupId] == _msgSender(),
-            "Groups: caller is not the contract owner or the group admin"
-        );
         require(groups[groupId].depth != 0, "Groups: group does not exist");
+        require(groupAdmins[groupId] == _msgSender(), "Groups: caller is not the group admin");
 
         groups[groupId].insert(identityCommitment);
 
-        emit NewIdentityCommitment(
-            provider,
-            name,
-            identityCommitment,
-            groups[groupId].numberOfLeaves - 1,
-            groups[groupId].root
-        );
+        emit NewIdentityCommitment(provider, name, identityCommitment, groups[groupId].root);
     }
 
+    /// @dev Deletes an identity commitment from an existing group.
+    /// @param provider: The provider of the group.
+    /// @param name: The name of the group.
+    /// @param identityCommitment: The new identity commitment.
+    /// @param path: The new identity commitment.
+    /// @param siblingNodes: The new identity commitment.
+    function deleteIdentityCommitment(
+        bytes32 provider,
+        bytes32 name,
+        uint256 identityCommitment,
+        uint8[] memory path,
+        uint256[] memory siblingNodes
+    ) public {
+        bytes32 groupId = getGroupId(provider, name);
+
+        require(groups[groupId].depth != 0, "Groups: group does not exist");
+        require(groupAdmins[groupId] == _msgSender(), "Groups: caller is not the group admin");
+
+        groups[groupId].remove(identityCommitment, path, siblingNodes);
+
+        emit DeleteIdentityCommitment(provider, name, identityCommitment, groups[groupId].root);
+    }
+
+    /// @dev Returns the group id.
+    /// @param provider: The provider of the group.
+    /// @param name: The name of the group.
     function getGroupId(bytes32 provider, bytes32 name) private pure returns (bytes32) {
         return keccak256(abi.encodePacked(provider, name));
     }

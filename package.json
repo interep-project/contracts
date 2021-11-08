@@ -76,6 +76,7 @@
         "hardhat": "^2.3.0",
         "hardhat-gas-reporter": "^1.0.4",
         "husky": "^6.0.0",
+        "incrementalquintree": "^1.0.7",
         "lint-staged": "^11.0.0",
         "mocha": "^8.4.0",
         "prettier": "^2.3.0",

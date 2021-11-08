@@ -52,4 +52,60 @@ library IncrementalTree {
         self.root = hash;
         self.numberOfLeaves += 1;
     }
+
+    function remove(
+        TreeData storage self,
+        uint256 leaf,
+        uint8[] memory path,
+        uint256[] memory siblingNodes
+    ) public {
+        require(verify(self, leaf, path, siblingNodes), "IncrementalTree: leaf is not part of the tree");
+
+        uint256 hash = self.zeroes[0];
+
+        for (uint8 i = 0; i < self.depth; i++) {
+            if (path[i] % 2 == 0) {
+                if (siblingNodes[i] == self.lastNodes[i][1]) {
+                    self.lastNodes[i][0] = hash;
+                }
+
+                hash = Hash.poseidon([hash, siblingNodes[i]]);
+            } else {
+                if (siblingNodes[i] == self.lastNodes[i][0]) {
+                    self.lastNodes[i][1] = hash;
+                }
+
+                hash = Hash.poseidon([siblingNodes[i], hash]);
+            }
+        }
+
+        self.root = hash;
+    }
+
+    function verify(
+        TreeData storage self,
+        uint256 leaf,
+        uint8[] memory path,
+        uint256[] memory siblingNodes
+    ) private view returns (bool) {
+        require(leaf < SNARK_SCALAR_FIELD, "IncrementalTree: leaf must be < SNARK_SCALAR_FIELD");
+        require(
+            path.length == self.depth && siblingNodes.length == self.depth,
+            "IncrementalTree: length of path is not correct"
+        );
+
+        uint256 hash = leaf;
+
+        for (uint8 i = 0; i < self.depth; i++) {
+            require(siblingNodes[i] < SNARK_SCALAR_FIELD, "IncrementalTree: sibling node must be < SNARK_SCALAR_FIELD");
+
+            if (path[i] % 2 == 0) {
+                hash = Hash.poseidon([hash, siblingNodes[i]]);
+            } else {
+                hash = Hash.poseidon([siblingNodes[i], hash]);
+            }
+        }
+
+        return hash == self.root;
+    }
 }

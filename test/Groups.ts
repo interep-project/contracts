@@ -1,44 +1,39 @@
 import { expect } from "chai"
 import { Signer } from "ethers"
+import { buildPoseidon } from "circomlibjs"
 import { ethers, run } from "hardhat"
+import { IncrementalQuinTree } from "incrementalquintree"
 import { Groups } from "../typechain"
 
 describe("Groups", () => {
     let contract: Groups
     let signers: Signer[]
+    let accounts: string[]
 
     const provider = ethers.utils.formatBytes32String("twitter")
     const name = ethers.utils.formatBytes32String("gold")
+    const identityCommitment = BigInt(1)
 
     before(async () => {
         contract = await run("deploy:groups", { logs: false })
+
         signers = await run("accounts", { logs: false })
+        accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
     })
 
     it("Should create a group", async () => {
-        const fun = () => contract.createGroup(provider, name, 16)
+        const fun = () => contract.createGroup(provider, name, 16, accounts[0])
 
         await expect(fun()).to.emit(contract, "NewGroup").withArgs(provider, name, 16)
     })
 
     it("Should not create a group with an existing id", async () => {
-        const fun = () => contract.createGroup(provider, name, 16)
+        const fun = () => contract.createGroup(provider, name, 16, accounts[0])
 
         await expect(fun()).to.be.revertedWith("Groups: group already exists")
     })
 
-    it("Should create an ownable group", async () => {
-        const dao = ethers.utils.formatBytes32String("DAO")
-        const name = ethers.utils.formatBytes32String("HelloWorld")
-        const admin = await signers[1].getAddress()
-
-        const fun = () => contract.createOwnableGroup(dao, name, 16, admin)
-
-        await expect(fun()).to.emit(contract, "NewGroup").withArgs(dao, name, 16)
-    })
-
     it("Should not add an identity commitment if the group does not exist", async () => {
-        const identityCommitment = BigInt(2)
         const otherName = ethers.utils.formatBytes32String("silver")
 
         const fun = () => contract.addIdentityCommitment(provider, otherName, identityCommitment)
@@ -46,20 +41,15 @@ describe("Groups", () => {
         await expect(fun()).to.be.revertedWith("Groups: group does not exist")
     })
 
-    it("Should not add an identity commitment if the caller is not the contract owner or the group admin", async () => {
+    it("Should not add an identity commitment if the caller is not the group admin", async () => {
         const identityCommitment = BigInt(2)
-        const otherName = ethers.utils.formatBytes32String("silver")
 
-        const fun = () => contract.connect(signers[2]).addIdentityCommitment(provider, otherName, identityCommitment)
+        const fun = () => contract.connect(signers[1]).addIdentityCommitment(provider, name, identityCommitment)
 
-        await expect(fun()).to.be.revertedWith("Groups: caller is not the contract owner or the group admin")
+        await expect(fun()).to.be.revertedWith("Groups: caller is not the group admin")
     })
 
     it("Should add an identity commitment in a group", async () => {
-        const identityCommitment = BigInt(
-            "2825646560483793878176284075509449079260676404272675066033690163469311186662"
-        )
-
         const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
 
         await expect(fun())
@@ -68,19 +58,8 @@ describe("Groups", () => {
                 provider,
                 name,
                 identityCommitment,
-                0,
-                "13636421308146043413489220009267735248703575391714290025204419877115892930915"
+                "16211261537006706331557500769845541584780950636316907182067421710925347020533"
             )
-    })
-
-    it("Should add an identity commitment in a ownable group", async () => {
-        const provider = ethers.utils.formatBytes32String("DAO")
-        const name = ethers.utils.formatBytes32String("HelloWorld")
-        const identityCommitment = BigInt(2)
-
-        const fun = () => contract.connect(signers[1]).addIdentityCommitment(provider, name, identityCommitment)
-
-        await expect(fun()).to.emit(contract, "NewIdentityCommitment")
     })
 
     it("Should throw an error if the length of the array parameters is not the same", async () => {
@@ -96,11 +75,35 @@ describe("Groups", () => {
         const names = ["gold", "silver", "bronze"].map(ethers.utils.formatBytes32String)
         const identityCommitments = [1, 2, 3].map(BigInt)
 
-        await contract.createGroup(provider, names[1], 16)
-        await contract.createGroup(provider, names[2], 16)
+        await contract.createGroup(provider, names[1], 16, accounts[0])
+        await contract.createGroup(provider, names[2], 16, accounts[0])
 
         const fun = () => contract.batchAddIdentityCommitment(provider, names, identityCommitments)
 
         await expect(fun()).to.emit(contract, "NewIdentityCommitment")
+    })
+
+    it("Should remove an identity commitment in a group", async () => {
+        const name = ethers.utils.formatBytes32String("RM")
+        const poseidon = await buildPoseidon()
+        const tree = new IncrementalQuinTree(16, 0, 2, (inputs: BigInt[]) => poseidon.F.toObject(poseidon(inputs)))
+
+        tree.insert(BigInt(1))
+        tree.insert(BigInt(2))
+        tree.insert(BigInt(3))
+
+        await contract.createGroup(provider, name, 16, accounts[0])
+        await contract.addIdentityCommitment(provider, name, BigInt(1))
+        await contract.addIdentityCommitment(provider, name, BigInt(2))
+        await contract.addIdentityCommitment(provider, name, BigInt(3))
+
+        tree.update(1, 0)
+
+        const path = tree.genMerklePath(1)
+        const siblingNodes = path.pathElements.map((e: BigInt[]) => e[0])
+
+        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(2), path.indices, siblingNodes)
+
+        await expect(fun()).to.emit(contract, "DeleteIdentityCommitment").withArgs(provider, name, BigInt(2), path.root)
     })
 })
