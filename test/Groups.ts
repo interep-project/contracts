@@ -102,7 +102,7 @@ describe("Groups", () => {
         const path = tree.genMerklePath(1)
         const siblingNodes = path.pathElements.map((e: BigInt[]) => e[0])
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(2), path.indices, siblingNodes)
+        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(2), siblingNodes, path.indices)
 
         await expect(fun()).to.emit(contract, "DeleteIdentityCommitment").withArgs(provider, name, BigInt(2), path.root)
     })
