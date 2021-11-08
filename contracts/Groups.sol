@@ -18,20 +18,17 @@ contract Groups is OwnableUpgradeable {
     /// @param name: The name of the group.
     /// @param identityCommitment: The new identity commitment.
     /// @param index: The index of the identity commitment in the tree.
-    /// @param rootHash: The new root hash of the tree.
+    /// @param root: The new root hash of the tree.
     event NewIdentityCommitment(
         bytes32 indexed provider,
         bytes32 indexed name,
         uint256 identityCommitment,
         uint256 index,
-        uint256 rootHash
+        uint256 root
     );
 
     /// @dev Gets a group id and returns the group/tree data.
     mapping(bytes32 => TreeData) private groups;
-
-    /// @dev Gets a group id and returns the last root hash.
-    mapping(bytes32 => uint256) private rootHashes;
 
     /// @dev Gets a group id and returns the group admin address.
     mapping(bytes32 => address) private groupAdmins;
@@ -48,7 +45,7 @@ contract Groups is OwnableUpgradeable {
         bytes32 provider,
         bytes32 name,
         uint8 depth,
-        address admin 
+        address admin
     ) external {
         createGroup(provider, name, depth);
 
@@ -80,7 +77,7 @@ contract Groups is OwnableUpgradeable {
     function getRootHash(bytes32 provider, bytes32 name) external view returns (uint256) {
         bytes32 groupId = getGroupId(provider, name);
 
-        return rootHashes[groupId];
+        return groups[groupId].root;
     }
 
     /// @dev ...
@@ -119,8 +116,6 @@ contract Groups is OwnableUpgradeable {
         require(groups[groupId].depth != 0, "Groups: group does not exist");
 
         groups[groupId].insert(identityCommitment);
-
-        rootHashes[groupId] = groups[groupId].root;
 
         emit NewIdentityCommitment(
             provider,
