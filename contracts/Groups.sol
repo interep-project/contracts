@@ -74,10 +74,18 @@ contract Groups is OwnableUpgradeable {
 
     /// @dev Gets a group provider and a group name and returns the last root hash of the group.
     /// @return The root hash.
-    function getRootHash(bytes32 provider, bytes32 name) external view returns (uint256) {
+    function getRoot(bytes32 provider, bytes32 name) external view returns (uint256) {
         bytes32 groupId = getGroupId(provider, name);
 
         return groups[groupId].root;
+    }
+
+    /// @dev Gets a group provider and a group name and returns the size of the group.
+    /// @return The root hash.
+    function getSize(bytes32 provider, bytes32 name) external view returns (uint256) {
+        bytes32 groupId = getGroupId(provider, name);
+
+        return groups[groupId].numberOfLeaves;
     }
 
     /// @dev ...
