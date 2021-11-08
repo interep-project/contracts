@@ -17,14 +17,14 @@ contract Groups is OwnableUpgradeable {
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
     /// @param depth: Depth of the tree.
-    event NewGroup(bytes32 indexed provider, bytes32 name, uint8 depth);
+    event GroupAdded(bytes32 indexed provider, bytes32 name, uint8 depth);
 
     /// @dev Emitted when a new identity commitment is added.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
     /// @param identityCommitment: New identity commitment.
     /// @param root: New root hash of the tree.
-    event NewIdentityCommitment(
+    event IdentityCommitmentAdded(
         bytes32 indexed provider,
         bytes32 indexed name,
         uint256 identityCommitment,
@@ -36,7 +36,7 @@ contract Groups is OwnableUpgradeable {
     /// @param name: Name of the group.
     /// @param identityCommitment: New identity commitment.
     /// @param root: New root hash of the tree.
-    event DeleteIdentityCommitment(
+    event IdentityCommitmentDeleted(
         bytes32 indexed provider,
         bytes32 indexed name,
         uint256 identityCommitment,
@@ -74,7 +74,7 @@ contract Groups is OwnableUpgradeable {
 
         admins[groupId] = admin;
 
-        emit NewGroup(provider, name, depth);
+        emit GroupAdded(provider, name, depth);
     }
 
     /// @dev Batch function to add multiple identity commitments.
@@ -129,7 +129,7 @@ contract Groups is OwnableUpgradeable {
 
         groups[groupId].insert(identityCommitment);
 
-        emit NewIdentityCommitment(provider, name, identityCommitment, groups[groupId].root);
+        emit IdentityCommitmentAdded(provider, name, identityCommitment, groups[groupId].root);
     }
 
     /// @dev Deletes an identity commitment from an existing group.
@@ -152,7 +152,7 @@ contract Groups is OwnableUpgradeable {
 
         groups[groupId].remove(identityCommitment, pathSiblingNodes, pathPositions);
 
-        emit DeleteIdentityCommitment(provider, name, identityCommitment, groups[groupId].root);
+        emit IdentityCommitmentDeleted(provider, name, identityCommitment, groups[groupId].root);
     }
 
     /// @dev Returns the group id.

@@ -24,7 +24,7 @@ describe("Groups", () => {
     it("Should create a group", async () => {
         const fun = () => contract.createGroup(provider, name, 16, accounts[0])
 
-        await expect(fun()).to.emit(contract, "NewGroup").withArgs(provider, name, 16)
+        await expect(fun()).to.emit(contract, "GroupAdded").withArgs(provider, name, 16)
     })
 
     it("Should not create a group with an existing id", async () => {
@@ -34,9 +34,9 @@ describe("Groups", () => {
     })
 
     it("Should not add an identity commitment if the group does not exist", async () => {
-        const otherName = ethers.utils.formatBytes32String("silver")
+        const name = ethers.utils.formatBytes32String("silver")
 
-        const fun = () => contract.addIdentityCommitment(provider, otherName, identityCommitment)
+        const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
 
         await expect(fun()).to.be.revertedWith("Groups: group does not exist")
     })
@@ -53,7 +53,7 @@ describe("Groups", () => {
         const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
 
         await expect(fun())
-            .to.emit(contract, "NewIdentityCommitment")
+            .to.emit(contract, "IdentityCommitmentAdded")
             .withArgs(
                 provider,
                 name,
@@ -80,30 +80,68 @@ describe("Groups", () => {
 
         const fun = () => contract.batchAddIdentityCommitment(provider, names, identityCommitments)
 
-        await expect(fun()).to.emit(contract, "NewIdentityCommitment")
+        await expect(fun()).to.emit(contract, "IdentityCommitmentAdded")
     })
 
-    it("Should remove an identity commitment in a group", async () => {
-        const name = ethers.utils.formatBytes32String("RM")
+    it("Should not delete an identity commitment if the group does not exist", async () => {
+        const name = ethers.utils.formatBytes32String("none")
+
+        const fun = () => contract.deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
+
+        await expect(fun()).to.be.revertedWith("Groups: group does not exist")
+    })
+
+    it("Should not delete an identity commitment if the caller is not the group admin", async () => {
+        const identityCommitment = BigInt(2)
+
+        const fun = () =>
+            contract.connect(signers[1]).deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
+
+        await expect(fun()).to.be.revertedWith("Groups: caller is not the group admin")
+    })
+
+    it("Should delete an identity commitment in a group", async () => {
+        const name = ethers.utils.formatBytes32String("hello")
         const poseidon = await buildPoseidon()
         const tree = new IncrementalQuinTree(16, 0, 2, (inputs: BigInt[]) => poseidon.F.toObject(poseidon(inputs)))
 
-        tree.insert(BigInt(1))
+        tree.insert(identityCommitment)
         tree.insert(BigInt(2))
         tree.insert(BigInt(3))
 
         await contract.createGroup(provider, name, 16, accounts[0])
-        await contract.addIdentityCommitment(provider, name, BigInt(1))
+        await contract.addIdentityCommitment(provider, name, identityCommitment)
         await contract.addIdentityCommitment(provider, name, BigInt(2))
         await contract.addIdentityCommitment(provider, name, BigInt(3))
 
-        tree.update(1, 0)
+        tree.update(0, 0)
 
-        const path = tree.genMerklePath(1)
-        const siblingNodes = path.pathElements.map((e: BigInt[]) => e[0])
+        const { root, indices, pathElements } = tree.genMerklePath(0)
+        const siblingNodes = pathElements.map((e: BigInt[]) => e[0])
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(2), siblingNodes, path.indices)
+        const fun = () => contract.deleteIdentityCommitment(provider, name, identityCommitment, siblingNodes, indices)
 
-        await expect(fun()).to.emit(contract, "DeleteIdentityCommitment").withArgs(provider, name, BigInt(2), path.root)
+        await expect(fun())
+            .to.emit(contract, "IdentityCommitmentDeleted")
+            .withArgs(provider, name, identityCommitment, root)
+    })
+
+    it("Should add an identity commitment in a group after a deletion", async () => {
+        const name = ethers.utils.formatBytes32String("hello")
+        const poseidon = await buildPoseidon()
+        const tree = new IncrementalQuinTree(16, 0, 2, (inputs: BigInt[]) => poseidon.F.toObject(poseidon(inputs)))
+
+        tree.insert(identityCommitment)
+        tree.insert(BigInt(2))
+        tree.insert(BigInt(3))
+
+        const fun = () => contract.addIdentityCommitment(provider, name, BigInt(4))
+
+        tree.update(0, 0)
+        tree.insert(BigInt(4))
+
+        const { root } = tree.genMerklePath(0)
+
+        await expect(fun()).to.emit(contract, "IdentityCommitmentAdded").withArgs(provider, name, BigInt(4), root)
     })
 })
