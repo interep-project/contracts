@@ -143,4 +143,12 @@ $ NODE_ENV=production yarn deploy:reputation-badge --name "InterRep Twitter Badg
 $ NODE_ENV=production yarn deploy:groups --network ropsten
 ```
 
+### Groups
+
+Create the InterRep default groups:
+
+```bash
+$ yarn create:groups --address <contractAddress> --depth <treesDepth>
+```
+
 You can find a copy of the `.env` file in the `.env.example` file.
