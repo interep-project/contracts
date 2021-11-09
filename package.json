@@ -26,6 +26,7 @@
         "deploy:mocks": "hardhat run ./scripts/deploy-mocks.ts",
         "deploy:groups": "hardhat deploy:groups",
         "deploy:reputation-badge": "hardhat deploy:reputation-badge",
+        "create-groups": "hardhat create-groups",
         "mint": "hardhat mint",
         "test": "hardhat test",
         "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",
@@ -94,5 +95,8 @@
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
         }
+    },
+    "dependencies": {
+        "@interrep/reputation-criteria": "^0.12.0"
     }
 }

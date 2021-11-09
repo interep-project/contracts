@@ -12,6 +12,7 @@ import "./tasks/accounts"
 import "./tasks/clean"
 import "./tasks/deploy-groups"
 import "./tasks/deploy-reputation-badge"
+import "./tasks/create-groups"
 import "./tasks/mint"
 
 dotenvConfig({ path: resolve(__dirname, "./.env") })
