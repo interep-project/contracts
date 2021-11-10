@@ -29,6 +29,7 @@
         "groups": "hardhat groups",
         "mint": "hardhat mint",
         "test": "hardhat test",
+        "test:prod": "yarn lint && yarn test",
         "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",
         "lint": "yarn run lint:sol && yarn run lint:ts",
         "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\"",
