@@ -47,7 +47,7 @@ If you want an overwiew of InterRep, read our announcement post: https://jaygrab
 | ReputationBadge (Twitter) | [0xF685...1E07](https://kovan.etherscan.io/address/0xF685380c95857Ae6f022F43ADB951BC2eE861E07) | [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
 | ReputationBadge (Github)  | [0xD6B4...2E18](https://kovan.etherscan.io/address/0xD6B4f70b441e9E2F4473F53Fe1cAe50F49C42E18) |                                                                                                  |                                                                                                       |
 | ReputationBadge (Reddit)  | [0x55d2...B4Cf](https://kovan.etherscan.io/address/0x55d2d15631078cC555d06f14fD45bF2A7D86B4Cf) |                                                                                                  |                                                                                                       |
-| Groups                    | [0xD2C9...735B](https://kovan.etherscan.io/address/0xD2C9435C0E9e051e37456C01B2478f3e48ce735B) | [0xa2A7...6419](https://ropsten.etherscan.io/address/0xa2A7f256B4Ea653eef95965D09bbdBb4b4526419) |                                                                                                       |
+| Groups                    | [0xD2C9...735B](https://kovan.etherscan.io/address/0xD2C9435C0E9e051e37456C01B2478f3e48ce735B) |  |                                                                                                       |
 
 ---
 
@@ -56,25 +56,27 @@ If you want an overwiew of InterRep, read our announcement post: https://jaygrab
 Clone this repository and install the dependencies:
 
 ```bash
-$ git clone https://github.com/InterRep/contracts.git interrep-contracts
-$ cd interrep-contracts
+$ git clone https://github.com/InterRep/contracts.git
+$ cd contracts
 $ yarn # or `npm i`
 ```
 
 ## Usage
+
+Copy the `.env.example` file and rename it `.env`.
 
 ### Compile
 
 Compile the smart contracts with Hardhat:
 
 ```bash
-$ yarn compile
+yarn compile
 ```
 
 This should generate the TypeChain typings. If you want to generate them manually run:
 
 ```bash
-$ yarn typechain
+yarn typechain
 ```
 
 ### Lint
@@ -82,15 +84,15 @@ $ yarn typechain
 Lint the Solidity or the TypeScript code:
 
 ```bash
-$ yarn lint:sol
-$ yarn lint:ts
+yarn lint:sol
+yarn lint:ts
 # or yarn lint to lint both.
 ```
 
 And check if the code is well formatted:
 
 ```bash
-$ yarn prettier
+yarn prettier
 ```
 
 ### Test
@@ -98,7 +100,7 @@ $ yarn prettier
 Run the Mocha tests:
 
 ```bash
-$ yarn test
+yarn test
 ```
 
 ### Coverage
@@ -106,7 +108,7 @@ $ yarn test
 Generate the code coverage report:
 
 ```bash
-$ yarn coverage
+yarn coverage
 ```
 
 ### Report Gas
@@ -114,7 +116,7 @@ $ yarn coverage
 See the gas usage per unit test and average gas per method call:
 
 ```bash
-$ REPORT_GAS=true yarn test
+REPORT_GAS=true yarn test
 ```
 
 ### Clean
@@ -122,25 +124,35 @@ $ REPORT_GAS=true yarn test
 Delete the smart contract artifacts, the coverage reports and the Hardhat cache:
 
 ```bash
-$ yarn clean
+yarn clean
 ```
+
+### Start a local network
+
+Run a Hardhat Network in a stand-alone fashion:
+
+```bash
+yarn start
+```
+
+Use `--network localhost` with the following commands if you want to interact with it.
 
 ### Deploy
 
-Deploy the contracts to Hardhat Network:
+Deploy the contracts:
 
 ```bash
-$ yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT
-$ yarn deploy:groups
+yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT
+yarn deploy:groups
 ```
 
-or run `yarn deploy:mocks` if you want a short command to simulate the previous command for testing purposes.
+If you have to deploy the contracts locally you can also run `yarn deploy:mocks --network localhost`. It runs both the previous commands with mocked data.
 
-Set your `.env` file and deploy the contracts to a specific network, such as the Ropsten testnet:
+If you want to deploy contracts in a specific network you can set up your `.env` `DEFAULT_NETWORK` variable with the name of one of our supported networks (hardhat, localhost, ropsten, kovan, arbitrum) or you can specify it as option:
 
 ```bash
-$ NODE_ENV=production yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT --network ropsten
-$ NODE_ENV=production yarn deploy:groups --network ropsten
+yarn deploy:groups --network kovan // Kovan testnet
+yarn deploy:groups --network localhost // Local network
 ```
 
 ### Groups
@@ -150,5 +162,3 @@ Create the InterRep default groups:
 ```bash
 $ yarn create:groups --address <contractAddress> --depth <treesDepth>
 ```
-
-You can find a copy of the `.env` file in the `.env.example` file.
