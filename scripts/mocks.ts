@@ -13,7 +13,12 @@ async function main(): Promise<void> {
         name: "InterRep Reddit Badge",
         symbol: "iREDDIT"
     })
-    await run("deploy:groups")
+
+    const { address } = await run("deploy:groups")
+    await run("groups", {
+        address,
+        depth: 16
+    })
 }
 
 main()

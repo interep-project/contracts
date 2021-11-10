@@ -1,9 +1,9 @@
 import { getOAuthProviders, getReputationLevels } from "@interrep/reputation-criteria"
-import { task } from "hardhat/config"
+import { task, types } from "hardhat/config"
 
-task("create-groups", "Create the InterRep default groups")
+task("groups", "Create the InterRep default groups")
     .addParam<string>("address", "The address of the contract")
-    .addParam<number>("depth", "The depth of the trees")
+    .addParam<number>("depth", "The depth of the trees", undefined, types.int)
     .setAction(async ({ address, depth }, { ethers }): Promise<void> => {
         const contract = await ethers.getContractAt("Groups", address)
         const admin = await contract.signer.getAddress()
