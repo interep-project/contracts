@@ -9,6 +9,15 @@
     <a href="https://github.com/InterRep" target="_blank">
         <img src="https://img.shields.io/badge/project-InterRep-blue.svg?style=flat-square">
     </a>
+    <a href="https://github.com/interrep/contracts/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/interrep/contracts.svg?style=flat-square">
+    </a>
+    <a href="https://github.com/interrep/contracts/actions?query=workflow%3Atest">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/interrep/contracts/test?label=test&style=flat-square&logo=github">
+    </a>
+    <a href="https://coveralls.io/github/InterRep/contracts">
+        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/InterRep/contracts?style=flat-square&logo=coveralls">
+    </a>
     <a href="https://eslint.org/" target="_blank">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint">
     </a>
