@@ -127,16 +127,6 @@ Delete the smart contract artifacts, the coverage reports and the Hardhat cache:
 yarn clean
 ```
 
-### Start a local network
-
-Run a Hardhat Network in a stand-alone fashion:
-
-```bash
-yarn start
-```
-
-Use `--network localhost` with the following commands if you want to interact with it.
-
 ### Deploy
 
 Deploy the contracts:
@@ -145,8 +135,6 @@ Deploy the contracts:
 yarn deploy:reputation-badge --name "InterRep Twitter Badge" --symbol iTWITT
 yarn deploy:groups
 ```
-
-If you have to deploy the contracts locally you can also run `yarn deploy:mocks --network localhost`. It runs both the previous commands with mocked data.
 
 If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, ropsten, kovan, arbitrum). Or you can specify it as option:
 
@@ -162,5 +150,21 @@ If you want to deploy the contracts on Ropsten, Kovan or Arbitrum remember to pr
 Create the InterRep default groups:
 
 ```bash
-$ yarn create:groups --address <contractAddress> --depth <treesDepth>
+$ yarn groups --address <contractAddress>
 ```
+
+### Preparing a local network
+
+Run a Hardhat Network in a stand-alone fashion:
+
+```bash
+yarn start
+```
+
+Deploy mocked contracts and groups (it will take ~2 minutes):
+
+```bash
+yarn mocks --network localhost
+```
+
+You can omit `--network localhost` if your `DEFAULT_NETWORK` env variable is equal to `localhost`.
