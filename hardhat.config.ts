@@ -18,15 +18,7 @@ import "./tasks/mint"
 dotenvConfig({ path: resolve(__dirname, "./.env") })
 
 function getNetworks(): NetworksUserConfig | undefined {
-    if (process.env.NODE_ENV === "production") {
-        if (!process.env.INFURA_API_KEY) {
-            throw new Error("Please set your INFURA_API_KEY in a .env file")
-        }
-
-        if (!process.env.BACKEND_PRIVATE_KEY) {
-            throw new Error("Please set your BACKEND_PRIVATE_KEY in a .env file")
-        }
-
+    if (process.env.INFURA_API_KEY && process.env.BACKEND_PRIVATE_KEY) {
         const infuraApiKey = process.env.INFURA_API_KEY
         const accounts = [`0x${process.env.BACKEND_PRIVATE_KEY}`]
 
