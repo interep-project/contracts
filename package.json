@@ -28,7 +28,7 @@
         "deploy:reputation-badge": "hardhat deploy:reputation-badge",
         "groups": "hardhat groups",
         "mint": "hardhat mint",
-        "test": "hardhat test",
+        "test": "yarn compile && hardhat test",
         "test:prod": "yarn lint && yarn test",
         "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",
         "lint": "yarn run lint:sol && yarn run lint:ts",
