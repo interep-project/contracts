@@ -148,12 +148,14 @@ yarn deploy:groups
 
 If you have to deploy the contracts locally you can also run `yarn deploy:mocks --network localhost`. It runs both the previous commands with mocked data.
 
-If you want to deploy contracts in a specific network you can set up your `.env` `DEFAULT_NETWORK` variable with the name of one of our supported networks (hardhat, localhost, ropsten, kovan, arbitrum) or you can specify it as option:
+If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, ropsten, kovan, arbitrum). Or you can specify it as option:
 
 ```bash
 yarn deploy:groups --network kovan // Kovan testnet
 yarn deploy:groups --network localhost // Local network
 ```
+
+If you want to deploy the contracts on Ropsten, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.
 
 ### Groups
 
