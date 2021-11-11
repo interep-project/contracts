@@ -27,24 +27,24 @@ describe("ReputationBadge", () => {
         await badge.deployed()
     })
 
-    it("should return the badge name", async () => {
+    it("Should return the badge name", async () => {
         expect(await badge.name()).to.eq(badgeName)
     })
 
-    it("should return the badge symbol", async () => {
+    it("Should return the badge symbol", async () => {
         expect(await badge.symbol()).to.eq(badgeSymbol)
     })
 
     /*
      **** PAUSING ****
      */
-    it("should let the deployer pause", async () => {
+    it("Should let the deployer pause", async () => {
         await badge.connect(deployer).pause()
 
         expect(await badge.paused()).to.be.true
     })
 
-    it("should let the deployer unpause", async () => {
+    it("Should let the deployer unpause", async () => {
         await badge.connect(deployer).pause()
 
         await badge.connect(deployer).unpause()
@@ -52,35 +52,35 @@ describe("ReputationBadge", () => {
         expect(await badge.paused()).to.be.false
     })
 
-    it("should not let another signer pause", async () => {
+    it("Should not let another signer pause", async () => {
         await expect(badge.connect(signer1).pause()).to.be.revertedWith("Ownable: caller is not the owner")
     })
 
-    it("should not let another signer unpause", async () => {
+    it("Should not let another signer unpause", async () => {
         await expect(badge.connect(signer1).unpause()).to.be.revertedWith("Ownable: caller is not the owner")
     })
 
     /*
      **** MINTING ****
      */
-    it("should let the backend mint a token", async () => {
+    it("Should let the backend mint a token", async () => {
         await badge.connect(backend).safeMint(signer1.address, 1)
 
         expect(await badge.balanceOf(signer1.address)).to.eq(1)
         expect(await badge.ownerOf(1)).to.eq(signer1.address)
     })
 
-    it("should only let the backend mint a token", async () => {
+    it("Should only let the backend mint a token", async () => {
         await expect(badge.connect(signer1).safeMint(signer1.address, 234)).to.be.revertedWith("Unauthorized")
     })
 
-    it("should not let minting happen when paused", async () => {
+    it("Should not let minting happen when paused", async () => {
         await badge.connect(deployer).pause()
 
         await expect(badge.connect(backend).safeMint(signer1.address, 1)).to.be.revertedWith("Pausable: paused")
     })
 
-    it("should not let mint twice with the same id", async () => {
+    it("Should not let mint twice with the same id", async () => {
         const tokenId = 5555
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
@@ -91,7 +91,7 @@ describe("ReputationBadge", () => {
         )
     })
 
-    it("should batch mint several tokens", async () => {
+    it("Should batch mint several tokens", async () => {
         expect(await badge.balanceOf(signer1.address)).to.eq(0)
         expect(await badge.balanceOf(signer2.address)).to.eq(0)
 
@@ -105,7 +105,7 @@ describe("ReputationBadge", () => {
         expect(await badge.ownerOf(45)).to.eq(signer2.address)
     })
 
-    it("should restrict batch minting to the backend", async () => {
+    it("Should restrict batch minting to the backend", async () => {
         await expect(
             badge.connect(signer2).batchMint([
                 { to: signer1.address, tokenId: 10 },
@@ -114,24 +114,24 @@ describe("ReputationBadge", () => {
         ).to.be.revertedWith("Unauthorized")
     })
 
-    it("should return true if a token exists", async () => {
+    it("Should return true if a token exists", async () => {
         await badge.connect(backend).safeMint(signer1.address, 1)
 
         expect(await badge.exists(1)).to.be.true
     })
 
-    it("should return false if a token does not exist", async () => {
+    it("Should return false if a token does not exist", async () => {
         expect(await badge.exists(268080990909099)).to.be.false
     })
 
     /*
      **** BACKEND ADDRESS ****
      */
-    it("should return the backend address", async () => {
+    it("Should return the backend address", async () => {
         expect(await badge.backendAddress()).to.eq(backend.address)
     })
 
-    it("should let the deployer change the backend address", async () => {
+    it("Should let the deployer change the backend address", async () => {
         const newBackend = signer1
 
         await expect(badge.connect(newBackend).safeMint(signer1.address, 234)).to.be.revertedWith("Unauthorized")
@@ -153,7 +153,7 @@ describe("ReputationBadge", () => {
         expect(await badge.balanceOf(signer1.address)).to.eq(1)
     })
 
-    it("should only let the deployer change the backend address", async () => {
+    it("Should only let the deployer change the backend address", async () => {
         await expect(badge.connect(signer1).changeBackendAddress(signer1.address)).to.be.revertedWith(
             "Ownable: caller is not the owner"
         )
@@ -162,7 +162,7 @@ describe("ReputationBadge", () => {
     /*
      **** BURNING ****
      */
-    it("should let tokens be burned by their owner", async () => {
+    it("Should let tokens be burned by their owner", async () => {
         const tokenId = 5645324387978
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
@@ -173,7 +173,7 @@ describe("ReputationBadge", () => {
         expect(await badge.balanceOf(signer1.address)).to.eq(0)
     })
 
-    it("should let approved accounts burn tokens on behalf", async () => {
+    it("Should let approved accounts burn tokens on behalf", async () => {
         const tokenId = 44
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
@@ -185,7 +185,7 @@ describe("ReputationBadge", () => {
         expect(await badge.balanceOf(signer1.address)).to.eq(0)
     })
 
-    it("should not let tokens be burned if not approved or owner", async () => {
+    it("Should not let tokens be burned if not approved or owner", async () => {
         const tokenId = 3333
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
@@ -200,7 +200,7 @@ describe("ReputationBadge", () => {
     /*
      **** URI ****
      */
-    it("should set the base URI and return the proper tokenURI", async () => {
+    it("Should set the base URI and return the proper tokenURI", async () => {
         const baseURI = "https://interrep.link/tokens/"
         const tokenId = 1
 
@@ -211,7 +211,7 @@ describe("ReputationBadge", () => {
         expect(await badge.tokenURI(1)).to.eq(baseURI + tokenId.toString())
     })
 
-    it("should only let the deployer change the base URI", async () => {
+    it("Should only let the deployer change the base URI", async () => {
         await expect(badge.connect(signer1).changeBaseURI("https://opensea.io/")).to.be.revertedWith(
             "Ownable: caller is not the owner"
         )
@@ -220,7 +220,7 @@ describe("ReputationBadge", () => {
     /*
      **** TRANSFER ****
      */
-    it("should let token holders transfer their token", async () => {
+    it("Should let token holders transfer their token", async () => {
         const tokenId = 6
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
@@ -231,7 +231,7 @@ describe("ReputationBadge", () => {
         ).to.changeTokenBalances(badge, [signer1, signer2], [-1, 1])
     })
 
-    it("should let approved accounts transfer a token", async () => {
+    it("Should let approved accounts transfer a token", async () => {
         const tokenId = 77
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
@@ -244,7 +244,7 @@ describe("ReputationBadge", () => {
         expect(await badge.ownerOf(tokenId)).to.eq(deployer.address)
     })
 
-    it("should not let unapproved transfers happen", async () => {
+    it("Should not let unapproved transfers happen", async () => {
         const tokenId = 8
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
@@ -255,7 +255,7 @@ describe("ReputationBadge", () => {
         ).to.be.revertedWith("ERC721: transfer caller is not owner nor approved")
     })
 
-    it("should not let transfer happen when paused", async () => {
+    it("Should not let transfer happen when paused", async () => {
         const tokenId = 991
         await badge.connect(backend).safeMint(signer1.address, tokenId)
 
