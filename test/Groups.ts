@@ -47,6 +47,25 @@ describe("Groups", () => {
         await expect(fun()).to.be.revertedWith("Groups: group already exists")
     })
 
+    it("Should not create groups if the array parameters have not the same length", async () => {
+        const names = ["gold", "silver", "bronze"].map(ethers.utils.formatBytes32String)
+        const depths = names.map(() => depth)
+
+        const fun = () => contract.batchCreateGroup(provider, names, depths, [accounts[0]])
+
+        await expect(fun()).to.be.revertedWith("Groups: array parameters should have the same length")
+    })
+
+    it("Should add 3 groups in a single batch", async () => {
+        const names = ["qui", "pro", "quo"].map(ethers.utils.formatBytes32String)
+        const depths = names.map(() => depth)
+        const admins = names.map(() => accounts[0])
+
+        const fun = () => contract.batchCreateGroup(provider, names, depths, admins)
+
+        await expect(fun()).to.emit(contract, "GroupAdded")
+    })
+
     it("Should get the root of the group", async () => {
         const root = await contract.getRoot(provider, name)
 
@@ -110,7 +129,7 @@ describe("Groups", () => {
         await expect(fun()).to.be.revertedWith("IncrementalTree: tree is full")
     })
 
-    it("Should throw an error if the length of the array parameters is not the same", async () => {
+    it("Should not add identity commitments if the array parameters have not the same length", async () => {
         const names = ["gold", "silver", "bronze"].map(ethers.utils.formatBytes32String)
         const identityCommitments = [1, 2].map(BigInt)
 

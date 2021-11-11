@@ -47,7 +47,7 @@ contract Groups is OwnableUpgradeable {
     mapping(bytes32 => TreeData) private groups;
 
     /// @dev Gets a group id and returns the group admin address.
-    mapping(bytes32 => address) private admins;
+    mapping(bytes32 => address) private groupAdmins;
 
     /// @dev OpenZeppelin initialize function.
     function initialize() public initializer {
@@ -55,31 +55,30 @@ contract Groups is OwnableUpgradeable {
         __Ownable_init();
     }
 
-    /// @dev Creates a new group by initializing the associated Merkle tree.
+    /// @dev Batch function to create multiple groups.
     /// @param provider: Provider of the group.
-    /// @param name: Name of the group.
-    /// @param depth: Depth of the tree.
-    /// @param admin: Admin of the group.
-    function createGroup(
+    /// @param names: Names of the groups.
+    /// @param depths: Depths of the trees.
+    /// @param admins: Admins of the groups.
+    function batchCreateGroup(
         bytes32 provider,
-        bytes32 name,
-        uint8 depth,
-        address admin
-    ) external onlyOwner {
-        bytes32 groupId = getGroupId(provider, name);
+        bytes32[] memory names,
+        uint8[] memory depths,
+        address[] memory admins
+    ) external {
+        require(
+            names.length == depths.length && names.length == admins.length,
+            "Groups: array parameters should have the same length"
+        );
 
-        require(groups[groupId].depth == 0, "Groups: group already exists");
-
-        groups[groupId].init(depth, 0);
-
-        admins[groupId] = admin;
-
-        emit GroupAdded(provider, name, depth);
+        for (uint256 i = 0; i < names.length; i++) {
+            createGroup(provider, names[i], depths[i], admins[i]);
+        }
     }
 
     /// @dev Batch function to add multiple identity commitments.
     /// @param provider: Provider of the group.
-    /// @param names: Names of the group.
+    /// @param names: Names of the groups.
     /// @param identityCommitments: New identity commitments.
     function batchAddIdentityCommitment(
         bytes32 provider,
@@ -113,6 +112,28 @@ contract Groups is OwnableUpgradeable {
         return groups[groupId].numberOfLeaves;
     }
 
+    /// @dev Creates a new group by initializing the associated Merkle tree.
+    /// @param provider: Provider of the group.
+    /// @param name: Name of the group.
+    /// @param depth: Depth of the tree.
+    /// @param admin: Admin of the group.
+    function createGroup(
+        bytes32 provider,
+        bytes32 name,
+        uint8 depth,
+        address admin
+    ) public onlyOwner {
+        bytes32 groupId = getGroupId(provider, name);
+
+        require(groups[groupId].depth == 0, "Groups: group already exists");
+
+        groups[groupId].init(depth, 0);
+
+        groupAdmins[groupId] = admin;
+
+        emit GroupAdded(provider, name, depth);
+    }
+
     /// @dev Adds an identity commitment to an existing group.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
@@ -125,7 +146,7 @@ contract Groups is OwnableUpgradeable {
         bytes32 groupId = getGroupId(provider, name);
 
         require(groups[groupId].depth != 0, "Groups: group does not exist");
-        require(admins[groupId] == _msgSender(), "Groups: caller is not the group admin");
+        require(groupAdmins[groupId] == _msgSender(), "Groups: caller is not the group admin");
 
         groups[groupId].insert(identityCommitment);
 
@@ -148,7 +169,7 @@ contract Groups is OwnableUpgradeable {
         bytes32 groupId = getGroupId(provider, name);
 
         require(groups[groupId].depth != 0, "Groups: group does not exist");
-        require(admins[groupId] == _msgSender(), "Groups: caller is not the group admin");
+        require(groupAdmins[groupId] == _msgSender(), "Groups: caller is not the group admin");
 
         groups[groupId].remove(identityCommitment, pathSiblingNodes, pathPositions);
 

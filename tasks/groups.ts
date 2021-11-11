@@ -16,14 +16,16 @@ task("groups", "Create the InterRep default groups")
         const providers = getOAuthProviders()
         const reputationLevels = getReputationLevels()
 
-        for (const provider of providers) {
-            for (const reputation of reputationLevels) {
-                await contract.createGroup(
-                    ethers.utils.formatBytes32String(provider),
-                    ethers.utils.formatBytes32String(reputation),
-                    depth,
-                    admin
-                )
-            }
+        for (let provider of providers) {
+            await contract.batchCreateGroup(
+                ethers.utils.formatBytes32String(provider),
+                reputationLevels.map(ethers.utils.formatBytes32String),
+                reputationLevels.map(() => depth),
+                reputationLevels.map(() => admin)
+            )
+
+            provider = (provider.charAt(0).toUpperCase() + provider.slice(1)) as any
+
+            console.log(`${provider} groups created`)
         }
     })
