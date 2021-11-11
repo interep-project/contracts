@@ -20,6 +20,7 @@
         "@ethersproject/wallet": "^5.2.0"
     },
     "scripts": {
+        "prepare": "yarn compile",
         "start": "hardhat node",
         "clean": "hardhat clean",
         "compile": "hardhat compile",
@@ -28,8 +29,8 @@
         "deploy:reputation-badge": "hardhat deploy:reputation-badge",
         "groups": "hardhat groups",
         "mint": "hardhat mint",
-        "test": "yarn compile && hardhat test",
-        "test:prod": "yarn lint && yarn test && yarn coverage",
+        "test": "hardhat test",
+        "test:prod": "yarn lint && yarn coverage",
         "coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"./test/**/*.ts\"",
         "lint": "yarn run lint:sol && yarn run lint:ts",
         "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\"",
