@@ -44,7 +44,12 @@ function getNetworks(): NetworksUserConfig | undefined {
 
 const config: HardhatUserConfig = {
     defaultNetwork: process.env.DEFAULT_NETWORK || "hardhat",
-    networks: getNetworks(),
+    networks: {
+        localhost: {
+            timeout: 50000
+        },
+        ...getNetworks()
+    },
     solidity: {
         version: "0.8.0"
     },
