@@ -33,7 +33,7 @@ task("deploy:groups", "Deploy a Groups contract")
 
         await contract.deployed()
 
-        logs && console.log(`The Groups contract has been deployed to the address: ${contract.address}`)
+        logs && console.log(`Groups contract has been deployed to: ${contract.address}`)
 
         return contract
     })

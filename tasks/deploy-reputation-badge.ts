@@ -15,7 +15,7 @@ task("deploy:reputation-badge", "Deploy a ReputationBadge contract")
 
         await contract.deployed()
 
-        logs && console.log(`The ReputationBadge contract has been deployed to the address: ${contract.address}`)
+        logs && console.log(`ReputationBadge contract has been deployed to: ${contract.address}`)
 
         return contract
     })
