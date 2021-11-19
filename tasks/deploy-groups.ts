@@ -1,5 +1,6 @@
 import { task, types } from "hardhat/config"
-import { poseidonContract } from "circomlibjs"
+// eslint-disable-next-line camelcase
+import { poseidon_gencontract as poseidonContract } from "circomlibjs"
 import { Contract } from "ethers"
 
 task("deploy:groups", "Deploy a Groups contract")

@@ -1,11 +1,10 @@
 import { expect } from "chai"
-import { buildPoseidon } from "circomlibjs"
 import { config as dotenvConfig } from "dotenv"
 import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
 import { resolve } from "path"
 import { Groups } from "../typechain"
-import { createTree, getPath } from "./utils"
+import { createTree } from "./utils"
 
 dotenvConfig({ path: resolve(__dirname, "../.env") })
 
@@ -13,7 +12,6 @@ describe("Groups", () => {
     let contract: Groups
     let signers: Signer[]
     let accounts: string[]
-    let poseidon: any
 
     const provider = ethers.utils.formatBytes32String("twitter")
     const name = ethers.utils.formatBytes32String("gold")
@@ -25,8 +23,6 @@ describe("Groups", () => {
 
         signers = await run("accounts", { logs: false })
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
-
-        poseidon = await buildPoseidon()
     })
 
     it("Should not create a group with a depth > 32", async () => {
@@ -179,67 +175,65 @@ describe("Groups", () => {
 
     it("Should delete an identity commitment", async () => {
         const name = ethers.utils.formatBytes32String("hello")
-        const tree = createTree(depth, poseidon, 3)
+        const tree = createTree(depth, 3)
 
-        tree.update(0, 0)
+        tree.delete(0)
 
         await contract.createGroup(provider, name, depth, accounts[0])
         await contract.addIdentityCommitment(provider, name, BigInt(1))
         await contract.addIdentityCommitment(provider, name, BigInt(2))
         await contract.addIdentityCommitment(provider, name, BigInt(3))
 
-        const { siblingNodes, positions, root } = getPath(tree, 0)
+        const { siblingNodes, path, root } = tree.createProof(0)
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(1), siblingNodes, positions)
+        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(1), siblingNodes as bigint[], path)
 
         await expect(fun()).to.emit(contract, "IdentityCommitmentDeleted").withArgs(provider, name, BigInt(1), root)
     })
 
     it("Should delete another identity commitment", async () => {
         const name = ethers.utils.formatBytes32String("hello")
-        const tree = createTree(depth, poseidon, 3)
+        const tree = createTree(depth, 3)
 
-        tree.update(0, 0)
-        tree.update(1, 0)
+        tree.delete(0)
+        tree.delete(1)
 
-        const { siblingNodes, positions, root } = getPath(tree, 1)
+        const { siblingNodes, path, root } = tree.createProof(1)
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(2), siblingNodes, positions)
+        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(2), siblingNodes as bigint[], path)
 
         await expect(fun()).to.emit(contract, "IdentityCommitmentDeleted").withArgs(provider, name, BigInt(2), root)
     })
 
     it("Should not delete an identity commitment that does not exist", async () => {
         const name = ethers.utils.formatBytes32String("hello")
-        const tree = createTree(depth, poseidon, 3)
+        const tree = createTree(depth, 3)
 
-        tree.update(0, 0)
-        tree.update(1, 0)
+        tree.delete(0)
+        tree.delete(1)
 
-        const { siblingNodes, positions } = getPath(tree, 0)
+        const { siblingNodes, path } = tree.createProof(0)
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(4), siblingNodes, positions)
+        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(4), siblingNodes as bigint[], path)
 
         await expect(fun()).to.be.revertedWith("IncrementalTree: leaf is not part of the tree")
     })
 
     it("Should add an identity commitment in a group after a deletion", async () => {
         const name = ethers.utils.formatBytes32String("hello")
-        const tree = createTree(depth, poseidon, 4)
+        const tree = createTree(depth, 4)
 
-        tree.update(0, 0)
-        tree.update(1, 0)
+        tree.delete(0)
+        tree.delete(1)
 
         const fun = () => contract.addIdentityCommitment(provider, name, BigInt(4))
 
-        const { root } = tree.genMerklePath(0)
-
-        await expect(fun()).to.emit(contract, "IdentityCommitmentAdded").withArgs(provider, name, BigInt(4), root)
+        await expect(fun()).to.emit(contract, "IdentityCommitmentAdded").withArgs(provider, name, BigInt(4), tree.root)
     })
 
     it("Should add 4 identity commitments and delete them all", async () => {
         const name = ethers.utils.formatBytes32String("complex")
-        const tree = createTree(depth, poseidon, 4)
+        const tree = createTree(depth, 4)
 
         await contract.createGroup(provider, name, depth, accounts[0])
 
@@ -248,16 +242,15 @@ describe("Groups", () => {
         }
 
         for (let i = 0; i < 4; i++) {
-            tree.update(i, 0)
+            tree.delete(i)
 
-            const { siblingNodes, positions } = getPath(tree, i)
+            const { siblingNodes, path } = tree.createProof(i)
 
-            await contract.deleteIdentityCommitment(provider, name, BigInt(i + 1), siblingNodes, positions)
+            await contract.deleteIdentityCommitment(provider, name, BigInt(i + 1), siblingNodes as bigint[], path)
         }
 
-        const expectedRoot = tree.genMerklePath(0).root
         const root = await contract.getRoot(provider, name)
 
-        expect(root).to.equal(expectedRoot)
+        expect(root).to.equal(tree.root)
     })
 })
