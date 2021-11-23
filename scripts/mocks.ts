@@ -14,11 +14,7 @@ async function main(): Promise<void> {
         symbol: "iREDDIT"
     })
 
-    const { address } = await run("deploy:groups")
-    await run("groups", {
-        address,
-        depth: 16
-    })
+    await run("deploy:groups")
 }
 
 main()

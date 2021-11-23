@@ -43,25 +43,6 @@ describe("Groups", () => {
         await expect(fun()).to.be.revertedWith("Groups: group already exists")
     })
 
-    it("Should not create groups if the array parameters have not the same length", async () => {
-        const names = ["gold", "silver", "bronze"].map(ethers.utils.formatBytes32String)
-        const depths = names.map(() => depth)
-
-        const fun = () => contract.batchCreateGroup(provider, names, depths, [accounts[0]])
-
-        await expect(fun()).to.be.revertedWith("Groups: array parameters should have the same length")
-    })
-
-    it("Should add 3 groups in a single batch", async () => {
-        const names = ["qui", "pro", "quo"].map(ethers.utils.formatBytes32String)
-        const depths = names.map(() => depth)
-        const admins = names.map(() => accounts[0])
-
-        const fun = () => contract.batchCreateGroup(provider, names, depths, admins)
-
-        await expect(fun()).to.emit(contract, "GroupAdded")
-    })
-
     it("Should get the root of the group", async () => {
         const root = await contract.getRoot(provider, name)
 
@@ -123,27 +104,6 @@ describe("Groups", () => {
         const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
 
         await expect(fun()).to.be.revertedWith("IncrementalTree: tree is full")
-    })
-
-    it("Should not add identity commitments if the array parameters have not the same length", async () => {
-        const names = ["gold", "silver", "bronze"].map(ethers.utils.formatBytes32String)
-        const identityCommitments = [1, 2].map(BigInt)
-
-        const fun = () => contract.batchAddIdentityCommitment(provider, names, identityCommitments)
-
-        await expect(fun()).to.be.revertedWith("Groups: array parameters should have the same length")
-    })
-
-    it("Should add 3 identity commitments in a single batch", async () => {
-        const names = ["gold", "silver", "bronze"].map(ethers.utils.formatBytes32String)
-        const identityCommitments = [1, 2, 3].map(BigInt)
-
-        await contract.createGroup(provider, names[1], depth, accounts[0])
-        await contract.createGroup(provider, names[2], depth, accounts[0])
-
-        const fun = () => contract.batchAddIdentityCommitment(provider, names, identityCommitments)
-
-        await expect(fun()).to.emit(contract, "IdentityCommitmentAdded")
     })
 
     it("Should not delete an identity commitment if the group does not exist", async () => {

@@ -69,31 +69,31 @@ library IncrementalTree {
     /// @dev Removes a leaf from the tree.
     /// @param self: Tree data.
     /// @param leaf: Leaf to be removed.
-    /// @param pathSiblingNodes: Array of sibling nodes of the path, one for each tree level.
-    /// @param pathPositions: Array of positions of new nodes to be added (0: left, 1: right).
+    /// @param proofSiblingNodes: Array of the sibling nodes of the proof of membership.
+    /// @param proofPath: Path of the proof of membership.
     function remove(
         TreeData storage self,
         uint256 leaf,
-        uint256[] memory pathSiblingNodes,
-        uint8[] memory pathPositions
+        uint256[] memory proofSiblingNodes,
+        uint8[] memory proofPath
     ) public {
-        require(verify(self, leaf, pathSiblingNodes, pathPositions), "IncrementalTree: leaf is not part of the tree");
+        require(verify(self, leaf, proofSiblingNodes, proofPath), "IncrementalTree: leaf is not part of the tree");
 
         uint256 hash = self.zeroes[0];
 
         for (uint8 i = 0; i < self.depth; i++) {
-            if (pathPositions[i] == 0) {
-                if (pathSiblingNodes[i] == self.lastSubtrees[i][1]) {
+            if (proofPath[i] == 0) {
+                if (proofSiblingNodes[i] == self.lastSubtrees[i][1]) {
                     self.lastSubtrees[i][0] = hash;
                 }
 
-                hash = Hash.poseidon([hash, pathSiblingNodes[i]]);
+                hash = Hash.poseidon([hash, proofSiblingNodes[i]]);
             } else {
-                if (pathSiblingNodes[i] == self.lastSubtrees[i][0]) {
+                if (proofSiblingNodes[i] == self.lastSubtrees[i][0]) {
                     self.lastSubtrees[i][1] = hash;
                 }
 
-                hash = Hash.poseidon([pathSiblingNodes[i], hash]);
+                hash = Hash.poseidon([proofSiblingNodes[i], hash]);
             }
         }
 
@@ -103,18 +103,18 @@ library IncrementalTree {
     /// @dev Verify if the path is correct and the leaf is part of the tree.
     /// @param self: Tree data.
     /// @param leaf: Leaf to be removed.
-    /// @param pathSiblingNodes: Array of sibling nodes of the path, one for each tree level.
-    /// @param pathPositions: Array of positions of new nodes to be added (0: left, 1: right).
+    /// @param proofSiblingNodes: Array of the sibling nodes of the proof of membership.
+    /// @param proofPath: Path of the proof of membership.
     /// @return True or false.
     function verify(
         TreeData storage self,
         uint256 leaf,
-        uint256[] memory pathSiblingNodes,
-        uint8[] memory pathPositions
+        uint256[] memory proofSiblingNodes,
+        uint8[] memory proofPath
     ) private view returns (bool) {
         require(leaf < SNARK_SCALAR_FIELD, "IncrementalTree: leaf must be < SNARK_SCALAR_FIELD");
         require(
-            pathPositions.length == self.depth && pathSiblingNodes.length == self.depth,
+            proofPath.length == self.depth && proofSiblingNodes.length == self.depth,
             "IncrementalTree: length of path is not correct"
         );
 
@@ -122,14 +122,14 @@ library IncrementalTree {
 
         for (uint8 i = 0; i < self.depth; i++) {
             require(
-                pathSiblingNodes[i] < SNARK_SCALAR_FIELD,
+                proofSiblingNodes[i] < SNARK_SCALAR_FIELD,
                 "IncrementalTree: sibling node must be < SNARK_SCALAR_FIELD"
             );
 
-            if (pathPositions[i] == 0) {
-                hash = Hash.poseidon([hash, pathSiblingNodes[i]]);
+            if (proofPath[i] == 0) {
+                hash = Hash.poseidon([hash, proofSiblingNodes[i]]);
             } else {
-                hash = Hash.poseidon([pathSiblingNodes[i], hash]);
+                hash = Hash.poseidon([proofSiblingNodes[i], hash]);
             }
         }
 
