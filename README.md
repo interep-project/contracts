@@ -53,10 +53,10 @@ If you want an overwiew of InterRep, read our announcement post: https://jaygrab
 
 |                           | Kovan                                                                                          | Ropsten                                                                                          | Arbitrum One                                                                                          |
 | ------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| ReputationBadge (Twitter) | [0xDD23...960c](https://kovan.etherscan.io/address/0xDD23A6Bb55887ff892f8728165E6A964Cd89960c) | [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
-| ReputationBadge (Github)  | [0xE5B0...d344](https://kovan.etherscan.io/address/0xE5B0302aB7F0c137E8236a42B08572e4f39ed344) |                                                                                                  |                                                                                                       |
+| ReputationBadge (Twitter) | [0xe0fC...798d](https://kovan.etherscan.io/address/0xe0fCf7AEDCf8f31F9d6eE4C16Ab89f68d337798d) | [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
+| ReputationBadge (Github)  | [0x1495...2311](https://kovan.etherscan.io/address/0x14958dF52CC76c8f3a919A769006196601012311) |                                                                                                  |                                                                                                       |
 | ReputationBadge (Reddit)  | [0x55d2...B4Cf](https://kovan.etherscan.io/address/0x55d2d15631078cC555d06f14fD45bF2A7D86B4Cf) |                                                                                                  |                                                                                                       |
-| Groups                    | [0xF3C8...3763](https://kovan.etherscan.io/address/0xF3C86A419a1F9aF498B1A570f2Ea874372d23763) |  |                                                                                                       |
+| Groups                    | [0x06d5...Cdcc](https://kovan.etherscan.io/address/0x06d554D4122B694a507459Ce8D93E97d9Dd2Cdcc) |                                                                                                  |                                                                                                       |
 
 ---
 
@@ -162,7 +162,7 @@ Run a Hardhat Network in a stand-alone fashion:
 yarn start
 ```
 
-Deploy mocked contracts and groups (it will take ~2 minutes):
+Deploy mocked contracts:
 
 ```bash
 yarn mocks --network localhost
