@@ -39,6 +39,8 @@ library IncrementalTree {
             self.zeroes[i] = zero;
             zero = Hash.poseidon([zero, zero]);
         }
+
+        self.root = zero;
     }
 
     /// @dev Inserts a leaf in the tree.

@@ -46,7 +46,7 @@ describe("Groups", () => {
     it("Should get the root of the group", async () => {
         const root = await contract.getRoot(provider, name)
 
-        expect(root).to.equal(0)
+        expect(root).to.equal("19217088683336594659449020493828377907203207941212636669271704950158751593251")
     })
 
     it("Should get the size of the group", async () => {
