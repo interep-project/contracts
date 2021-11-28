@@ -154,14 +154,6 @@ yarn deploy:groups --network localhost // Local network
 
 If you want to deploy the contracts on Ropsten, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.
 
-### Groups
-
-Create the InterRep default groups:
-
-```bash
-$ yarn groups --address <contractAddress>
-```
-
 ### Preparing a local network
 
 Run a Hardhat Network in a stand-alone fashion:

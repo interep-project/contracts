@@ -27,7 +27,6 @@
         "mocks": "hardhat run ./scripts/mocks.ts",
         "deploy:groups": "hardhat deploy:groups",
         "deploy:reputation-badge": "hardhat deploy:reputation-badge",
-        "groups": "hardhat groups",
         "mint": "hardhat mint",
         "test": "hardhat test",
         "test:prod": "yarn lint && yarn coverage",
