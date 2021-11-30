@@ -16,12 +16,18 @@ task("deploy:groups", "Deploy a Groups contract")
 
         await poseidonLib.deployed()
 
+        logs && console.log(`Poseidon library has been deployed to: ${poseidonLib.address}`)
+
         const IncrementalTreeLibFactory = await ethers.getContractFactory("IncrementalTree", {
             libraries: {
                 Hash: poseidonLib.address
             }
         })
         const incrementalTreeLib = await IncrementalTreeLibFactory.deploy()
+
+        await incrementalTreeLib.deployed()
+
+        logs && console.log(`IncrementalTree library has been deployed to: ${incrementalTreeLib.address}`)
 
         const ContractFactory = await ethers.getContractFactory("Groups", {
             libraries: {
