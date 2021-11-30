@@ -56,7 +56,7 @@ If you want an overwiew of InterRep, read our announcement post: https://jaygrab
 | ReputationBadge (Twitter) | [0xe0fC...798d](https://kovan.etherscan.io/address/0xe0fCf7AEDCf8f31F9d6eE4C16Ab89f68d337798d) | [0x2F4d...BC11](https://ropsten.etherscan.io/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) | [0x2F4d...BC11](https://explorer.offchainlabs.com/address/0x2F4d1333337b5C4C47Db5DB3A36eD547a549BC11) |
 | ReputationBadge (Github)  | [0x1495...2311](https://kovan.etherscan.io/address/0x14958dF52CC76c8f3a919A769006196601012311) |                                                                                                  |                                                                                                       |
 | ReputationBadge (Reddit)  | [0x55d2...B4Cf](https://kovan.etherscan.io/address/0x55d2d15631078cC555d06f14fD45bF2A7D86B4Cf) |                                                                                                  |                                                                                                       |
-| Groups                    | [0x06d5...Cdcc](https://kovan.etherscan.io/address/0x06d554D4122B694a507459Ce8D93E97d9Dd2Cdcc) |                                                                                                  |                                                                                                       |
+| Groups                    | [0x220f...a36F](https://kovan.etherscan.io/address/0x220fBdB6F996827b1Cf12f0C181E8d5e6de3a36F) |                                                                                                  |                                                                                                       |
 
 ---
 
