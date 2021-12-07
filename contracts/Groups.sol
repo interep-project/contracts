@@ -13,6 +13,12 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 contract Groups is OwnableUpgradeable {
     using IncrementalTree for TreeData;
 
+    /// @dev Emitted when an offchain group is updated. It is useful to ensure the integrity of offchain group trees.
+    /// @param provider: Provider of the group.
+    /// @param name: Name of the group.
+    /// @param root: New root hash of the tree.
+    event OffchainMerkleRoot(bytes32 indexed provider, bytes32 indexed name, uint256 root);
+
     /// @dev Emitted when a new group is created.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
@@ -53,6 +59,25 @@ contract Groups is OwnableUpgradeable {
     function initialize() public initializer {
         // Call ownable super initialize function.
         __Ownable_init();
+    }
+
+    /// @dev Emits events with the new Merkle root of offchain groups.
+    /// @param providers: Providers of the groups.
+    /// @param names: Names of the groups.
+    /// @param roots: New root hashes of the trees.
+    function publishOffchainMerkleRoots(
+        bytes32[] memory providers,
+        bytes32[] memory names,
+        uint256[] memory roots
+    ) external onlyOwner {
+        require(
+            providers.length == names.length && names.length == roots.length,
+            "Groups: parameters lists does not have the same length"
+        );
+
+        for (uint8 i = 0; i < providers.length; i++) {
+            OffchainMerkleRoot(providers[i], names[i], roots[i]);
+        }
     }
 
     /// @dev Creates a new group by initializing the associated Merkle tree.

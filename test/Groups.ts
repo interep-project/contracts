@@ -1,6 +1,6 @@
 import { expect } from "chai"
 import { config as dotenvConfig } from "dotenv"
-import { Signer } from "ethers"
+import { BytesLike, Signer } from "ethers"
 import { ethers, run } from "hardhat"
 import { resolve } from "path"
 import { Groups } from "../typechain"
@@ -25,10 +25,27 @@ describe("Groups", () => {
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
     })
 
-    it("Should not create a group with a depth > 32", async () => {
-        const fun = () => contract.createGroup(provider, name, 33, accounts[0])
+    it("Should publish 20 new offchain Merkle roots", async () => {
+        const providers: BytesLike[] = []
+        const names: BytesLike[] = []
+        const roots: bigint[] = []
 
-        await expect(fun()).to.be.revertedWith("IncrementalTree: tree depth must be between 1 and 32")
+        for (let i = 0; i < 20; i++) {
+            providers.push(provider)
+            names.push(name)
+            roots.push(BigInt(i))
+        }
+
+        const transaction = contract.publishOffchainMerkleRoots(providers, names, roots)
+
+        await expect(transaction).to.emit(contract, "OffchainMerkleRoot").withArgs(provider, name, roots[0])
+        expect((await (await transaction).wait()).events).to.length(20)
+    })
+
+    it("Should not create a group with a depth > 32", async () => {
+        const tx = contract.createGroup(provider, name, 33, accounts[0])
+
+        await expect(tx).to.be.revertedWith("IncrementalTree: tree depth must be between 1 and 32")
     })
 
     it("Should create a group", async () => {
