@@ -49,21 +49,21 @@ describe("Groups", () => {
     })
 
     it("Should not create a group with a depth > 32", async () => {
-        const tx = contract.createGroup(provider, name, 33, accounts[0])
+        const transaction = contract.createGroup(provider, name, 33, accounts[0])
 
-        await expect(tx).to.be.revertedWith("IncrementalTree: tree depth must be between 1 and 32")
+        await expect(transaction).to.be.revertedWith("IncrementalTree: tree depth must be between 1 and 32")
     })
 
     it("Should create a group", async () => {
-        const fun = () => contract.createGroup(provider, name, depth, accounts[0])
+        const transaction = contract.createGroup(provider, name, depth, accounts[0])
 
-        await expect(fun()).to.emit(contract, "GroupAdded").withArgs(provider, name, depth)
+        await expect(transaction).to.emit(contract, "GroupAdded").withArgs(provider, name, depth)
     })
 
     it("Should not create a group with an existing id", async () => {
-        const fun = () => contract.createGroup(provider, name, depth, accounts[0])
+        const transaction = contract.createGroup(provider, name, depth, accounts[0])
 
-        await expect(fun()).to.be.revertedWith("Groups: group already exists")
+        await expect(transaction).to.be.revertedWith("Groups: group already exists")
     })
 
     it("Should get the root of the group", async () => {
@@ -81,17 +81,17 @@ describe("Groups", () => {
     it("Should not add an identity commitment if the group does not exist", async () => {
         const name = ethers.utils.formatBytes32String("silver")
 
-        const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
+        const transaction = contract.addIdentityCommitment(provider, name, identityCommitment)
 
-        await expect(fun()).to.be.revertedWith("Groups: group does not exist")
+        await expect(transaction).to.be.revertedWith("Groups: group does not exist")
     })
 
     it("Should not add an identity commitment if the caller is not the group admin", async () => {
         const identityCommitment = BigInt(2)
 
-        const fun = () => contract.connect(signers[1]).addIdentityCommitment(provider, name, identityCommitment)
+        const transaction = contract.connect(signers[1]).addIdentityCommitment(provider, name, identityCommitment)
 
-        await expect(fun()).to.be.revertedWith("Groups: caller is not the group admin")
+        await expect(transaction).to.be.revertedWith("Groups: caller is not the group admin")
     })
 
     it("Should not add an identity commitment if its value is > SNARK_SCALAR_FIELD", async () => {
@@ -99,15 +99,15 @@ describe("Groups", () => {
             "21888242871839275222246405745257275088548364400416034343698204186575808495618"
         )
 
-        const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
+        const transaction = contract.addIdentityCommitment(provider, name, identityCommitment)
 
-        await expect(fun()).to.be.revertedWith("IncrementalTree: leaf must be < SNARK_SCALAR_FIELD")
+        await expect(transaction).to.be.revertedWith("IncrementalTree: leaf must be < SNARK_SCALAR_FIELD")
     })
 
     it("Should add an identity commitment in a group", async () => {
-        const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
+        const transaction = contract.addIdentityCommitment(provider, name, identityCommitment)
 
-        await expect(fun())
+        await expect(transaction)
             .to.emit(contract, "IdentityCommitmentAdded")
             .withArgs(
                 provider,
@@ -124,26 +124,27 @@ describe("Groups", () => {
         await contract.addIdentityCommitment(provider, name, identityCommitment)
         await contract.addIdentityCommitment(provider, name, identityCommitment)
 
-        const fun = () => contract.addIdentityCommitment(provider, name, identityCommitment)
+        const transaction = contract.addIdentityCommitment(provider, name, identityCommitment)
 
-        await expect(fun()).to.be.revertedWith("IncrementalTree: tree is full")
+        await expect(transaction).to.be.revertedWith("IncrementalTree: tree is full")
     })
 
     it("Should not delete an identity commitment if the group does not exist", async () => {
         const name = ethers.utils.formatBytes32String("none")
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
+        const transaction = contract.deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
 
-        await expect(fun()).to.be.revertedWith("Groups: group does not exist")
+        await expect(transaction).to.be.revertedWith("Groups: group does not exist")
     })
 
     it("Should not delete an identity commitment if the caller is not the group admin", async () => {
         const identityCommitment = BigInt(2)
 
-        const fun = () =>
-            contract.connect(signers[1]).deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
+        const transaction = contract
+            .connect(signers[1])
+            .deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
 
-        await expect(fun()).to.be.revertedWith("Groups: caller is not the group admin")
+        await expect(transaction).to.be.revertedWith("Groups: caller is not the group admin")
     })
 
     it("Should not delete an identity commitment if its value is > SNARK_SCALAR_FIELD", async () => {
@@ -151,9 +152,9 @@ describe("Groups", () => {
             "21888242871839275222246405745257275088548364400416034343698204186575808495618"
         )
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
+        const transaction = contract.deleteIdentityCommitment(provider, name, identityCommitment, [0, 1], [0, 1])
 
-        await expect(fun()).to.be.revertedWith("IncrementalTree: leaf must be < SNARK_SCALAR_FIELD")
+        await expect(transaction).to.be.revertedWith("IncrementalTree: leaf must be < SNARK_SCALAR_FIELD")
     })
 
     it("Should delete an identity commitment", async () => {
@@ -169,9 +170,11 @@ describe("Groups", () => {
 
         const { siblingNodes, path, root } = tree.createProof(0)
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(1), siblingNodes as bigint[], path)
+        const transaction = contract.deleteIdentityCommitment(provider, name, BigInt(1), siblingNodes as bigint[], path)
 
-        await expect(fun()).to.emit(contract, "IdentityCommitmentDeleted").withArgs(provider, name, BigInt(1), root)
+        await expect(transaction)
+            .to.emit(contract, "IdentityCommitmentDeleted")
+            .withArgs(provider, name, BigInt(1), root)
     })
 
     it("Should delete another identity commitment", async () => {
@@ -183,9 +186,11 @@ describe("Groups", () => {
 
         const { siblingNodes, path, root } = tree.createProof(1)
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(2), siblingNodes as bigint[], path)
+        const transaction = contract.deleteIdentityCommitment(provider, name, BigInt(2), siblingNodes as bigint[], path)
 
-        await expect(fun()).to.emit(contract, "IdentityCommitmentDeleted").withArgs(provider, name, BigInt(2), root)
+        await expect(transaction)
+            .to.emit(contract, "IdentityCommitmentDeleted")
+            .withArgs(provider, name, BigInt(2), root)
     })
 
     it("Should not delete an identity commitment that does not exist", async () => {
@@ -197,9 +202,9 @@ describe("Groups", () => {
 
         const { siblingNodes, path } = tree.createProof(0)
 
-        const fun = () => contract.deleteIdentityCommitment(provider, name, BigInt(4), siblingNodes as bigint[], path)
+        const transaction = contract.deleteIdentityCommitment(provider, name, BigInt(4), siblingNodes as bigint[], path)
 
-        await expect(fun()).to.be.revertedWith("IncrementalTree: leaf is not part of the tree")
+        await expect(transaction).to.be.revertedWith("IncrementalTree: leaf is not part of the tree")
     })
 
     it("Should add an identity commitment in a group after a deletion", async () => {
@@ -209,9 +214,11 @@ describe("Groups", () => {
         tree.delete(0)
         tree.delete(1)
 
-        const fun = () => contract.addIdentityCommitment(provider, name, BigInt(4))
+        const transaction = contract.addIdentityCommitment(provider, name, BigInt(4))
 
-        await expect(fun()).to.emit(contract, "IdentityCommitmentAdded").withArgs(provider, name, BigInt(4), tree.root)
+        await expect(transaction)
+            .to.emit(contract, "IdentityCommitmentAdded")
+            .withArgs(provider, name, BigInt(4), tree.root)
     })
 
     it("Should add 4 identity commitments and delete them all", async () => {
