@@ -25,6 +25,12 @@ describe("Groups", () => {
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
     })
 
+    it("Should not publish new offchain Merkle roots if the parameter lists don't have the same length", async () => {
+        const transaction = contract.publishOffchainMerkleRoots([provider], [name], [BigInt(1), BigInt(2)])
+
+        await expect(transaction).to.be.revertedWith("Groups: parameters lists does not have the same length")
+    })
+
     it("Should publish 20 new offchain Merkle roots", async () => {
         const providers: BytesLike[] = []
         const names: BytesLike[] = []
