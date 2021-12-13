@@ -96,8 +96,5 @@
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
         }
-    },
-    "dependencies": {
-        "@interrep/reputation-criteria": "^0.12.0"
     }
 }
