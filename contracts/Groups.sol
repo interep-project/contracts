@@ -5,11 +5,6 @@ import {IncrementalTree, TreeData} from "./IncrementalTree.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /// @title InterRep groups.
-/// @dev InterRep allows DApps and external services to verify when their users are real or when
-/// they have certain properties. Users are added to our groups, which are managed as
-/// binary Merkle trees. InterRep will allow you to verify whether or not a user is part of the group
-/// without revealing their identity. The integrity of the groups is guaranteed by this contract,
-/// while anonymity is ensured through zero-knowledge technologies.
 contract Groups is OwnableUpgradeable {
     using IncrementalTree for TreeData;
 
