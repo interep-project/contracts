@@ -63,6 +63,11 @@
       "address": "0x9f44be9F69aF1e049dCeCDb2d9296f36C49Ceafb",
       "txHash": "0xf661f62b46293df184a30c0db650ec5c9ca7a5dcd19f9d563e022f479091e810",
       "kind": "transparent"
+    },
+    {
+      "address": "0xc068f3F15f367a60eb2B7c0620961A15A3b36fA3",
+      "txHash": "0x19d7c93cb544e23e15e82bb07c0c81c88d31fb0728cb6c35e1ac1c93986e446e",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -326,6 +331,119 @@
           },
           "t_array(t_uint256)44_storage": {
             "label": "uint256[44]"
+          }
+        }
+      }
+    },
+    "1dcd3e53ab842a75fcba2aab9852cb5e2257e3b4923fa1f9466a4c67a3004f62": {
+      "address": "0x03387af03cA6052369D4ab11C497F0B785b680Ca",
+      "txHash": "0xa0361c84815a55427c328f51cb7f2876571e08b522e4e4adff3838ab0878bd26",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "Groups",
+            "label": "groups",
+            "type": "t_mapping(t_bytes32,t_struct(TreeData)614_storage)",
+            "src": "contracts/Groups.sol:48"
+          },
+          {
+            "contract": "Groups",
+            "label": "groupAdmins",
+            "type": "t_mapping(t_bytes32,t_address)",
+            "src": "contracts/Groups.sol:51"
+          }
+        ],
+        "types": {
+          "t_mapping(t_bytes32,t_struct(TreeData)614_storage)": {
+            "label": "mapping(bytes32 => struct TreeData)"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_struct(TreeData)614_storage": {
+            "label": "struct TreeData",
+            "members": [
+              {
+                "label": "depth",
+                "type": "t_uint8"
+              },
+              {
+                "label": "root",
+                "type": "t_uint256"
+              },
+              {
+                "label": "numberOfLeaves",
+                "type": "t_uint256"
+              },
+              {
+                "label": "zeroes",
+                "type": "t_mapping(t_uint256,t_uint256)"
+              },
+              {
+                "label": "lastSubtrees",
+                "type": "t_mapping(t_uint256,t_array(t_uint256)2_storage)"
+              }
+            ]
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)2_storage)": {
+            "label": "mapping(uint256 => uint256[2])"
+          },
+          "t_array(t_uint256)2_storage": {
+            "label": "uint256[2]"
+          },
+          "t_mapping(t_bytes32,t_address)": {
+            "label": "mapping(bytes32 => address)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
           }
         }
       }
