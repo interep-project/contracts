@@ -11,8 +11,6 @@ import "solidity-coverage"
 import "./tasks/accounts"
 import "./tasks/clean"
 import "./tasks/deploy-groups"
-import "./tasks/deploy-reputation-badge"
-import "./tasks/mint"
 
 dotenvConfig({ path: resolve(__dirname, "./.env") })
 
