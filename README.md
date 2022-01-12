@@ -53,7 +53,7 @@ Please, visit our [documentation website](https://docs.interrep.link) for more d
 
 |        | Kovan                                                                                          | Arbitrum One |
 | ------ | ---------------------------------------------------------------------------------------------- | ------------ |
-| Groups | [0xc068...6fA3](https://kovan.etherscan.io/address/0xc068f3F15f367a60eb2B7c0620961A15A3b36fA3) |              |
+| Groups | [0x5Ec7...67Cd](https://kovan.etherscan.io/address/0x5Ec7d851a52A2a25CEc528F42a7ACA8EcF4667Cd) |              |
 
 ---
 
