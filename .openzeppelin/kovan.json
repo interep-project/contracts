@@ -48,6 +48,11 @@
       "address": "0x5Ec7d851a52A2a25CEc528F42a7ACA8EcF4667Cd",
       "txHash": "0x014f34c062e31475b995dbaa789d8a5fb4de042c5435f22d803113c8d49cb035",
       "kind": "transparent"
+    },
+    {
+      "address": "0x8c29e0b77e32f704F03eeCE01c041192A5EB6c77",
+      "txHash": "0xc2d185259d0aa94caed105a0e8686d186ec11ca6460714ef901ebb50472931c4",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -136,6 +141,128 @@
           },
           "t_uint256": {
             "label": "uint256"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)"
+          },
+          "t_mapping(t_uint256,t_array(t_uint256)2_storage)": {
+            "label": "mapping(uint256 => uint256[2])"
+          },
+          "t_array(t_uint256)2_storage": {
+            "label": "uint256[2]"
+          },
+          "t_mapping(t_bytes32,t_address)": {
+            "label": "mapping(bytes32 => address)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "1faa23c7ed22d389e3293a03b597cc7ff2041189dc75a7facca6733215e35640": {
+      "address": "0x6D9862e6140D94E932d94c8BcE74a0BDD0ea5ACb",
+      "txHash": "0x1e2c6e2ec6fc1604fba2ed266760031feb80a9ea4043f9dc577feb141399df0a",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "Groups",
+            "label": "offchainRoots",
+            "type": "t_mapping(t_bytes32,t_uint256)",
+            "src": "contracts/Groups.sol:49"
+          },
+          {
+            "contract": "Groups",
+            "label": "groups",
+            "type": "t_mapping(t_bytes32,t_struct(TreeData)660_storage)",
+            "src": "contracts/Groups.sol:52"
+          },
+          {
+            "contract": "Groups",
+            "label": "groupAdmins",
+            "type": "t_mapping(t_bytes32,t_address)",
+            "src": "contracts/Groups.sol:55"
+          }
+        ],
+        "types": {
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_bytes32,t_struct(TreeData)660_storage)": {
+            "label": "mapping(bytes32 => struct TreeData)"
+          },
+          "t_struct(TreeData)660_storage": {
+            "label": "struct TreeData",
+            "members": [
+              {
+                "label": "depth",
+                "type": "t_uint8"
+              },
+              {
+                "label": "root",
+                "type": "t_uint256"
+              },
+              {
+                "label": "numberOfLeaves",
+                "type": "t_uint256"
+              },
+              {
+                "label": "zeroes",
+                "type": "t_mapping(t_uint256,t_uint256)"
+              },
+              {
+                "label": "lastSubtrees",
+                "type": "t_mapping(t_uint256,t_array(t_uint256)2_storage)"
+              }
+            ]
+          },
+          "t_uint8": {
+            "label": "uint8"
           },
           "t_mapping(t_uint256,t_uint256)": {
             "label": "mapping(uint256 => uint256)"
