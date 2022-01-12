@@ -25,13 +25,13 @@ describe("Groups", () => {
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
     })
 
-    it("Should not publish new offchain Merkle roots if the parameter lists don't have the same length", async () => {
-        const transaction = contract.publishOffchainMerkleRoots([provider], [name], [BigInt(1), BigInt(2)])
+    it("Should not publish new offchain roots if the parameter lists don't have the same length", async () => {
+        const transaction = contract.addOffchainRoots([provider], [name], [BigInt(1), BigInt(2)])
 
         await expect(transaction).to.be.revertedWith("Groups: parameters lists does not have the same length")
     })
 
-    it("Should publish 20 new offchain Merkle roots", async () => {
+    it("Should publish 20 new offchain roots", async () => {
         const providers: BytesLike[] = []
         const names: BytesLike[] = []
         const roots: bigint[] = []
@@ -42,10 +42,16 @@ describe("Groups", () => {
             roots.push(BigInt(i))
         }
 
-        const transaction = contract.publishOffchainMerkleRoots(providers, names, roots)
+        const transaction = contract.addOffchainRoots(providers, names, roots)
 
-        await expect(transaction).to.emit(contract, "OffchainMerkleRoot").withArgs(provider, name, roots[0])
+        await expect(transaction).to.emit(contract, "OffchainRoot").withArgs(provider, name, roots[0])
         expect((await (await transaction).wait()).events).to.length(20)
+    })
+
+    it("Should get the root of an offchain group", async () => {
+        const root = await contract.getOffchainRoot(provider, name)
+
+        expect(root).to.equal("19")
     })
 
     it("Should not create a group with a depth > 32", async () => {
@@ -66,13 +72,13 @@ describe("Groups", () => {
         await expect(transaction).to.be.revertedWith("Groups: group already exists")
     })
 
-    it("Should get the root of the group", async () => {
+    it("Should get the root of a group", async () => {
         const root = await contract.getRoot(provider, name)
 
         expect(root).to.equal("19217088683336594659449020493828377907203207941212636669271704950158751593251")
     })
 
-    it("Should get the size of the group", async () => {
+    it("Should get the size of a group", async () => {
         const size = await contract.getSize(provider, name)
 
         expect(size).to.equal(0)

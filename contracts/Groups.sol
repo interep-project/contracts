@@ -8,11 +8,12 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 contract Groups is OwnableUpgradeable {
     using IncrementalTree for TreeData;
 
-    /// @dev Emitted when an offchain group is updated. It is useful to ensure the integrity of offchain group trees.
+    /// @dev Emitted when an offchain group is updated. It is useful to ensure the
+    /// integrity of the offchain group trees.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
     /// @param root: New root hash of the tree.
-    event OffchainMerkleRoot(bytes32 indexed provider, bytes32 indexed name, uint256 root);
+    event OffchainRoot(bytes32 indexed provider, bytes32 indexed name, uint256 root);
 
     /// @dev Emitted when a new group is created.
     /// @param provider: Provider of the group.
@@ -44,6 +45,9 @@ contract Groups is OwnableUpgradeable {
         uint256 root
     );
 
+    /// @dev Gets a group id and returns the offchain tree root.
+    mapping(bytes32 => uint256) private offchainRoots;
+
     /// @dev Gets a group id and returns the group/tree data.
     mapping(bytes32 => TreeData) private groups;
 
@@ -56,11 +60,11 @@ contract Groups is OwnableUpgradeable {
         __Ownable_init();
     }
 
-    /// @dev Emits events with the new Merkle root of offchain groups.
+    /// @dev Adds a list of new offchain root hashes.
     /// @param providers: Providers of the groups.
     /// @param names: Names of the groups.
     /// @param roots: New root hashes of the trees.
-    function publishOffchainMerkleRoots(
+    function addOffchainRoots(
         bytes32[] memory providers,
         bytes32[] memory names,
         uint256[] memory roots
@@ -71,11 +75,15 @@ contract Groups is OwnableUpgradeable {
         );
 
         for (uint8 i = 0; i < providers.length; i++) {
-            OffchainMerkleRoot(providers[i], names[i], roots[i]);
+            bytes32 groupId = getGroupId(providers[i], names[i]);
+
+            offchainRoots[groupId] = roots[i];
+
+            emit OffchainRoot(providers[i], names[i], roots[i]);
         }
     }
 
-    /// @dev Creates a new group by initializing the associated Merkle tree.
+    /// @dev Creates a new group by initializing the associated tree.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
     /// @param depth: Depth of the tree.
@@ -140,7 +148,17 @@ contract Groups is OwnableUpgradeable {
         emit IdentityCommitmentDeleted(provider, name, identityCommitment, groups[groupId].root);
     }
 
-    /// @dev Returns the last root hash of the group.
+    /// @dev Returns the last root hash of an offchain group.
+    /// @param provider: Provider of the group.
+    /// @param name: Name of the group.
+    /// @return Root hash of the group.
+    function getOffchainRoot(bytes32 provider, bytes32 name) external view returns (uint256) {
+        bytes32 groupId = getGroupId(provider, name);
+
+        return offchainRoots[groupId];
+    }
+
+    /// @dev Returns the last root hash of a group.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
     /// @return Root hash of the group.
@@ -150,7 +168,7 @@ contract Groups is OwnableUpgradeable {
         return groups[groupId].root;
     }
 
-    /// @dev Returns the size of the group.
+    /// @dev Returns the size of a group.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
     /// @return Size of the group.
@@ -160,7 +178,7 @@ contract Groups is OwnableUpgradeable {
         return groups[groupId].numberOfLeaves;
     }
 
-    /// @dev Returns the group id.
+    /// @dev Returns a group id.
     /// @param provider: Provider of the group.
     /// @param name: Name of the group.
     /// @return Group id.
