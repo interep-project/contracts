@@ -6,17 +6,17 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/interep" target="_blank">
+    <a href="https://github.com/interep-project" target="_blank">
         <img src="https://img.shields.io/badge/project-Interep-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/interep/contracts/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/interep/contracts.svg?style=flat-square">
+    <a href="https://github.com/interep-project/contracts/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/interep-project/contracts.svg?style=flat-square">
     </a>
-    <a href="https://github.com/interep/contracts/actions?query=workflow%3Atest">
-        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/interep/contracts/test?label=test&style=flat-square&logo=github">
+    <a href="https://github.com/interep-project/contracts/actions?query=workflow%3Atest">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/interep-project/contracts/test?label=test&style=flat-square&logo=github">
     </a>
-    <a href="https://coveralls.io/github/interep/contracts">
-        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/interep/contracts?style=flat-square&logo=coveralls">
+    <a href="https://coveralls.io/github/interep-project/contracts">
+        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/interep-project/contracts?style=flat-square&logo=coveralls">
     </a>
     <a href="https://eslint.org/" target="_blank">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint">
@@ -24,7 +24,7 @@
     <a href="https://prettier.io/" target="_blank">
         <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier">
     </a>
-    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/interep/contracts?style=flat-square">
+    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/interep-project/contracts?style=flat-square">
 </p>
 
 <div align="center">
