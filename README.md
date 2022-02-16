@@ -1,22 +1,22 @@
 <p align="center">
     <h1 align="center">
-        InterRep contracts
+        Interep contracts
     </h1>
-    <p align="center">InterRep Solidity smart contracts.</p>
+    <p align="center">Interep Solidity smart contracts.</p>
 </p>
 
 <p align="center">
-    <a href="https://github.com/InterRep" target="_blank">
-        <img src="https://img.shields.io/badge/project-InterRep-blue.svg?style=flat-square">
+    <a href="https://github.com/interep" target="_blank">
+        <img src="https://img.shields.io/badge/project-Interep-blue.svg?style=flat-square">
     </a>
-    <a href="https://github.com/interrep/contracts/blob/main/LICENSE">
-        <img alt="Github license" src="https://img.shields.io/github/license/interrep/contracts.svg?style=flat-square">
+    <a href="https://github.com/interep/contracts/blob/main/LICENSE">
+        <img alt="Github license" src="https://img.shields.io/github/license/interep/contracts.svg?style=flat-square">
     </a>
-    <a href="https://github.com/interrep/contracts/actions?query=workflow%3Atest">
-        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/interrep/contracts/test?label=test&style=flat-square&logo=github">
+    <a href="https://github.com/interep/contracts/actions?query=workflow%3Atest">
+        <img alt="GitHub Workflow test" src="https://img.shields.io/github/workflow/status/interep/contracts/test?label=test&style=flat-square&logo=github">
     </a>
-    <a href="https://coveralls.io/github/InterRep/contracts">
-        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/InterRep/contracts?style=flat-square&logo=coveralls">
+    <a href="https://coveralls.io/github/interep/contracts">
+        <img alt="Coveralls" src="https://img.shields.io/coveralls/github/interep/contracts?style=flat-square&logo=coveralls">
     </a>
     <a href="https://eslint.org/" target="_blank">
         <img alt="Linter eslint" src="https://img.shields.io/badge/linter-eslint-8080f2?style=flat-square&logo=eslint">
@@ -24,20 +24,20 @@
     <a href="https://prettier.io/" target="_blank">
         <img alt="Code style prettier" src="https://img.shields.io/badge/code%20style-prettier-f8bc45?style=flat-square&logo=prettier">
     </a>
-    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/InterRep/contracts?style=flat-square">
+    <img alt="Repository top language" src="https://img.shields.io/github/languages/top/interep/contracts?style=flat-square">
 </p>
 
 <div align="center">
     <h4>
-        <a href="https://docs.interrep.link/contributing">
+        <a href="https://docs.interep.link/contributing">
             👥 Contributing
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://docs.interrep.link/code-of-conduct">
+        <a href="https://docs.interep.link/code-of-conduct">
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://t.me/interrep">
+        <a href="https://t.me/interep">
             🗣️ Chat &amp; Support
         </a>
     </h4>
@@ -45,9 +45,9 @@
 
 ---
 
-Please, visit our [documentation website](https://docs.interrep.link) for more details.
+Please, visit our [documentation website](https://docs.interep.link) for more details.
 
-⚠️ **Notice**: [interrep.link](https://interrep.link) and [ropsten.interrep.link](https://ropsten.interrep.link) still refer to the old MVP version of interRep. They will soon be updated. You can find an updated version at [kovan.interrep.link](https://kovan.interrep.link) (staging env).
+⚠️ **Notice**: [interrep.link](https://interrep.link) and [ropsten.interrep.link](https://ropsten.interrep.link) still refer to the old MVP version of Interep. They will soon be updated. You can find an updated version at [kovan.interep.link](https://kovan.interep.link) (staging env).
 
 ### Deployed contracts
 
@@ -62,7 +62,7 @@ Please, visit our [documentation website](https://docs.interrep.link) for more d
 Clone this repository and install the dependencies:
 
 ```bash
-$ git clone https://github.com/InterRep/contracts.git
+$ git clone https://github.com/interep/contracts.git
 $ cd contracts
 $ yarn # or `npm i`
 ```

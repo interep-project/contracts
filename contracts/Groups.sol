@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {IncrementalTree, TreeData} from "./IncrementalTree.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-/// @title InterRep groups.
+/// @title Interep groups.
 contract Groups is OwnableUpgradeable {
     using IncrementalTree for TreeData;
 

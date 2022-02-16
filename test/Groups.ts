@@ -174,9 +174,15 @@ describe("Groups", () => {
         await contract.addIdentityCommitment(provider, name, BigInt(2))
         await contract.addIdentityCommitment(provider, name, BigInt(3))
 
-        const { siblingNodes, path, root } = tree.createProof(0)
+        const { siblings, pathIndices, root } = tree.createProof(0)
 
-        const transaction = contract.deleteIdentityCommitment(provider, name, BigInt(1), siblingNodes as bigint[], path)
+        const transaction = contract.deleteIdentityCommitment(
+            provider,
+            name,
+            BigInt(1),
+            siblings.map((s) => s[0]),
+            pathIndices
+        )
 
         await expect(transaction)
             .to.emit(contract, "IdentityCommitmentDeleted")
@@ -190,9 +196,15 @@ describe("Groups", () => {
         tree.delete(0)
         tree.delete(1)
 
-        const { siblingNodes, path, root } = tree.createProof(1)
+        const { siblings, pathIndices, root } = tree.createProof(1)
 
-        const transaction = contract.deleteIdentityCommitment(provider, name, BigInt(2), siblingNodes as bigint[], path)
+        const transaction = contract.deleteIdentityCommitment(
+            provider,
+            name,
+            BigInt(2),
+            siblings.map((s) => s[0]),
+            pathIndices
+        )
 
         await expect(transaction)
             .to.emit(contract, "IdentityCommitmentDeleted")
@@ -206,9 +218,15 @@ describe("Groups", () => {
         tree.delete(0)
         tree.delete(1)
 
-        const { siblingNodes, path } = tree.createProof(0)
+        const { siblings, pathIndices } = tree.createProof(0)
 
-        const transaction = contract.deleteIdentityCommitment(provider, name, BigInt(4), siblingNodes as bigint[], path)
+        const transaction = contract.deleteIdentityCommitment(
+            provider,
+            name,
+            BigInt(4),
+            siblings.map((s) => s[0]),
+            pathIndices
+        )
 
         await expect(transaction).to.be.revertedWith("IncrementalTree: leaf is not part of the tree")
     })
@@ -240,9 +258,15 @@ describe("Groups", () => {
         for (let i = 0; i < 4; i++) {
             tree.delete(i)
 
-            const { siblingNodes, path } = tree.createProof(i)
+            const { siblings, pathIndices } = tree.createProof(i)
 
-            await contract.deleteIdentityCommitment(provider, name, BigInt(i + 1), siblingNodes as bigint[], path)
+            await contract.deleteIdentityCommitment(
+                provider,
+                name,
+                BigInt(i + 1),
+                siblings.map((s) => s[0]),
+                pathIndices
+            )
         }
 
         const root = await contract.getRoot(provider, name)
