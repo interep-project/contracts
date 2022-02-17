@@ -46,7 +46,11 @@ contract Interep is Ownable, SemaphoreGroups {
     /// @param groupId: Id of the group.
     /// @param depth: Depth of the tree.
     /// @param admin: Admin of the group.
-    function createGroup(uint256 groupId, uint8 depth, address admin) external {
+    function createGroup(
+        uint256 groupId,
+        uint8 depth,
+        address admin
+    ) external {
         _createGroup(groupId, depth);
 
         groupAdmins[groupId] = admin;
