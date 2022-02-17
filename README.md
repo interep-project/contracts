@@ -60,9 +60,9 @@ Please, visit our [web app](https://kovan.interep.link) or our [documentation we
 Clone this repository and install the dependencies:
 
 ```bash
-$ git clone https://github.com/interep/contracts.git
-$ cd contracts
-$ yarn # or `npm i`
+git clone https://github.com/interep-project/contracts.git
+cd contracts
+yarn # or `npm i`
 ```
 
 ## Usage
@@ -75,12 +75,6 @@ Compile the smart contracts with Hardhat:
 
 ```bash
 yarn compile
-```
-
-This should generate the TypeChain typings. If you want to generate them manually run:
-
-```bash
-yarn typechain
 ```
 
 ### Lint
@@ -112,7 +106,7 @@ yarn test
 Generate the code coverage report:
 
 ```bash
-yarn coverage
+yarn test:coverage
 ```
 
 ### Report Gas
@@ -120,15 +114,7 @@ yarn coverage
 See the gas usage per unit test and average gas per method call:
 
 ```bash
-REPORT_GAS=true yarn test
-```
-
-### Clean
-
-Delete the smart contract artifacts, the coverage reports and the Hardhat cache:
-
-```bash
-yarn clean
+yarn test:report-gas
 ```
 
 ### Deploy
@@ -136,14 +122,14 @@ yarn clean
 Deploy the contracts:
 
 ```bash
-yarn deploy:groups
+yarn deploy
 ```
 
 If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, ropsten, kovan, arbitrum). Or you can specify it as option:
 
 ```bash
-yarn deploy:groups --network kovan // Kovan testnet
-yarn deploy:groups --network localhost // Local network
+yarn deploy --network kovan // Kovan testnet
+yarn deploy --network localhost // Local network
 ```
 
 If you want to deploy the contracts on Ropsten, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.

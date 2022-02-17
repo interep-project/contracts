@@ -1,6 +1,5 @@
 import "@nomiclabs/hardhat-etherscan"
 import "@nomiclabs/hardhat-waffle"
-import "@openzeppelin/hardhat-upgrades"
 import "@typechain/hardhat"
 import { config as dotenvConfig } from "dotenv"
 import "hardhat-gas-reporter"
@@ -8,9 +7,9 @@ import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
 import { resolve } from "path"
 import "solidity-coverage"
+import { config } from "./package.json"
 import "./tasks/accounts"
-import "./tasks/clean"
-import "./tasks/deploy-groups"
+import "./tasks/deploy"
 
 dotenvConfig({ path: resolve(__dirname, "./.env") })
 
@@ -39,7 +38,15 @@ function getNetworks(): NetworksUserConfig | undefined {
     }
 }
 
-const config: HardhatUserConfig = {
+const hardhatConfig: HardhatUserConfig = {
+    solidity: config.solidity,
+    paths: {
+        sources: config.paths.contracts,
+        tests: config.paths.tests,
+        cache: config.paths.cache,
+        artifacts: config.paths.build.contracts
+    },
+
     defaultNetwork: process.env.DEFAULT_NETWORK || "hardhat",
     networks: {
         localhost: {
@@ -47,15 +54,13 @@ const config: HardhatUserConfig = {
         },
         ...getNetworks()
     },
-    solidity: {
-        version: "0.8.0"
-    },
     gasReporter: {
         currency: "USD",
-        enabled: process.env.REPORT_GAS === "true"
+        enabled: process.env.REPORT_GAS === "true",
+        coinmarketcap: process.env.COINMARKETCAP_API_KEY
     },
     typechain: {
-        outDir: "typechain",
+        outDir: config.paths.build.typechain,
         target: "ethers-v5"
     },
     etherscan: {
@@ -63,4 +68,4 @@ const config: HardhatUserConfig = {
     }
 }
 
-export default config
+export default hardhatConfig
