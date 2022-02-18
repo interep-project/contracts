@@ -1,13 +1,12 @@
-name: test
+name: coverage
 
 on:
-    pull_request:
     push:
         branches:
             - main
 
 jobs:
-    test:
+    coveralls:
         runs-on: ubuntu-latest
 
         steps:
@@ -19,4 +18,8 @@ jobs:
 
             - run: yarn --frozen-lockfile
             - run: yarn compile
-            - run: yarn test:prod
+            - run: yarn test:coverage
+
+            - uses: coverallsapp/github-action@master
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
