@@ -10,6 +10,7 @@
         "prepare": "yarn compile",
         "compile": "hardhat compile",
         "deploy": "hardhat deploy",
+        "deploy:verifier": "hardhat deploy:verifier",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",
@@ -37,7 +38,9 @@
         "@types/node": "^15.6.1",
         "@typescript-eslint/eslint-plugin": "^4.25.0",
         "@typescript-eslint/parser": "^4.25.0",
+        "@zk-kit/identity": "^1.4.1",
         "@zk-kit/incremental-merkle-tree": "^0.4.2",
+        "@zk-kit/protocols": "^1.8.2",
         "chai": "^4.3.4",
         "circomlibjs": "^0.0.8",
         "commitizen": "^4.2.4",
@@ -48,6 +51,7 @@
         "ethereum-waffle": "^3.3.0",
         "ethers": "^5.2.0",
         "hardhat": "^2.3.0",
+        "hardhat-dependency-compiler": "^1.1.2",
         "hardhat-gas-reporter": "^1.0.4",
         "lint-staged": "^11.0.0",
         "mocha": "^8.4.0",
@@ -78,7 +82,7 @@
         }
     },
     "dependencies": {
-        "@appliedzkp/semaphore-contracts": "^0.2.0",
+        "@appliedzkp/semaphore-contracts": "^0.3.0",
         "@openzeppelin/contracts": "^4.5.0"
     }
 }

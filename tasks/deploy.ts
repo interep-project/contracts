@@ -4,7 +4,8 @@ import { task, types } from "hardhat/config"
 
 task("deploy", "Deploy a Interep contract")
     .addOptionalParam<boolean>("logs", "Print the logs", true, types.boolean)
-    .setAction(async ({ logs }, { ethers }): Promise<Contract> => {
+    .addParam("verifiers", "Tree depths and verifier addresses", undefined, types.json)
+    .setAction(async ({ logs, verifiers }, { ethers }): Promise<Contract> => {
         const poseidonABI = poseidonContract.generateABI(2)
         const poseidonBytecode = poseidonContract.createCode(2)
 
@@ -34,7 +35,10 @@ task("deploy", "Deploy a Interep contract")
             }
         })
 
-        const contract = await ContractFactory.deploy()
+        const contract = await ContractFactory.deploy(
+            verifiers.map((v: [number, number]) => v[0]),
+            verifiers.map((v: [number, number]) => v[1])
+        )
 
         await contract.deployed()
 

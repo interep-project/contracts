@@ -2,6 +2,7 @@ import "@nomiclabs/hardhat-etherscan"
 import "@nomiclabs/hardhat-waffle"
 import "@typechain/hardhat"
 import { config as dotenvConfig } from "dotenv"
+import "hardhat-dependency-compiler"
 import "hardhat-gas-reporter"
 import { HardhatUserConfig } from "hardhat/config"
 import { NetworksUserConfig } from "hardhat/types"
@@ -10,6 +11,7 @@ import "solidity-coverage"
 import { config } from "./package.json"
 import "./tasks/accounts"
 import "./tasks/deploy"
+import "./tasks/deploy-verifier"
 
 dotenvConfig({ path: resolve(__dirname, "./.env") })
 
@@ -46,7 +48,9 @@ const hardhatConfig: HardhatUserConfig = {
         cache: config.paths.cache,
         artifacts: config.paths.build.contracts
     },
-
+    dependencyCompiler: {
+        paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
+    },
     defaultNetwork: process.env.DEFAULT_NETWORK || "hardhat",
     networks: {
         localhost: {
