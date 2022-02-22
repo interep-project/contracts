@@ -3,7 +3,7 @@ import { config as dotenvConfig } from "dotenv"
 import { BigNumber, Signer } from "ethers"
 import { ethers, run } from "hardhat"
 import { Strategy, ZkIdentity } from "@zk-kit/identity"
-import { Semaphore, generateMerkleProof } from "@zk-kit/protocols"
+import { Semaphore, generateMerkleProof, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { resolve } from "path"
 import { Interep } from "../build/typechain/Interep"
 import { createTree, createIdentityCommitments } from "./utils"
@@ -147,9 +147,28 @@ describe("Interep", () => {
     })
 
     describe("# verifyProof", () => {
+        const signal = "Hello world"
+        const identity = new ZkIdentity(Strategy.MESSAGE, "0")
+        const identityCommitment = identity.genIdentityCommitment()
+        const zeroValue = BigNumber.from(ethers.utils.solidityKeccak256(["string"], ["Semaphore"])).toBigInt()
+        const merkleProof = generateMerkleProof(depth, zeroValue, 2, members, identityCommitment)
+        const witness = Semaphore.genWitness(
+            identity.getTrapdoor(),
+            identity.getNullifier(),
+            merkleProof,
+            merkleProof.root,
+            signal
+        )
+
+        let fullProof: SemaphoreFullProof
+        let solidityProof: SemaphoreSolidityProof
+
         before(async () => {
             await contract.addMember(groupId, members[1])
             await contract.addMember(groupId, members[2])
+
+            fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
+            solidityProof = Semaphore.packToSolidityProof(fullProof)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
@@ -159,53 +178,25 @@ describe("Interep", () => {
         })
 
         it("Should throw an exception if the proof is not valid", async () => {
-            const signal = "Hello world"
-            const identity = new ZkIdentity(Strategy.MESSAGE, "0")
-            const identityCommitment = identity.genIdentityCommitment()
-            const zeroValue = BigNumber.from(ethers.utils.solidityKeccak256(["string"], ["Semaphore"])).toBigInt()
-
-            const merkleProof = generateMerkleProof(depth, zeroValue, 2, members, identityCommitment)
-
-            const witness = Semaphore.genWitness(
-                identity.getTrapdoor(),
-                identity.getNullifier(),
-                merkleProof,
-                merkleProof.root,
-                signal
+            const transaction = contract.verifyProof(
+                groupId,
+                signal,
+                fullProof.publicSignals.nullifierHash,
+                0,
+                solidityProof
             )
-
-            const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-            const solidityProof = Semaphore.packToSolidityProof(fullProof)
-
-            const nullifierHash = Semaphore.genNullifierHash(merkleProof.root, identity.getNullifier())
-
-            const transaction = contract.verifyProof(groupId, signal, nullifierHash, 0, solidityProof)
 
             await expect(transaction).to.be.revertedWith("Interep: the proof is not valid")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
-            const signal = "Hello world"
-            const identity = new ZkIdentity(Strategy.MESSAGE, "0")
-            const identityCommitment = identity.genIdentityCommitment()
-            const zeroValue = BigNumber.from(ethers.utils.solidityKeccak256(["string"], ["Semaphore"])).toBigInt()
-
-            const merkleProof = generateMerkleProof(depth, zeroValue, 2, members, identityCommitment)
-
-            const witness = Semaphore.genWitness(
-                identity.getTrapdoor(),
-                identity.getNullifier(),
-                merkleProof,
-                merkleProof.root,
-                signal
+            const transaction = contract.verifyProof(
+                groupId,
+                signal,
+                fullProof.publicSignals.nullifierHash,
+                fullProof.publicSignals.merkleRoot,
+                solidityProof
             )
-
-            const fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-            const solidityProof = Semaphore.packToSolidityProof(fullProof)
-
-            const nullifierHash = Semaphore.genNullifierHash(merkleProof.root, identity.getNullifier())
-
-            const transaction = contract.verifyProof(groupId, signal, nullifierHash, merkleProof.root, solidityProof)
 
             await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId, signal)
         })
