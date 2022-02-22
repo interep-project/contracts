@@ -51,7 +51,7 @@ Please, visit our [web app](https://kovan.interep.link) or our [documentation we
 
 |        | Kovan                                                                                          | Arbitrum One |
 | ------ | ---------------------------------------------------------------------------------------------- | ------------ |
-| Groups | [0x8c29...6c77](https://kovan.etherscan.io/address/0x8c29e0b77e32f704F03eeCE01c041192A5EB6c77) |              |
+| Groups | [0x06bc...4bD1](https://kovan.etherscan.io/address/0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1) |              |
 
 ---
 
@@ -119,17 +119,23 @@ yarn test:report-gas
 
 ### Deploy
 
-Deploy the contracts:
+Deploy a Semaphore verifier contract with depth = 20:
 
 ```bash
-yarn deploy
+yarn deploy:verifier # The resulting address will have to be used in the next step.
+```
+
+Deploy the Interep contract with one Semaphore verifier:
+
+```bash
+yarn deploy --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]'
 ```
 
 If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, ropsten, kovan, arbitrum). Or you can specify it as option:
 
 ```bash
-yarn deploy --network kovan // Kovan testnet
-yarn deploy --network localhost // Local network
+yarn deploy --verifiers '[[20, "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"]]' --network kovan
+yarn deploy --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]' --network localhost
 ```
 
 If you want to deploy the contracts on Ropsten, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.
@@ -142,10 +148,11 @@ Run a Hardhat Network in a stand-alone fashion:
 yarn start
 ```
 
-Deploy the `Groups.sol` contract:
+Deploy a Semaphore verifier and the Interep contract:
 
 ```bash
-yarn deploy:groups --network localhost
+yarn deploy:verifier --network localhost
+yarn deploy --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]' --network localhost
 ```
 
 You can omit `--network localhost` if your `DEFAULT_NETWORK` env variable is equal to `localhost`.
