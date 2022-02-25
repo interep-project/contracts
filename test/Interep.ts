@@ -89,7 +89,7 @@ describe("Interep", () => {
         it("Should create a group", async () => {
             const transaction = contract.createGroup(groupId, depth, accounts[0])
 
-            await expect(transaction).to.emit(contract, "GroupAdded").withArgs(groupId, depth)
+            await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, depth, 0)
         })
     })
 
@@ -110,7 +110,7 @@ describe("Interep", () => {
                 .withArgs(
                     groupId,
                     members[0],
-                    "8430290810815993763936320875702691044009457941353977969924088162842849710651"
+                    "18951329906296061785889394467312334959162736293275411745101070722914184798221"
                 )
         })
     })
@@ -150,8 +150,7 @@ describe("Interep", () => {
         const signal = "Hello world"
         const identity = new ZkIdentity(Strategy.MESSAGE, "0")
         const identityCommitment = identity.genIdentityCommitment()
-        const zeroValue = BigNumber.from(ethers.utils.solidityKeccak256(["string"], ["Semaphore"])).toBigInt()
-        const merkleProof = generateMerkleProof(depth, zeroValue, 2, members, identityCommitment)
+        const merkleProof = generateMerkleProof(depth, BigInt(0), 2, members, identityCommitment)
         const witness = Semaphore.genWitness(
             identity.getTrapdoor(),
             identity.getNullifier(),

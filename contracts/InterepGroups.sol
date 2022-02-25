@@ -41,7 +41,7 @@ contract InterepGroups is IInterepGroups, Ownable, SemaphoreGroups {
         uint8 depth,
         address admin
     ) external override {
-        _createGroup(groupId, depth);
+        _createGroup(groupId, depth, 0);
 
         groupAdmins[groupId] = admin;
     }
