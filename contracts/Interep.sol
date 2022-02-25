@@ -146,7 +146,10 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
     /// @dev Updates an offchain group.
     /// @param groupId: Id of the group.
     /// @param group: Offchain data.
-    function _updateOffchainGroup(uint256 groupId, OffchainGroup calldata group) private onlySupportedDepth(group.depth) {
+    function _updateOffchainGroup(uint256 groupId, OffchainGroup calldata group)
+        private
+        onlySupportedDepth(group.depth)
+    {
         require(getDepth(groupId) == 0, "Interep: group id already exists onchain");
 
         offchainGroups[groupId] = group;
