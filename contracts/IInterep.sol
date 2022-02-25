@@ -18,12 +18,18 @@ interface IInterep {
     /// @param groupId: Id of the group.
     /// @param root: Root hash of the tree.
     /// @param depth: Depth of the tree.
-    event OffchainGroupAdded(uint256 indexed groupId, uint256 root, uint8 depth);
+    event OffchainGroupUpdated(uint256 indexed groupId, uint256 root, uint8 indexed depth);
 
-    /// @dev Adds a list of offchain groups. It is useful to ensure the integrity of the Interep offchain trees.
+    /// @dev Emitted when an admin is assigned to an onchain group.
+    /// @param groupId: Id of the group.
+    /// @param oldAdmin: Old admin of the group.
+    /// @param newAdmin: New admin of the group.
+    event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
+
+    /// @dev Updates a list of offchain groups. It is useful to ensure the integrity of the Interep offchain trees.
     /// @param groupIds: List of the group ids.
     /// @param groups: List of the offchain groups (with tree depth and root).
-    function addOffchainGroups(uint256[] calldata groupIds, OffchainGroup[] calldata groups) external;
+    function updateOffchainGroups(uint256[] calldata groupIds, OffchainGroup[] calldata groups) external;
 
     /// @dev Saves the nullifier hash to avoid double signaling and exit an event
     /// if the zero-knowledge proof is valid.
@@ -49,6 +55,11 @@ interface IInterep {
         uint8 depth,
         address admin
     ) external;
+
+    /// @dev Updates the admin of an onchain group.
+    /// @param groupId: Id of the group.
+    /// @param newAdmin: New admin of the group.
+    function updateGroupAdmin(uint256 groupId, address newAdmin) external;
 
     /// @dev Adds a new member to an existing onchain group.
     /// @param groupId: Id of the group.

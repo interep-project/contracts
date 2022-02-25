@@ -85,8 +85,8 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
         emit ProofVerified(groupId, signal);
     }
 
-    /// @dev See {IInterep-addOffchainGroups}.
-    function addOffchainGroups(uint256[] calldata groupIds, OffchainGroup[] calldata groups)
+    /// @dev See {IInterep-updateOffchainGroups}.
+    function updateOffchainGroups(uint256[] calldata groupIds, OffchainGroup[] calldata groups)
         external
         override
         onlyOwner
@@ -94,7 +94,7 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
         require(groupIds.length == groups.length, "Interep: parameters lists does not have the same length");
 
         for (uint8 i = 0; i < groupIds.length; i++) {
-            _addOffchainGroup(groupIds[i], groups[i]);
+            _updateOffchainGroup(groupIds[i], groups[i]);
         }
     }
 
@@ -107,6 +107,15 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
         _createGroup(groupId, depth, 0);
 
         groupAdmins[groupId] = admin;
+
+        emit GroupAdminUpdated(groupId, address(0), admin);
+    }
+
+    /// @dev See {IInterep-updateGroupAdmin}.
+    function updateGroupAdmin(uint256 groupId, address newAdmin) external override onlyGroupAdmin(groupId) {
+        groupAdmins[groupId] = newAdmin;
+
+        emit GroupAdminUpdated(groupId, _msgSender(), newAdmin);
     }
 
     /// @dev See {IInterep-addMember}.
@@ -134,14 +143,14 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
         return offchainGroups[groupId].depth;
     }
 
-    /// @dev Adds an offchain group.
+    /// @dev Updates an offchain group.
     /// @param groupId: Id of the group.
     /// @param group: Offchain data.
-    function _addOffchainGroup(uint256 groupId, OffchainGroup calldata group) private onlySupportedDepth(group.depth) {
+    function _updateOffchainGroup(uint256 groupId, OffchainGroup calldata group) private onlySupportedDepth(group.depth) {
         require(getDepth(groupId) == 0, "Interep: group id already exists onchain");
 
         offchainGroups[groupId] = group;
 
-        emit OffchainGroupAdded(groupId, group.root, group.depth);
+        emit OffchainGroupUpdated(groupId, group.root, group.depth);
     }
 }

@@ -2,7 +2,7 @@ import { Strategy, ZkIdentity } from "@zk-kit/identity"
 import { generateMerkleProof, Semaphore, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { config as dotenvConfig } from "dotenv"
-import { Signer } from "ethers"
+import { Signer, constants } from "ethers"
 import { ethers, run } from "hardhat"
 import { resolve } from "path"
 import { Interep } from "../build/typechain/Interep"
@@ -31,15 +31,15 @@ describe("Interep", () => {
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))
     })
 
-    describe("# addOffchainGroups", () => {
+    describe("# updateOffchainGroups", () => {
         it("Should not publish new offchain groups if the parameter lists don't have the same length", async () => {
-            const transaction = contract.addOffchainGroups([offchainGroupId, offchainGroupId], [{ root: 1, depth }])
+            const transaction = contract.updateOffchainGroups([offchainGroupId, offchainGroupId], [{ root: 1, depth }])
 
             await expect(transaction).to.be.revertedWith("Interep: parameters lists does not have the same length")
         })
 
         it("Should not publish new offchain groups if there is an unsupported tree depth", async () => {
-            const transaction = contract.addOffchainGroups([offchainGroupId], [{ root: 1, depth: 10 }])
+            const transaction = contract.updateOffchainGroups([offchainGroupId], [{ root: 1, depth: 10 }])
 
             await expect(transaction).to.be.revertedWith("Interep: tree depth is not supported")
         })
@@ -47,7 +47,7 @@ describe("Interep", () => {
         it("Should not publish an offchain group if an onchain group with the same id already exists", async () => {
             await contract.createGroup(3, depth, accounts[0])
 
-            const transaction = contract.addOffchainGroups([3], [{ root: 1, depth }])
+            const transaction = contract.updateOffchainGroups([3], [{ root: 1, depth }])
 
             await expect(transaction).to.be.revertedWith("Interep: group id already exists onchain")
         })
@@ -64,10 +64,10 @@ describe("Interep", () => {
                 })
             }
 
-            const transaction = contract.addOffchainGroups(groupIds, offchainGroups)
+            const transaction = contract.updateOffchainGroups(groupIds, offchainGroups)
 
             await expect(transaction)
-                .to.emit(contract, "OffchainGroupAdded")
+                .to.emit(contract, "OffchainGroupUpdated")
                 .withArgs(offchainGroupId, offchainGroups[0].root, offchainGroups[0].depth)
             expect((await (await transaction).wait()).events).to.length(20)
         })
@@ -97,9 +97,26 @@ describe("Interep", () => {
         })
 
         it("Should create a group", async () => {
-            const transaction = contract.createGroup(groupId, depth, accounts[0])
+            const transaction = contract.connect(signers[1]).createGroup(groupId, depth, accounts[1])
 
             await expect(transaction).to.emit(contract, "GroupCreated").withArgs(groupId, depth, 0)
+            await expect(transaction)
+                .to.emit(contract, "GroupAdminUpdated")
+                .withArgs(groupId, constants.AddressZero, accounts[1])
+        })
+    })
+
+    describe("# updateGroupAdmin", () => {
+        it("Should not update a group admin if the caller is not the group admin", async () => {
+            const transaction = contract.updateGroupAdmin(groupId, accounts[0])
+
+            await expect(transaction).to.be.revertedWith("Interep: caller is not the group admin")
+        })
+
+        it("Should update the group admin", async () => {
+            const transaction = contract.connect(signers[1]).updateGroupAdmin(groupId, accounts[0])
+
+            await expect(transaction).to.emit(contract, "GroupAdminUpdated").withArgs(groupId, accounts[1], accounts[0])
         })
     })
 
