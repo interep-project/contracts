@@ -1,18 +1,37 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "./interfaces/IInterep.sol";
-import "./InterepGroups.sol";
+import "./IInterep.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
 import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
+import "@appliedzkp/semaphore-contracts/base/SemaphoreGroups.sol";
 
 /// @title Interep
 /// @dev Interep is a collection of groups (onchain and offchain) where members can prove
 /// their membership without revealing their identity. DApps can use this contract to verify
 /// if a Semaphore proof is valid and then use its signal.
-contract Interep is IInterep, SemaphoreCore, InterepGroups {
+/// Each Interep group is actually a Merkle tree, whose leaves represent the members of the group.
+/// `depth` and `root` therefore refer to the tree. Interep groups can be divided into two types:
+/// onchain groups managed entirely with the `SemaphoreGroups` contracts, and offchain groups managed
+/// by Interep's servers. The tree roots used in offchain groups are updated at regular intervals
+/// by Interep with the `addOffchainGroups` function.
+contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
     /// @dev Gets a tree depth and returns its verifier address.
     mapping(uint8 => IVerifier) public verifiers;
+
+    /// @dev Gets a group id and returns the offchain group (tree root and depth).
+    mapping(uint256 => OffchainGroup) public offchainGroups;
+
+    /// @dev Gets a group id and returns the group admin address.
+    mapping(uint256 => address) public groupAdmins;
+
+    /// @dev Checks if the group admin is the transaction sender.
+    /// @param groupId: Id of the group.
+    modifier onlyGroupAdmin(uint256 groupId) {
+        require(groupAdmins[groupId] == _msgSender(), "Interep: caller is not the group admin");
+        _;
+    }
 
     /// @dev Since there can be multiple verifier contracts (each associated with a certain tree depth),
     /// it is necessary to pass the addresses of the previously deployed verifier contracts with the associated
@@ -35,7 +54,7 @@ contract Interep is IInterep, SemaphoreCore, InterepGroups {
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof
-    ) public override {
+    ) external override {
         uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
 
@@ -57,5 +76,58 @@ contract Interep is IInterep, SemaphoreCore, InterepGroups {
         _saveNullifierHash(nullifierHash);
 
         emit ProofVerified(groupId, signal);
+    }
+
+    /// @dev See {IInterep-addOffchainGroups}.
+    function addOffchainGroups(uint256[] calldata groupIds, OffchainGroup[] calldata groups)
+        external
+        override
+        onlyOwner
+    {
+        require(groupIds.length == groups.length, "Interep: parameters lists does not have the same length");
+
+        for (uint8 i = 0; i < groupIds.length; i++) {
+            require(getDepth(groupIds[i]) == 0, "Interep: group id already exists onchain");
+
+            offchainGroups[groupIds[i]] = groups[i];
+
+            emit OffchainGroupAdded(groupIds[i], groups[i].root, groups[i].depth);
+        }
+    }
+
+    /// @dev See {IInterep-createGroup}.
+    function createGroup(
+        uint256 groupId,
+        uint8 depth,
+        address admin
+    ) external override {
+        _createGroup(groupId, depth, 0);
+
+        groupAdmins[groupId] = admin;
+    }
+
+    /// @dev See {IInterep-addMember}.
+    function addMember(uint256 groupId, uint256 identityCommitment) external override onlyGroupAdmin(groupId) {
+        _addMember(groupId, identityCommitment);
+    }
+
+    /// @dev See {IInterep-removeMember}.
+    function removeMember(
+        uint256 groupId,
+        uint256 identityCommitment,
+        uint256[] calldata proofSiblings,
+        uint8[] calldata proofPathIndices
+    ) external override onlyGroupAdmin(groupId) {
+        _removeMember(groupId, identityCommitment, proofSiblings, proofPathIndices);
+    }
+
+    /// @dev See {IInterep-getOffchainRoot}.
+    function getOffchainRoot(uint256 groupId) public view override returns (uint256) {
+        return offchainGroups[groupId].root;
+    }
+
+    /// @dev See {IInterep-getOffchainDepth}.
+    function getOffchainDepth(uint256 groupId) public view override returns (uint8) {
+        return offchainGroups[groupId].depth;
     }
 }

@@ -35,9 +35,7 @@ describe("Interep", () => {
         it("Should not publish new offchain groups if the parameter lists don't have the same length", async () => {
             const transaction = contract.addOffchainGroups([offchainGroupId, offchainGroupId], [{ root: 1, depth: 20 }])
 
-            await expect(transaction).to.be.revertedWith(
-                "InterepGroups: parameters lists does not have the same length"
-            )
+            await expect(transaction).to.be.revertedWith("Interep: parameters lists does not have the same length")
         })
 
         it("Should not publish an offchain group if an onchain group with the same id already exists", async () => {
@@ -45,7 +43,7 @@ describe("Interep", () => {
 
             const transaction = contract.addOffchainGroups([3], [{ root: 1, depth: 20 }])
 
-            await expect(transaction).to.be.revertedWith("InterepGroups: group id already exists onchain")
+            await expect(transaction).to.be.revertedWith("Interep: group id already exists onchain")
         })
 
         it("Should publish 20 new offchain roots", async () => {
@@ -99,7 +97,7 @@ describe("Interep", () => {
 
             const transaction = contract.connect(signers[1]).addMember(groupId, member)
 
-            await expect(transaction).to.be.revertedWith("InterepGroups: caller is not the group admin")
+            await expect(transaction).to.be.revertedWith("Interep: caller is not the group admin")
         })
 
         it("Should add a new member in an existing group", async () => {
@@ -119,7 +117,7 @@ describe("Interep", () => {
         it("Should not remove a member if the caller is not the group admin", async () => {
             const transaction = contract.connect(signers[1]).removeMember(groupId, members[0], [0, 1], [0, 1])
 
-            await expect(transaction).to.be.revertedWith("InterepGroups: caller is not the group admin")
+            await expect(transaction).to.be.revertedWith("Interep: caller is not the group admin")
         })
 
         it("Should remove a member from an existing group", async () => {
