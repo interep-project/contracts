@@ -33,6 +33,13 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
         _;
     }
 
+    /// @dev Checks if there is a verifier for the given tree depth.
+    /// @param depth: Depth of the tree.
+    modifier onlySupportedDepth(uint8 depth) {
+        require(address(verifiers[depth]) != address(0), "Interep: tree depth is not supported");
+        _;
+    }
+
     /// @dev Since there can be multiple verifier contracts (each associated with a certain tree depth),
     /// it is necessary to pass the addresses of the previously deployed verifier contracts with the associated
     /// tree depth. Depending on the depth chosen when creating the poll, a certain verifier will be
@@ -87,11 +94,7 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
         require(groupIds.length == groups.length, "Interep: parameters lists does not have the same length");
 
         for (uint8 i = 0; i < groupIds.length; i++) {
-            require(getDepth(groupIds[i]) == 0, "Interep: group id already exists onchain");
-
-            offchainGroups[groupIds[i]] = groups[i];
-
-            emit OffchainGroupAdded(groupIds[i], groups[i].root, groups[i].depth);
+            _addOffchainGroup(groupIds[i], groups[i]);
         }
     }
 
@@ -100,7 +103,7 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
         uint256 groupId,
         uint8 depth,
         address admin
-    ) external override {
+    ) external override onlySupportedDepth(depth) {
         _createGroup(groupId, depth, 0);
 
         groupAdmins[groupId] = admin;
@@ -129,5 +132,16 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
     /// @dev See {IInterep-getOffchainDepth}.
     function getOffchainDepth(uint256 groupId) public view override returns (uint8) {
         return offchainGroups[groupId].depth;
+    }
+
+    /// @dev Adds an offchain group.
+    /// @param groupId: Id of the group.
+    /// @param group: Offchain data.
+    function _addOffchainGroup(uint256 groupId, OffchainGroup calldata group) private onlySupportedDepth(group.depth) {
+        require(getDepth(groupId) == 0, "Interep: group id already exists onchain");
+
+        offchainGroups[groupId] = group;
+
+        emit OffchainGroupAdded(groupId, group.root, group.depth);
     }
 }

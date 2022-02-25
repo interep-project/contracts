@@ -1,12 +1,12 @@
+import { Strategy, ZkIdentity } from "@zk-kit/identity"
+import { generateMerkleProof, Semaphore, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { config as dotenvConfig } from "dotenv"
-import { BigNumber, Signer } from "ethers"
+import { Signer } from "ethers"
 import { ethers, run } from "hardhat"
-import { Strategy, ZkIdentity } from "@zk-kit/identity"
-import { Semaphore, generateMerkleProof, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { resolve } from "path"
 import { Interep } from "../build/typechain/Interep"
-import { createTree, createIdentityCommitments } from "./utils"
+import { createIdentityCommitments, createTree } from "./utils"
 
 dotenvConfig({ path: resolve(__dirname, "../.env") })
 
@@ -33,22 +33,28 @@ describe("Interep", () => {
 
     describe("# addOffchainGroups", () => {
         it("Should not publish new offchain groups if the parameter lists don't have the same length", async () => {
-            const transaction = contract.addOffchainGroups([offchainGroupId, offchainGroupId], [{ root: 1, depth: 20 }])
+            const transaction = contract.addOffchainGroups([offchainGroupId, offchainGroupId], [{ root: 1, depth }])
 
             await expect(transaction).to.be.revertedWith("Interep: parameters lists does not have the same length")
+        })
+
+        it("Should not publish new offchain groups if there is an unsupported tree depth", async () => {
+            const transaction = contract.addOffchainGroups([offchainGroupId], [{ root: 1, depth: 10 }])
+
+            await expect(transaction).to.be.revertedWith("Interep: tree depth is not supported")
         })
 
         it("Should not publish an offchain group if an onchain group with the same id already exists", async () => {
             await contract.createGroup(3, depth, accounts[0])
 
-            const transaction = contract.addOffchainGroups([3], [{ root: 1, depth: 20 }])
+            const transaction = contract.addOffchainGroups([3], [{ root: 1, depth }])
 
             await expect(transaction).to.be.revertedWith("Interep: group id already exists onchain")
         })
 
         it("Should publish 20 new offchain roots", async () => {
             const groupIds: number[] = []
-            const offchainGroups: any[] = []
+            const offchainGroups: { root: number; depth: number }[] = []
 
             for (let i = 0; i < 20; i++) {
                 groupIds.push(offchainGroupId)
@@ -84,6 +90,12 @@ describe("Interep", () => {
     })
 
     describe("# createGroup", () => {
+        it("Should not create a group if the tree depth is not supported", async () => {
+            const transaction = contract.createGroup(groupId, 10, accounts[0])
+
+            await expect(transaction).to.be.revertedWith("Interep: tree depth is not supported")
+        })
+
         it("Should create a group", async () => {
             const transaction = contract.createGroup(groupId, depth, accounts[0])
 
