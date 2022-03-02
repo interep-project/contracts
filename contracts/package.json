@@ -1,0 +1,39 @@
+{
+    "name": "@interep/contracts",
+    "version": "0.1.0",
+    "description": "Interep smart contracts.",
+    "license": "MIT",
+    "files": [
+        "**/*.sol"
+    ],
+    "keywords": [
+        "blockchain",
+        "ethereum",
+        "hardhat",
+        "smart-contracts",
+        "semaphore",
+        "interep",
+        "identity",
+        "solidity",
+        "zero-knowledge",
+        "zk-snarks",
+        "zero-knowledge-proofs",
+        "circom",
+        "proof-of-membership"
+    ],
+    "homepage": "https://github.com/interep-project/contracts.git#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/interep-project/contracts.git.git"
+    },
+    "bugs": {
+        "url": "https://github.com/interep-project/contracts.git/issues"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@appliedzkp/semaphore-contracts": "^0.4.0",
+        "@openzeppelin/contracts": "^4.5.0"
+    }
+}
