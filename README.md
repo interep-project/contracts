@@ -51,7 +51,7 @@ Please, visit our [web app](https://kovan.interep.link) or our [documentation we
 
 |         | Kovan                                                                                          | Arbitrum One |
 | ------- | ---------------------------------------------------------------------------------------------- | ------------ |
-| Interep | [0x7881...331c](https://kovan.etherscan.io/address/0x7881B91f9c45a866cE8a8905fB93eF9Cb3B2331c) |              |
+| Interep | [0x8d67...558D](https://kovan.etherscan.io/address/0x8d6710ecB0079E34CdBcAB302F354B6a8C81558D) |              |
 
 ---
 
