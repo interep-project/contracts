@@ -57,7 +57,7 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
     /// @dev See {IInterep-verifyProof}.
     function verifyProof(
         uint256 groupId,
-        string calldata signal,
+        bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof

@@ -12,7 +12,7 @@ interface IInterep {
     /// @dev Emitted when a Semaphore proof is verified.
     /// @param groupId: Id of the group.
     /// @param signal: Semaphore signal.
-    event ProofVerified(uint256 indexed groupId, string signal);
+    event ProofVerified(uint256 indexed groupId, bytes32 signal);
 
     /// @dev Emitted when an offchain group is updated.
     /// @param groupId: Id of the group.
@@ -40,7 +40,7 @@ interface IInterep {
     /// @param proof: Zero-knowledge proof.
     function verifyProof(
         uint256 groupId,
-        string calldata signal,
+        bytes32 signal,
         uint256 nullifierHash,
         uint256 externalNullifier,
         uint256[8] calldata proof

@@ -2,7 +2,7 @@ import { Strategy, ZkIdentity } from "@zk-kit/identity"
 import { generateMerkleProof, Semaphore, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { config as dotenvConfig } from "dotenv"
-import { Signer, constants } from "ethers"
+import { Signer, constants, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { resolve } from "path"
 import { Interep } from "../build/typechain/Interep"
@@ -175,9 +175,10 @@ describe("Interep", () => {
 
     describe("# verifyProof", () => {
         const signal = "Hello world"
+        const bytes32Signal = utils.formatBytes32String(signal)
         const identity = new ZkIdentity(Strategy.MESSAGE, "0")
         const identityCommitment = identity.genIdentityCommitment()
-        const merkleProof = generateMerkleProof(depth, BigInt(0), 2, members, identityCommitment)
+        const merkleProof = generateMerkleProof(depth, BigInt(0), members, identityCommitment)
         const witness = Semaphore.genWitness(
             identity.getTrapdoor(),
             identity.getNullifier(),
@@ -194,11 +195,11 @@ describe("Interep", () => {
             await contract.addMember(groupId, members[2])
 
             fullProof = await Semaphore.genProof(witness, wasmFilePath, finalZkeyPath)
-            solidityProof = Semaphore.packToSolidityProof(fullProof)
+            solidityProof = Semaphore.packToSolidityProof(fullProof.proof)
         })
 
         it("Should not verify a proof if the group does not exist", async () => {
-            const transaction = contract.verifyProof(10, "", 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
+            const transaction = contract.verifyProof(10, bytes32Signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
             await expect(transaction).to.be.revertedWith("Interep: the group does not exist")
         })
@@ -206,7 +207,7 @@ describe("Interep", () => {
         it("Should throw an exception if the proof is not valid", async () => {
             const transaction = contract.verifyProof(
                 groupId,
-                signal,
+                bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 0,
                 solidityProof
@@ -218,13 +219,13 @@ describe("Interep", () => {
         it("Should verify a proof for an onchain group correctly", async () => {
             const transaction = contract.verifyProof(
                 groupId,
-                signal,
+                bytes32Signal,
                 fullProof.publicSignals.nullifierHash,
                 fullProof.publicSignals.merkleRoot,
                 solidityProof
             )
 
-            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId, signal)
+            await expect(transaction).to.emit(contract, "ProofVerified").withArgs(groupId, bytes32Signal)
         })
     })
 })

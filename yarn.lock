@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@appliedzkp/semaphore-contracts@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@appliedzkp/semaphore-contracts/-/semaphore-contracts-0.4.0.tgz#d6ade34397a9930a6dd7592e0faf5ca5bba4ff0a"
-  integrity sha512-Eg5K8YRj4fvx9R/Q92tJy9/YlpTX22d/WzCWubYW/S57J7A2z0JN9GdtGYDGgn1u/IRI9iuTUKaammTGnNoAeA==
+"@appliedzkp/semaphore-contracts@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@appliedzkp/semaphore-contracts/-/semaphore-contracts-0.6.0.tgz#cbc21b2212485d156eacdbac4b488b6c2a8f3553"
+  integrity sha512-rx2Iq8+cWBfpmZs3bxHarHjR68fknQfdUUgyoGdie7O6gjl1PKKGI9Ufsu+Pyt67T7katlHiFZvXYqIncU9KgQ==
   dependencies:
     "@openzeppelin/contracts" "^4.4.2"
     "@zk-kit/incremental-merkle-tree.sol" "^0.3.0"
@@ -1115,13 +1115,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/fs-extra@^9.0.13":
-  version "9.0.13"
-  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.13.tgz#7594fbae04fe7f1918ce8b3d213f74ff44ac1f45"
-  integrity sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==
-  dependencies:
-    "@types/node" "*"
-
 "@types/glob@^7.1.1":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
@@ -1383,10 +1376,10 @@
   resolved "https://registry.yarnpkg.com/@zk-kit/incremental-merkle-tree/-/incremental-merkle-tree-0.4.3.tgz#197f72102d35dd9c546a6a432896d6d6f6de05f4"
   integrity sha512-2qHfrJXtPx8/UmF0wFAUr4VqCLr3J/P859fk/e3fwKLUnf3baeIUAO6inY4wrh0NGy4bzpKUWYjDph0yTbPz6A==
 
-"@zk-kit/protocols@^1.8.2":
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.8.2.tgz#125cc9ceaec0e69ce70c71b565f3c82b6e2c5e50"
-  integrity sha512-s3Opc+sKYqobBhrxpiPmoagDcyqPPlwx7WiOhSHQmhA/niBu9K803fX1Js5lsnC3vvdDb+ryiDU/6P8rcmcSXg==
+"@zk-kit/protocols@^1.11.0":
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/@zk-kit/protocols/-/protocols-1.11.0.tgz#21aa6298819b2f05c8c3f232fba33a1a32b22d4f"
+  integrity sha512-WfjLL1kaasOb0GkTfB3o/jgom8y93qCI4/T+r1nAcNa/RTxX1hkXWs9bhL/ZaKbFmKMesaMCFev89wpBeHCxkg==
   dependencies:
     "@ethersproject/bytes" "^5.5.0"
     "@ethersproject/solidity" "^5.5.0"
@@ -4064,7 +4057,7 @@ eslint@^5.6.0:
     table "^5.2.3"
     text-table "^0.2.0"
 
-eslint@^7.27.0:
+eslint@^7.29.0:
   version "7.32.0"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.32.0.tgz#c6d328a14be3fb08c8d1d21e12c02fdb7a2a812d"
   integrity sha512-VHZ8gX+EDfz+97jGcgyGCyRia/dPOd6Xh9yPv8Bl1+SoaIwD+a/vlrOmGRUyOYu7MwUhc7CxqeaDZU13S4+EpA==
