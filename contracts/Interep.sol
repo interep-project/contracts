@@ -86,15 +86,11 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
     }
 
     /// @dev See {IInterep-updateOffchainGroups}.
-    function updateOffchainGroups(uint256[] calldata groupIds, OffchainGroup[] calldata groups)
-        external
-        override
-        onlyOwner
-    {
-        require(groupIds.length == groups.length, "Interep: parameters lists does not have the same length");
+    function updateOffchainGroups(OffchainGroup[] calldata groups) external override onlyOwner {
+        for (uint8 i = 0; i < groups.length; i++) {
+            uint256 groupId = uint256(keccak256(abi.encodePacked(groups[i].provider, groups[i].name)));
 
-        for (uint8 i = 0; i < groupIds.length; i++) {
-            _updateOffchainGroup(groupIds[i], groups[i]);
+            _updateOffchainGroup(groupId, groups[i]);
         }
     }
 
@@ -154,6 +150,6 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
 
         offchainGroups[groupId] = group;
 
-        emit OffchainGroupUpdated(groupId, group.root, group.depth);
+        emit OffchainGroupUpdated(groupId, group.provider, group.name, group.root, group.depth);
     }
 }

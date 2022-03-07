@@ -15,8 +15,10 @@ describe("Interep", () => {
     let signers: Signer[]
     let accounts: string[]
 
+    const groupProvider = utils.formatBytes32String("provider")
+    const groupName = utils.formatBytes32String("name")
+    const offchainGroupId = utils.solidityKeccak256(["bytes32", "bytes32"], [groupProvider, groupName])
     const groupId = 1
-    const offchainGroupId = 2
     const members = createIdentityCommitments(3)
     const depth = 20
 
@@ -32,43 +34,51 @@ describe("Interep", () => {
     })
 
     describe("# updateOffchainGroups", () => {
-        it("Should not publish new offchain groups if the parameter lists don't have the same length", async () => {
-            const transaction = contract.updateOffchainGroups([offchainGroupId, offchainGroupId], [{ root: 1, depth }])
-
-            await expect(transaction).to.be.revertedWith("Interep: parameters lists does not have the same length")
-        })
-
         it("Should not publish new offchain groups if there is an unsupported tree depth", async () => {
-            const transaction = contract.updateOffchainGroups([offchainGroupId], [{ root: 1, depth: 10 }])
+            const transaction = contract.updateOffchainGroups([
+                { provider: groupProvider, name: groupName, root: 1, depth: 10 }
+            ])
 
             await expect(transaction).to.be.revertedWith("Interep: tree depth is not supported")
         })
 
         it("Should not publish an offchain group if an onchain group with the same id already exists", async () => {
-            await contract.createGroup(3, depth, accounts[0])
+            const groupProvider = utils.formatBytes32String("provider2")
+            const groupName = utils.formatBytes32String("name2")
+            const offchainGroupId = utils.solidityKeccak256(["bytes32", "bytes32"], [groupProvider, groupName])
 
-            const transaction = contract.updateOffchainGroups([3], [{ root: 1, depth }])
+            await contract.createGroup(offchainGroupId, depth, accounts[0])
+
+            const transaction = contract.updateOffchainGroups([
+                { provider: groupProvider, name: groupName, root: 1, depth }
+            ])
 
             await expect(transaction).to.be.revertedWith("Interep: group id already exists onchain")
         })
 
         it("Should publish 20 new offchain roots", async () => {
-            const groupIds: number[] = []
-            const offchainGroups: { root: number; depth: number }[] = []
+            const offchainGroups: { provider: string; name: string; root: number; depth: number }[] = []
 
             for (let i = 0; i < 20; i++) {
-                groupIds.push(offchainGroupId)
                 offchainGroups.push({
+                    provider: groupProvider,
+                    name: groupName,
                     root: i,
                     depth
                 })
             }
 
-            const transaction = contract.updateOffchainGroups(groupIds, offchainGroups)
+            const transaction = contract.updateOffchainGroups(offchainGroups)
 
             await expect(transaction)
                 .to.emit(contract, "OffchainGroupUpdated")
-                .withArgs(offchainGroupId, offchainGroups[0].root, offchainGroups[0].depth)
+                .withArgs(
+                    offchainGroupId,
+                    offchainGroups[0].provider,
+                    offchainGroups[0].name,
+                    offchainGroups[0].root,
+                    offchainGroups[0].depth
+                )
             expect((await (await transaction).wait()).events).to.length(20)
         })
     })

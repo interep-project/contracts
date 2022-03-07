@@ -5,6 +5,8 @@ pragma solidity ^0.8.4;
 /// @dev Interface of a Interep contract.
 interface IInterep {
     struct OffchainGroup {
+        bytes32 provider;
+        bytes32 name;
         uint256 root;
         uint8 depth;
     }
@@ -16,9 +18,17 @@ interface IInterep {
 
     /// @dev Emitted when an offchain group is updated.
     /// @param groupId: Id of the group.
+    /// @param provider: Provider of the group.
+    /// @param name: Name of the group.
     /// @param root: Root hash of the tree.
     /// @param depth: Depth of the tree.
-    event OffchainGroupUpdated(uint256 indexed groupId, uint256 root, uint8 indexed depth);
+    event OffchainGroupUpdated(
+        uint256 groupId,
+        bytes32 indexed provider,
+        bytes32 indexed name,
+        uint256 root,
+        uint8 indexed depth
+    );
 
     /// @dev Emitted when an admin is assigned to an onchain group.
     /// @param groupId: Id of the group.
@@ -27,9 +37,8 @@ interface IInterep {
     event GroupAdminUpdated(uint256 indexed groupId, address indexed oldAdmin, address indexed newAdmin);
 
     /// @dev Updates a list of offchain groups. It is useful to ensure the integrity of the Interep offchain trees.
-    /// @param groupIds: List of the group ids.
     /// @param groups: List of the offchain groups (with tree depth and root).
-    function updateOffchainGroups(uint256[] calldata groupIds, OffchainGroup[] calldata groups) external;
+    function updateOffchainGroups(OffchainGroup[] calldata groups) external;
 
     /// @dev Saves the nullifier hash to avoid double signaling and exit an event
     /// if the zero-knowledge proof is valid.
