@@ -33,7 +33,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@appliedzkp/semaphore-contracts": "^0.6.0",
+        "@appliedzkp/semaphore-contracts": "^0.6.2",
         "@openzeppelin/contracts": "^4.5.0"
     }
 }
