@@ -88,7 +88,8 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
     /// @dev See {IInterep-updateOffchainGroups}.
     function updateOffchainGroups(OffchainGroup[] calldata groups) external override onlyOwner {
         for (uint8 i = 0; i < groups.length; i++) {
-            uint256 groupId = uint256(keccak256(abi.encodePacked(groups[i].provider, groups[i].name))) % SNARK_SCALAR_FIELD;
+            uint256 groupId = uint256(keccak256(abi.encodePacked(groups[i].provider, groups[i].name))) %
+                SNARK_SCALAR_FIELD;
 
             _updateOffchainGroup(groupId, groups[i]);
         }
