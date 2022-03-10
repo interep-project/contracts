@@ -2,11 +2,11 @@ import { Strategy, ZkIdentity } from "@zk-kit/identity"
 import { generateMerkleProof, Semaphore, SemaphoreFullProof, SemaphoreSolidityProof } from "@zk-kit/protocols"
 import { expect } from "chai"
 import { config as dotenvConfig } from "dotenv"
-import { Signer, constants, utils } from "ethers"
+import { constants, Signer, utils } from "ethers"
 import { ethers, run } from "hardhat"
 import { resolve } from "path"
 import { Interep } from "../build/typechain/Interep"
-import { createIdentityCommitments, createTree } from "./utils"
+import { createIdentityCommitments, createOffchainGroupId, createTree } from "./utils"
 
 dotenvConfig({ path: resolve(__dirname, "../.env") })
 
@@ -17,7 +17,7 @@ describe("Interep", () => {
 
     const groupProvider = utils.formatBytes32String("provider")
     const groupName = utils.formatBytes32String("name")
-    const offchainGroupId = utils.solidityKeccak256(["bytes32", "bytes32"], [groupProvider, groupName])
+    const offchainGroupId = createOffchainGroupId(groupProvider, groupName)
     const groupId = 1
     const members = createIdentityCommitments(3)
     const depth = 20
@@ -45,7 +45,7 @@ describe("Interep", () => {
         it("Should not publish an offchain group if an onchain group with the same id already exists", async () => {
             const groupProvider = utils.formatBytes32String("provider2")
             const groupName = utils.formatBytes32String("name2")
-            const offchainGroupId = utils.solidityKeccak256(["bytes32", "bytes32"], [groupProvider, groupName])
+            const offchainGroupId = createOffchainGroupId(groupProvider, groupName)
 
             await contract.createGroup(offchainGroupId, depth, accounts[0])
 
@@ -160,7 +160,7 @@ describe("Interep", () => {
         })
 
         it("Should remove a member from an existing group", async () => {
-            const groupId = ethers.utils.formatBytes32String("hello")
+            const groupId = 100
             const tree = createTree(depth, 3)
 
             tree.delete(0)
