@@ -37,7 +37,7 @@
             🤝 Code of conduct
         </a>
         <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <a href="https://t.me/interrep">
+        <a href="https://discord.gg/Tp9He7qws4">
             🗣️ Chat &amp; Support
         </a>
     </h4>
@@ -51,7 +51,7 @@ Please, visit our [web app](https://kovan.interep.link) or our [documentation we
 
 |         | Kovan                                                                                          | Arbitrum One |
 | ------- | ---------------------------------------------------------------------------------------------- | ------------ |
-| Interep | [0xb2Aa...cdAc](https://kovan.etherscan.io/address/0xb2Aab6E8E99ae8788E1C6345ff3e302CBB29cdAc) |              |
+| Interep | [0x5B8e...a6dc](https://kovan.etherscan.io/address/0x5B8e7cC7bAC61A4b952d472b67056B2f260ba6dc) |              |
 
 ---
 

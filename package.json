@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Interep smart contracts.",
     "license": "MIT",
-    "homepage": "https://github.com/interep-project/contracts.git",
+    "homepage": "https://github.com/interep-project/contracts",
     "private": "true",
     "scripts": {
         "start": "hardhat node",
