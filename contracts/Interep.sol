@@ -74,10 +74,7 @@ contract Interep is IInterep, Ownable, SemaphoreCore, SemaphoreGroups {
 
         IVerifier verifier = verifiers[depth];
 
-        require(
-            _isValidProof(signal, root, nullifierHash, externalNullifier, proof, verifier),
-            "Interep: the proof is not valid"
-        );
+        _verifyProof(signal, root, nullifierHash, externalNullifier, proof, verifier);
 
         // Prevent double-signaling (nullifierHash = hash(pollId + identityNullifier)).
         _saveNullifierHash(nullifierHash);

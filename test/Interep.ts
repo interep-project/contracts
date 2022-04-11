@@ -223,7 +223,7 @@ describe("Interep", () => {
                 solidityProof
             )
 
-            await expect(transaction).to.be.revertedWith("Interep: the proof is not valid")
+            await expect(transaction).to.be.revertedWith("InvalidProof()")
         })
 
         it("Should verify a proof for an onchain group correctly", async () => {
