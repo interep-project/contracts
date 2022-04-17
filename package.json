@@ -8,7 +8,8 @@
     "scripts": {
         "start": "hardhat node",
         "compile": "hardhat compile",
-        "deploy": "hardhat deploy",
+        "deploy": "hardhat run ./scripts/deploy.ts",
+        "deploy-interep": "hardhat deploy:interep",
         "deploy:verifier": "hardhat deploy:verifier",
         "test": "hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",

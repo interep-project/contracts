@@ -3,7 +3,7 @@ import { generateMerkleProof, Semaphore, SemaphoreFullProof, SemaphoreSolidityPr
 import { expect } from "chai"
 import { config as dotenvConfig } from "dotenv"
 import { constants, Signer, utils } from "ethers"
-import { ethers, run } from "hardhat"
+import { run } from "hardhat"
 import { resolve } from "path"
 import { Interep } from "../build/typechain/Interep"
 import { createIdentityCommitments, createOffchainGroupId, createTree } from "./utils"
@@ -27,7 +27,7 @@ describe("Interep", () => {
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
-        contract = await run("deploy", { logs: false, verifiers: [[depth, verifierAddress]] })
+        contract = await run("deploy:interep", { logs: false, verifiers: [[depth, verifierAddress]] })
 
         signers = await run("accounts", { logs: false })
         accounts = await Promise.all(signers.map((signer: Signer) => signer.getAddress()))

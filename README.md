@@ -148,11 +148,10 @@ Run a Hardhat Network in a stand-alone fashion:
 yarn start
 ```
 
-Deploy a Semaphore verifier and the Interep contract:
+Deploy Semaphore verifier and Interep contract:
 
 ```bash
-yarn deploy:verifier --network localhost
-yarn deploy --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]' --network localhost
+yarn deploy --network localhost
 ```
 
 You can omit `--network localhost` if your `DEFAULT_NETWORK` env variable is equal to `localhost`.
