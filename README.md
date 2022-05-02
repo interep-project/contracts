@@ -131,14 +131,14 @@ Deploy the Interep contract with one Semaphore verifier:
 yarn deploy:interep --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]'
 ```
 
-If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, ropsten, kovan, arbitrum). Or you can specify it as option:
+If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, kovan, arbitrum). Or you can specify it as option:
 
 ```bash
 yarn deploy:interep --verifiers '[[20, "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"]]' --network kovan
 yarn deploy:interep --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]' --network localhost
 ```
 
-If you want to deploy the contracts on Ropsten, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.
+If you want to deploy the contracts on Goerli, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.
 
 ### Preparing a local network
 
