@@ -28,13 +28,20 @@ contract Interep is IInterep, Ownable, SemaphoreCore {
     }
 
     /// @dev Initializes the Semaphore verifiers used to verify the user's ZK proofs.
-    /// @param depths: Three depths associated with the verifiers.
-    /// @param verifierAddresses: Verifier addresses.
-    constructor(uint8[] memory depths, address[] memory verifierAddresses) {
-        require(depths.length == verifierAddresses.length, "Interep: parameters lists does not have the same length");
+    /// @param _verifiers: List of Semaphore verifiers (address and related Merkle tree depth).
+    constructor(Verifier[] memory _verifiers) {
+        for (uint8 i = 0; i < _verifiers.length; i++) {
+            verifiers[_verifiers[i].merkleTreeDepth] = IVerifier(_verifiers[i].contractAddress);
+        }
+    }
 
-        for (uint8 i = 0; i < depths.length; i++) {
-            verifiers[depths[i]] = IVerifier(verifierAddresses[i]);
+    /// @dev See {IInterep-updateGroups}.
+    function updateGroups(Group[] calldata _groups) external override onlyOwner {
+        for (uint8 i = 0; i < _groups.length; i++) {
+            uint256 groupId = uint256(keccak256(abi.encodePacked(_groups[i].provider, _groups[i].name))) %
+                SNARK_SCALAR_FIELD;
+
+            _updateGroup(groupId, _groups[i]);
         }
     }
 
@@ -49,7 +56,7 @@ contract Interep is IInterep, Ownable, SemaphoreCore {
         uint256 root = getRoot(groupId);
         uint8 depth = getDepth(groupId);
 
-        require(depth != 0, "Interep: the group does not exist");
+        require(depth != 0, "Interep: group does not exist");
 
         IVerifier verifier = verifiers[depth];
 
@@ -58,16 +65,6 @@ contract Interep is IInterep, Ownable, SemaphoreCore {
         _saveNullifierHash(nullifierHash);
 
         emit ProofVerified(groupId, signal);
-    }
-
-    /// @dev See {IInterep-updateGroups}.
-    function updateGroups(Group[] calldata offchainGroups) external override onlyOwner {
-        for (uint8 i = 0; i < offchainGroups.length; i++) {
-            uint256 groupId = uint256(keccak256(abi.encodePacked(offchainGroups[i].provider, offchainGroups[i].name))) %
-                SNARK_SCALAR_FIELD;
-
-            _updateGroup(groupId, offchainGroups[i]);
-        }
     }
 
     /// @dev See {IInterep-getRoot}.

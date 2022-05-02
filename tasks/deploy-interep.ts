@@ -7,10 +7,7 @@ task("deploy:interep", "Deploy an Interep contract")
     .setAction(async ({ logs, verifiers }, { ethers }): Promise<Contract> => {
         const ContractFactory = await ethers.getContractFactory("Interep")
 
-        const contract = await ContractFactory.deploy(
-            verifiers.map((v: [number, number]) => v[0]),
-            verifiers.map((v: [number, number]) => v[1])
-        )
+        const contract = await ContractFactory.deploy(verifiers)
 
         await contract.deployed()
 

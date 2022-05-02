@@ -28,7 +28,10 @@ describe("Interep", () => {
 
     before(async () => {
         const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
-        contract = await run("deploy:interep", { logs: false, verifiers: [[tree.depth, verifierAddress]] })
+        contract = await run("deploy:interep", {
+            logs: false,
+            verifiers: [{ merkleTreeDepth: tree.depth, contractAddress: verifierAddress }]
+        })
     })
 
     describe("# updateGroups", () => {
@@ -101,7 +104,7 @@ describe("Interep", () => {
         it("Should not verify a proof if the group does not exist", async () => {
             const transaction = contract.verifyProof(10, bytes32Signal, 0, 0, [0, 0, 0, 0, 0, 0, 0, 0])
 
-            await expect(transaction).to.be.revertedWith("Interep: the group does not exist")
+            await expect(transaction).to.be.revertedWith("Interep: group does not exist")
         })
 
         it("Should throw an exception if the proof is not valid", async () => {

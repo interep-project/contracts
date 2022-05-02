@@ -2,7 +2,10 @@ import { run } from "hardhat"
 
 async function main() {
     const { address: verifierAddress } = await run("deploy:verifier", { logs: false })
-    const { address: interepAddress } = await run("deploy:interep", { logs: false, verifiers: [[20, verifierAddress]] })
+    const { address: interepAddress } = await run("deploy:interep", {
+        logs: false,
+        verifiers: [{ merkleTreeDepth: 20, contractAddress: verifierAddress }]
+    })
 
     console.log(`Interep contract has been deployed to: ${interepAddress}`)
 }

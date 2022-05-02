@@ -51,7 +51,7 @@ Please, visit our [web app](https://kovan.interep.link) or our [documentation we
 
 |         | Kovan                                                                                          | Goerli                                                      | Arbitrum One |
 | ------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------ |
-| Interep | [0x9738...6D6D](https://kovan.etherscan.io/address/0x973863A2D7ddcCAfa9c2d98A3027C1fE0D056D6D) | [0xC0ae...F1c9](https://goerli.etherscan.io/address/0xC0ae1a8D3505B2bE9DCe0e826abd722Afd13F1c9) |              |
+| Interep | [0xF58D...53De](https://kovan.etherscan.io/address/0xF58D3b710cDD337df432e20a806Ad04f6CfE53De) | [0x9f44...eafb](https://goerli.etherscan.io/address/0x9f44be9F69aF1e049dCeCDb2d9296f36C49Ceafb) |              |
 
 ---
 
@@ -128,14 +128,14 @@ yarn deploy:verifier # The resulting address will have to be used in the next st
 Deploy the Interep contract with one Semaphore verifier:
 
 ```bash
-yarn deploy:interep --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]'
+yarn deploy:interep --verifiers '[{"merkleTreeDepth": 20, "contractAddress": "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"}]'
 ```
 
 If you want to deploy contracts in a specific network you can set up the `DEFAULT_NETWORK` variable in your `.env` file with the name of one of our supported networks (hardhat, localhost, goerli, kovan, arbitrum). Or you can specify it as option:
 
 ```bash
-yarn deploy:interep --verifiers '[[20, "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"]]' --network kovan
-yarn deploy:interep --verifiers '[[20, "0x5FbDB2315678afecb367f032d93F642f64180aa3"]]' --network localhost
+yarn deploy:interep --verifiers '[{"merkleTreeDepth": 20, "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3"}]' --network kovan
+yarn deploy:interep --verifiers '[{"merkleTreeDepth": 20, "contractAddress": "0x06bcD633988c1CE7Bd134DbE2C12119b6f3E4bD1"}]' --network localhost
 ```
 
 If you want to deploy the contracts on Goerli, Kovan or Arbitrum remember to provide a valid private key and an Infura API in your `.env` file.

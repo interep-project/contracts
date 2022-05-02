@@ -4,6 +4,11 @@ pragma solidity ^0.8.4;
 /// @title Interep interface.
 /// @dev Interface of a Interep contract.
 interface IInterep {
+    struct Verifier {
+        address contractAddress;
+        uint8 merkleTreeDepth;
+    }
+
     struct Group {
         bytes32 provider;
         bytes32 name;
