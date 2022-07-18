@@ -49,7 +49,7 @@ const hardhatConfig: HardhatUserConfig = {
         artifacts: config.paths.build.contracts
     },
     dependencyCompiler: {
-        paths: ["@appliedzkp/semaphore-contracts/base/Verifier.sol"]
+        paths: ["@semaphore-protocol/contracts/verifiers/Verifier20.sol"]
     },
     defaultNetwork: process.env.DEFAULT_NETWORK || "hardhat",
     networks: {

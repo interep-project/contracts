@@ -3,9 +3,9 @@ pragma solidity ^0.8.4;
 
 import "./IInterep.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@appliedzkp/semaphore-contracts/interfaces/IVerifier.sol";
-import "@appliedzkp/semaphore-contracts/base/SemaphoreCore.sol";
-import "@appliedzkp/semaphore-contracts/base/SemaphoreConstants.sol";
+import "@semaphore-protocol/contracts/interfaces/IVerifier.sol";
+import "@semaphore-protocol/contracts/base/SemaphoreCore.sol";
+import "@semaphore-protocol/contracts/base/SemaphoreConstants.sol";
 
 /// @title Interep
 /// @dev Interep is a collection of reputation Semaphore groups in which members
